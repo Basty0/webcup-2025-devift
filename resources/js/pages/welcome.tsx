@@ -1,8 +1,11 @@
 import { CarouselGallery } from '@/components/carousel-gallery';
 import { GalleryDetail } from '@/components/gallery-detail';
+import { HeroSection } from '@/components/hero-section-1';
 import ModelViewer from '@/components/model-viewer';
 import ScrollableCard from '@/components/scrollable-card';
+import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
+import LayoutApp from '@/layouts/layout-app';
 import { Head } from '@inertiajs/react';
 import { useState } from 'react';
 // import { type SharedData } from '@/types';
@@ -63,11 +66,14 @@ export default function Welcome() {
     const selectedGalleryItem = galleryItems.find((item) => item.id === selectedItem);
 
     return (
-        <>
+        <LayoutApp>
             <Head title="Welcome">
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
+
+            {/* <HeroCarousel /> */}
+            <HeroSection />
             <h1 className="mb-4 text-2xl font-bold">Modèle 3D</h1>
             <div className="grid w-full grid-cols-2 gap-4 p-2">
                 {/* <div className="flex w-1/2 flex-col gap-4">
@@ -106,6 +112,17 @@ export default function Welcome() {
                 </div>
             </div>
 
+            <div className="flex flex-col items-center justify-center p-4 md:hidden">
+                <h1 className="font-poppins w-[420px] text-[84px] leading-[88px] font-bold">Our Features</h1>
+                <div className="font-poppins mt-8 w-[420px] text-sm">
+                    <p>
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sapiente qui quis, facere, cupiditate, doloremque natus ex
+                        perspiciatis ratione hic corrupti adipisci ea doloribus!
+                    </p>
+                    <Button className="mt-5 h-auto rounded-full bg-black px-8 py-6 text-white hover:bg-black/90">See More Details</Button>
+                </div>
+            </div>
+
             <ScrollableCard />
 
             <div className="flex min-h-screen flex-col items-center justify-center p-4">
@@ -121,6 +138,6 @@ export default function Welcome() {
                     </DialogContent>
                 </Dialog>
             </div>
-        </>
+        </LayoutApp>
     );
 }

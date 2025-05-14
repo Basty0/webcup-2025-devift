@@ -1,0 +1,190 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground text-[12px];
+    font-family: var(--font-poppins), sans-serif;
+  }
+}
+
+@layer components {
+  /* Animation keyframes */
+  @keyframes showContent {
+    to {
+      transform: translateY(0px);
+      filter: blur(0px);
+      opacity: 1;
+    }
+  }
+
+  @keyframes showImage {
+    to {
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+    }
+  }
+
+  @keyframes showThumbnail {
+    from {
+      width: 0;
+      opacity: 0;
+    }
+  }
+
+  @keyframes effectNext {
+    from {
+      transform: translateX(150px);
+    }
+  }
+
+  @keyframes runningTime {
+    from {
+      width: 100%;
+    }
+    to {
+      width: 0;
+    }
+  }
+
+  @keyframes outFrame {
+    to {
+      width: 150px;
+      height: 220px;
+      bottom: 50px;
+      left: 50%;
+      border-radius: 20px;
+    }
+  }
+
+  @keyframes contentOut {
+    to {
+      transform: translateY(-150px);
+      filter: blur(20px);
+      opacity: 0;
+    }
+  }
+
+  /* Carousel animations */
+  .carousel.next .list .item:nth-child(1) img {
+    width: 150px;
+    height: 220px;
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    border-radius: 30px;
+    animation: showImage 0.5s linear 1 forwards;
+  }
+
+  .carousel.next .thumbnail .item:nth-last-child(1) {
+    overflow: hidden;
+    animation: showThumbnail 0.5s linear 1 forwards;
+  }
+
+  .carousel.prev .list .item img {
+    z-index: 100;
+  }
+
+  .carousel.next .thumbnail {
+    animation: effectNext 0.5s linear 1 forwards;
+  }
+
+  .carousel.next .time,
+  .carousel.prev .time {
+    animation: runningTime 3s linear 1 forwards;
+  }
+
+  .carousel.prev .list .item:nth-child(2) {
+    z-index: 2;
+  }
+
+  .carousel.prev .list .item:nth-child(2) img {
+    animation: outFrame 0.5s linear 1 forwards;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+
+  .carousel.prev .thumbnail .item:nth-child(1) {
+    overflow: hidden;
+    opacity: 0;
+    animation: showThumbnail 0.5s linear 1 forwards;
+  }
+
+  .carousel.next .arrows button,
+  .carousel.prev .arrows button {
+    pointer-events: none;
+  }
+
+  .carousel.prev .list .item:nth-child(2) .content .author,
+  .carousel.prev .list .item:nth-child(2) .content .title,
+  .carousel.prev .list .item:nth-child(2) .content .topic,
+  .carousel.prev .list .item:nth-child(2) .content .des,
+  .carousel.prev .list .item:nth-child(2) .content .buttons {
+    animation: contentOut 1.5s linear 1 forwards !important;
+  }
+
+  /* Responsive styles */
+  @media screen and (max-width: 678px) {
+    .carousel .list .item .content {
+      padding-right: 0;
+    }
+    .carousel .list .item .content .title {
+      font-size: 30px;
+    }
+  }
+}

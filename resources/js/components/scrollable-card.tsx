@@ -59,7 +59,7 @@ export default function ScrollableCard() {
 
     return (
         <div ref={stackAreaRef} className="relative flex h-[300vh] w-full">
-            <div className="sticky top-0 left-0 flex h-screen basis-1/2 flex-col items-center justify-center">
+            <div className="sticky top-0 left-0 hidden h-screen basis-1/2 flex-col items-center justify-center md:flex">
                 <h1 className="font-poppins w-[420px] text-[84px] leading-[88px] font-bold">Our Features</h1>
                 <div className="font-poppins mt-8 w-[420px] text-sm">
                     <p>
@@ -70,7 +70,7 @@ export default function ScrollableCard() {
                 </div>
             </div>
 
-            <div className="relative sticky top-0 h-screen basis-1/2">
+            <div className="sticky top-0 h-screen w-full items-center justify-center md:w-1/2">
                 {cards.map((card, index) => {
                     const isAway = awayCards.includes(card.id);
                     const zIndex = cards.length - index;
@@ -79,7 +79,7 @@ export default function ScrollableCard() {
                     return (
                         <Card
                             key={card.id}
-                            className={`absolute top-[calc(50%-175px)] left-[calc(50%-175px)] mb-2.5 flex h-[350px] w-[350px] flex-col justify-between rounded-3xl p-9 transition-transform duration-500 ease-in-out ${card.color} border-none text-white shadow-2xl`}
+                            className={`absolute top-[calc(50%-175px)] left-[calc(50%-70px)] mb-2.5 flex h-[250px] w-[250px] flex-col justify-between rounded-3xl p-9 transition-transform duration-500 ease-in-out md:h-[350px] md:w-[350px] ${card.color} border-none text-white shadow-2xl`}
                             style={{
                                 transform: isAway ? 'translateY(-120vh) rotate(-48deg)' : `rotate(${angle}deg)`,
                                 zIndex,
@@ -87,7 +87,7 @@ export default function ScrollableCard() {
                             }}
                         >
                             <div className="font-poppins text-xl font-bold">{card.subtitle}</div>
-                            <div className="font-poppins text-[44px] leading-[54px] font-bold">{card.content}</div>
+                            <div className="font-poppins text-[24px] leading-[54px] font-bold md:text-[44px]">{card.content}</div>
                         </Card>
                     );
                 })}
