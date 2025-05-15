@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Link, usePage } from '@inertiajs/react';
 import { Menu, X } from 'lucide-react';
-import React, { type ReactNode } from 'react';
+import React, { type ReactNode, useEffect, useState } from 'react';
 
 interface AppLayoutProps {
     children: ReactNode;
@@ -16,12 +16,43 @@ interface User {
     email: string;
 }
 
-export default ({ children }: AppLayoutProps) => (
-    <>
-        <HeroHeader />
-        {children}
-    </>
-);
+export default ({ children }: AppLayoutProps) => {
+    const [isDarkMode, setIsDarkMode] = useState(false);
+
+    useEffect(() => {
+        // Détecter le thème initial
+        const isDark = document.documentElement.classList.contains('dark');
+        setIsDarkMode(isDark);
+
+        // Observer les changements de thème
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === 'class') {
+                    const isDark = document.documentElement.classList.contains('dark');
+                    setIsDarkMode(isDark);
+                }
+            });
+        });
+
+        observer.observe(document.documentElement, { attributes: true });
+
+        return () => observer.disconnect();
+    }, []);
+
+    return (
+        <div
+            className="min-h-screen"
+            style={{
+                background: isDarkMode
+                    ? 'linear-gradient(135deg, oklch(0.12 0.03 240), oklch(0.15 0.05 280), oklch(0.145 0 0))'
+                    : 'linear-gradient(135deg, oklch(0.97 0.02 240), oklch(0.98 0.04 260), oklch(1 0 0))',
+            }}
+        >
+            <HeroHeader />
+            {children}
+        </div>
+    );
+};
 
 const menuItems = [
     { name: 'Fonctionnalités', href: '#link' },

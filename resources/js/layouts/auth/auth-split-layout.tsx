@@ -28,7 +28,7 @@ export default function AuthSplitLayout({ children, title, description }: PropsW
             <div className="relative hidden h-full flex-col p-10 text-white backdrop-blur-sm lg:flex">
                 <div
                     className="absolute inset-0 m-4 rounded-lg bg-cover bg-center bg-no-repeat"
-                    style={{ backgroundImage: "url('/images/2.jpeg')" }}
+                    style={{ backgroundImage: "url('/images/3.jpeg')" }}
                 />
                 <Link
                     href={route('home')}

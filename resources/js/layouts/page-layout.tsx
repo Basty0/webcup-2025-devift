@@ -15,7 +15,7 @@ import { useInitials } from '@/hooks/use-initials';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { Activity, Component, HomeIcon, LogOut, Package, ScrollText, Settings, SunMoon } from 'lucide-react';
-import { type ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 
 interface AppLayoutProps {
     children: ReactNode;
@@ -61,13 +61,16 @@ const data = [
 ];
 
 export default function PageLayout({ children, breadcrumbs = [] }: AppLayoutProps) {
-    const { auth } = usePage<SharedData>().props;
+    const { auth, ziggy } = usePage<SharedData>().props;
     const getInitials = useInitials();
 
+    // Récupérer le chemin actuel de l'URL
+    const currentPath = ziggy?.location;
+
     return (
-        <div className="relative min-h-screen pb-20">
+        <div className="bg-background relative min-h-screen pb-20">
             {/* Header */}
-            <header className="bg-background/30 fixed top-0 right-0 left-0 z-40 border-b border-gray-200 backdrop-blur-sm dark:border-gray-800">
+            <header className="bg-background/30 fixed top-0 right-0 left-0 z-40 m-2 mx-auto max-w-6xl rounded-lg px-6 backdrop-blur-sm transition-all duration-300 lg:px-12">
                 <div className="mx-auto flex h-16 items-center justify-between px-4 md:max-w-7xl">
                     <div className="flex items-center gap-4">
                         <div className="flex items-center">
@@ -132,21 +135,38 @@ export default function PageLayout({ children, breadcrumbs = [] }: AppLayoutProp
             {/* Main content */}
             <main className="pt-20">{children}</main>
 
-            <AppleStyleDock />
+            <AppleStyleDock currentPath={currentPath} />
         </div>
     );
 }
 
-export function AppleStyleDock() {
+export function AppleStyleDock({ currentPath }: { currentPath?: string }) {
     return (
         <div className="fixed bottom-2 left-1/2 z-50 max-w-full -translate-x-1/2">
             <Dock className="items-end pb-3">
-                {data.map((item, idx) => (
-                    <DockItem key={idx} className="aspect-square rounded-full bg-gray-200 dark:bg-neutral-800" href={item.href}>
-                        <DockLabel>{item.title}</DockLabel>
-                        <DockIcon>{item.icon}</DockIcon>
-                    </DockItem>
-                ))}
+                {data.map((item, idx) => {
+                    // Vérifier si cet élément est actif en comparant son href avec l'URL actuelle
+                    const isActive = currentPath && item.href !== '#' && currentPath.startsWith(item.href);
+
+                    return (
+                        <DockItem
+                            key={idx}
+                            className={`aspect-square rounded-full backdrop-blur-md ${
+                                isActive ? 'bg-primary/20 ring-primary dark:bg-primary/20 ring-2' : 'bg-gray-200/30 dark:bg-neutral-800/30'
+                            }`}
+                            href={item.href}
+                        >
+                            <DockLabel>{item.title}</DockLabel>
+                            <DockIcon>
+                                {React.cloneElement(item.icon, {
+                                    className: `h-full w-full ${
+                                        isActive ? 'text-primary dark:text-primary' : 'text-neutral-600 dark:text-neutral-300'
+                                    }`,
+                                })}
+                            </DockIcon>
+                        </DockItem>
+                    );
+                })}
             </Dock>
         </div>
     );
