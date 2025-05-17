@@ -27,18 +27,40 @@ class ProfileController extends Controller
     /**
      * Update the user's profile settings.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
+    public function update(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string',
+        'email' => 'required|email',
+        'bio' => 'nullable|string',
+        'photo' => 'nullable|image|max:2048',
+        'photo_cover' => 'nullable|image|max:4096',
+    ]);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+    $user = auth()->user();
 
-        $request->user()->save();
-
-        return to_route('profile.edit');
+    if ($request->hasFile('photo')) {
+        $photo = $request->file('photo');
+        $photoName = uniqid('photo_') . '.' . $photo->getClientOriginalExtension();
+        $photo->move(public_path('uploads/photos'), $photoName);
+        $user->photo = '/uploads/photos/' . $photoName;
     }
+
+    if ($request->hasFile('photo_cover')) {
+        $cover = $request->file('photo_cover');
+        $coverName = uniqid('cover_') . '.' . $cover->getClientOriginalExtension();
+        $cover->move(public_path('uploads/covers'), $coverName);
+        $user->photo_cover = '/uploads/covers/' . $coverName;
+    }
+
+    $user->name = $request->name;
+    $user->email = $request->email;
+    $user->bio = $request->bio;
+    $user->save();
+
+    return redirect('/profil');
+}
+
 
     /**
      * Delete the user's account.

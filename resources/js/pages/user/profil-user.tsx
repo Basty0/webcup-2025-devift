@@ -10,16 +10,16 @@ export default function ProfilUser({user}: {user: any}) {
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'ProfilUser',
-            href: `/profil/${user.id}`,
+            href: `/profil`,
         },
     ];
     console.log(user);
     return (
         <PageLayout breadcrumbs={breadcrumbs}>
             <Head title="ProfilUser" />
-            <SettingsLayout>
-            <ProfilePage />
-            </SettingsLayout>
+            
+            <ProfilePage user={user}/>
+            
         </PageLayout>
     );
 }

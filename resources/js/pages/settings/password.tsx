@@ -11,12 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Password settings',
-        href: '/settings/password',
-    },
-];
+
 
 export default function Password() {
     const passwordInput = useRef<HTMLInputElement>(null);
@@ -49,10 +44,10 @@ export default function Password() {
     };
 
     return (
-        <PageLayout breadcrumbs={breadcrumbs}>
+        <>
             <Head title="Profile settings" />
 
-            <SettingsLayout>
+           
                 <div className="space-y-6">
                     <HeadingSmall title="Update password" description="Ensure your account is using a long, random password to stay secure" />
 
@@ -122,7 +117,7 @@ export default function Password() {
                         </div>
                     </form>
                 </div>
-            </SettingsLayout>
-        </PageLayout>
+            
+        </>
     );
 }
