@@ -156,7 +156,7 @@ export default function ContentFeed({ isMobile }: ContentFeedProps) {
             {/* Barre d'interaction fixe avec animation lors du changement de contenu */}
             <AnimatePresence mode="wait">
                 <div
-                    className={`fixed z-50 ${isMobile ? 'bottom-30 left-6' : 't left-6 -translate-y-1/2 transform'}`}
+                    className={`fixed z-50 ${isMobile ? 'bottom-30 left-2' : 't left-6 -translate-y-1/2 transform'}`}
                     key={`interaction-container-${activeIndex}`}
                 >
                     <InteractionBar stats={posts[activeIndex].stats} postId={posts[activeIndex].id} isMobile={isMobile} />

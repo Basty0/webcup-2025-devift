@@ -139,7 +139,7 @@ export default function ContentCard({ post, isActive, isMobile, direction, index
                 {/* Main Content */}
                 <div className="relative mb-8 flex justify-center">
                     {/* Content Text (Main) - Centré avec un espace à gauche pour la barre d'interaction fixe */}
-                    <motion.div className={`${isMobile ? 'ml-24 px-4' : 'max-w-2xl px-8'}`} variants={contentVariants}>
+                    <motion.div className={`${isMobile ? 'ml-12 px-4' : 'max-w-2xl px-8'}`} variants={contentVariants}>
                         <motion.h2 className="mb-2 text-2xl font-bold text-white" variants={itemVariants}>
                             {post.content.title}
                         </motion.h2>

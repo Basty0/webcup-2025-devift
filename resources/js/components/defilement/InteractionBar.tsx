@@ -71,7 +71,7 @@ export default function InteractionBar({ stats, postId, isMobile = false }: Inte
 
     return (
         <motion.div
-            className={`flex flex-col items-center gap-${isMobile ? '3' : '6'} rounded-full bg-gray-300/70 p-${isMobile ? '2' : '4'} py-${isMobile ? '4' : '6'} backdrop-blur-md`}
+            className={`flex flex-col items-center gap-${isMobile ? '3' : '6'} bg-background/30 rounded-full backdrop-blur-md p-${isMobile ? '2' : '4'} py-${isMobile ? '4' : '6'} backdrop-blur-md`}
             variants={containerVariants}
             initial="hidden"
             animate="visible"
