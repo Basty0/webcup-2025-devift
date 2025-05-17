@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\Itilusateur\UserControlleur;
 use App\Http\Controllers\TheEndController;
+use App\Http\Controllers\Settings\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Api\ReactionController;
@@ -34,7 +35,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/profil', [UserControlleur::class, 'ViewProfil'])
         ->name('profil.ViewProfil');
-
+       
     // Sample Email Testing
     Route::get('/email/sample', function () {
         return Inertia::render('emails/sample');

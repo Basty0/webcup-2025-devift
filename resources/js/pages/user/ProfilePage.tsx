@@ -5,8 +5,14 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Pencil, MessageCircle, Share2, ChevronDown, ChevronUp } from "lucide-react"
 import { useState } from "react"
+import Modifuser from './modif-user';
+export default function ProfilePage({ user }: { user: any }) {
+        console.log(user)
+     const [isModal,setIsmodal] =  useState(false);
 
-export default function ProfilePage() {
+     const OpenModal = () => {
+        setIsmodal(!isModal)
+     }
   // Données fictives pour les publications
   const publishedPosts = [
     {
@@ -146,13 +152,13 @@ export default function ProfilePage() {
   ]
 
   return (
-    <div className="container mx-auto px-4 pb-8">
+    <div className="container mx-auto px-4 pb-8 bg-background">
       {/* Section de couverture et profil */}
       <div className="relative mb-6">
         {/* Photo de couverture */}
         <div className="relative h-[200px] md:h-[300px] w-full rounded-b-lg overflow-hidden">
           <Image
-            src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&h=300&q=80"
+            src={user.photo_cover}
             alt="Photo de couverture"
             fill
             className="object-cover"
@@ -164,7 +170,7 @@ export default function ProfilePage() {
         <div className="flex flex-col md:flex-row items-center md:items-end gap-4 -mt-16 md:-mt-20 px-4 relative z-10">
           <Avatar className="h-32 w-32 md:h-40 md:w-40 border-4 border-background">
             <AvatarImage
-              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=160&h=160&q=80"
+             src={user.photo}
               alt="Photo de profil"
             />
             <AvatarFallback>JP</AvatarFallback>
@@ -172,14 +178,13 @@ export default function ProfilePage() {
 
           <div className="flex flex-col md:flex-row items-center md:items-end justify-between w-full pb-4">
             <div className="text-center md:text-left">
-              <h1 className="text-2xl font-bold">Jean Dupont</h1>
-              <p className="text-muted-foreground">1.2k amis · 350 abonnés</p>
+              <h1 className="text-2xl font-bold">{user.name}</h1>
+              <p className="text-muted-foreground">{user.bio}</p>
             </div>
 
-            <Button className="mt-2 md:mt-0" variant="outline">
-              <Pencil className="mr-2 h-4 w-4" />
-              Modifier le profil
-            </Button>
+            <div className="mt-2 md:mt-0">
+            <Modifuser />
+            </div>
           </div>
         </div>
 
