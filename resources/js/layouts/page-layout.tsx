@@ -21,7 +21,6 @@ import React, { type ReactNode } from 'react';
 interface AppLayoutProps {
     children: ReactNode;
     breadcrumbs?: BreadcrumbItem[];
-   
 }
 
 const data = [
@@ -63,7 +62,6 @@ const data = [
 ];
 
 export default function PageLayout({ children, breadcrumbs = [] }: AppLayoutProps) {
-  
     const { auth, ziggy } = usePage<SharedData>().props;
     const getInitials = useInitials();
 
