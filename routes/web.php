@@ -7,17 +7,30 @@ use App\Http\Controllers\TheEndController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Api\ReactionController;
+use App\Http\Controllers\Api\SearchController;
+use App\Http\Controllers\Api\NewSearchController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('home');
 
+// Public routes
+Route::get('/recherche', function () {
+    return Inertia::render('resulatrecherche/resulats-recherche');
+})->name('resulatrecherche');
+
+Route::get('/theend/{theend}', [TheEndController::class, 'show'])->name('theend.show');
+
+// Content detail page route
+Route::get('/content/{id}', function ($id) {
+    return Inertia::render('content/[id]', ['id' => $id]);
+})->name('content.show');
+
+// Route de recherche accessible sans authentification
+Route::get('/api/search', [NewSearchController::class, 'search'])->name('api.search');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/recherche', function () {
-        return Inertia::render('resulatrecherche/resulats-recherche');
-    })->name('resulatrecherche');
-
 
     Route::get('/profil', [UserControlleur::class, 'ViewProfil'])
         ->name('profil.ViewProfil');
@@ -43,11 +56,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Add reaction route
     Route::get('/reaction/{id}/react', [ReactionController::class, 'react']);
 });
-
-
-Route::get('/theend/{theend}', [TheEndController::class, 'show'])->name('theend.show');
-   
-
 
 // Route::get('/email/verify', function () {
 //     return view('auth.verify-email');
