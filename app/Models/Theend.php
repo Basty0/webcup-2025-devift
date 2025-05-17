@@ -10,6 +10,7 @@ class Theend extends Model
     protected $fillable = [
         'user_id',
         'slug',
+        'title',
         'content',
         'is_public',
         'tone',

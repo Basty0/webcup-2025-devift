@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('type_id')->constrained('types');
             $table->string('slug')->unique();
+            $table->string('title')->nullable();
             $table->text('content');
             $table->boolean('is_public')->default(true);
             $table->enum('tone', ['dramatique', 'ironique', 'cringe', 'classe', 'touchant', 'absurde', 'passif_agressif', 'honnête']);

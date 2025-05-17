@@ -11,10 +11,11 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
 import { useInitials } from '@/hooks/use-initials';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { Activity, Component, HomeIcon, LogOut, Package, ScrollText, Settings, SunMoon } from 'lucide-react';
+import { Activity, Bell, Component, HomeIcon, LogOut, Package, ScrollText, Search, Settings, SunMoon } from 'lucide-react';
 import React, { type ReactNode } from 'react';
 
 interface AppLayoutProps {
@@ -77,15 +78,30 @@ export default function PageLayout({ children, breadcrumbs = [] }: AppLayoutProp
                             <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-md">
                                 <AppLogoIcon className="size-5 fill-current text-white dark:text-black" />
                             </div>
-                            <div className="ml-2 hidden text-sm font-semibold sm:block">Laravel Starter Kit</div>
                         </div>
                         {breadcrumbs.length > 0 && (
                             <div className="hidden text-lg font-medium md:block">{breadcrumbs[breadcrumbs.length - 1].title}</div>
                         )}
                     </div>
 
+                    {/* Search Bar */}
+                    <div className="hidden flex-1 items-center justify-center px-4 md:flex">
+                        <div className="w-full max-w-xl">
+                            <div className="relative">
+                                <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
+                                <Input
+                                    type="search"
+                                    placeholder="Rechercher..."
+                                    className="bg-background/50 w-full rounded-full pl-9 backdrop-blur-sm"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="flex items-center gap-2">
-                        <AppearanceToggleDropdown />
+                        <Button variant="ghost" className="size-10 rounded-full p-1">
+                            <Bell className="h-4 w-4" />
+                        </Button>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" className="size-10 rounded-full p-1">
@@ -118,6 +134,10 @@ export default function PageLayout({ children, breadcrumbs = [] }: AppLayoutProp
                                         <Settings className="mr-2 h-4 w-4" />
                                         Profil
                                     </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem asChild>
+                                    <AppearanceToggleDropdown />
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem asChild>

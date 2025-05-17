@@ -14,6 +14,14 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('photo')->nullable();
+            $table->string('photo_cover')->nullable();
+            $table->string('bio')->nullable();
+            $table->string('location')->nullable();
+            $table->string('twitter')->nullable();
+            $table->string('tiktok')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('linkedin')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
