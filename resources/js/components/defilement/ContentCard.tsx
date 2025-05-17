@@ -1,10 +1,15 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import { Image } from '@/components/ui/image';
+import { Link } from '@inertiajs/react';
 import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
 
 interface Post {
-    id: string | number;
+    id: number | string;
+    slug: string;
     author: {
+        id: number;
         name: string;
         type: string;
         image?: string;
@@ -13,7 +18,14 @@ interface Post {
         title: string;
         description: string;
         image?: string;
+        tone: string;
     };
+    stats: {
+        likes: number;
+        comments: number;
+        shares: number;
+    };
+    created_at: string;
 }
 
 interface ContentCardProps {
@@ -108,14 +120,14 @@ export default function ContentCard({ post, isActive, isMobile, direction, index
                         src={post.content.image || '/placeholder.svg'}
                         alt={post.content.title}
                         fill
-                        className="rounded-2xl object-cover brightness-[0.85]"
+                        className="object-cover brightness-[0.85]"
                         priority={index === 0}
                     />
                 ) : (
                     <Image
                         src={post.content.image || '/placeholder.svg'}
                         alt={post.content.title}
-                        className="rounded-2xl object-cover brightness-[0.85] w-full h-full"
+                        className="h-full w-full object-cover brightness-[0.85]"
                         priority={index === 0}
                     />
                 )}
@@ -127,12 +139,12 @@ export default function ContentCard({ post, isActive, isMobile, direction, index
             {/* Content + InteractionBar (desktop) */}
             <div
                 className={`relative z-10 w-full ${
-                    isMobile ? 'flex h-full flex-col justify-between' : 'mx-auto flex h-full max-w-5xl flex-row justify-between items-center'
+                    isMobile ? 'flex h-full flex-col justify-between' : 'mx-auto flex h-full max-w-5xl flex-row items-center justify-between'
                 }`}
             >
                 {/* Bloc principal (texte, auteur) */}
-                <div className={isMobile ? '' : ' flex flex-col justify-start'}>
-                    {/* Header - Publicateur */}
+                <div className={isMobile ? 'flex h-full flex-col justify-between' : 'flex h-full flex-col justify-between'}>
+                    {/* Header - Publicateur (Always at the top) */}
                     <motion.div className="p-4" variants={contentVariants}>
                         <motion.div className="flex items-center gap-3" variants={itemVariants}>
                             <Avatar className="h-10 w-10 border-2 border-white">
@@ -146,16 +158,24 @@ export default function ContentCard({ post, isActive, isMobile, direction, index
                         </motion.div>
                     </motion.div>
 
-                    {/* Main Content */}
-                    <div className=" flex justify-start">
+                    {/* Main Content (Moved to bottom) */}
+                    <div className="mb-20 flex justify-start">
                         {/* Content Text (Main) - Centré avec un espace à gauche pour la barre d'interaction fixe */}
-                        <motion.div className={`${isMobile ? 'ml-12 px-4' : 'max-w-2xl px-8'}`} variants={contentVariants}>
+                        <motion.div className={`${isMobile ? 'ml-12 px-4' : 'mb-30 max-w-2xl px-8 pb-10'}`} variants={contentVariants}>
                             <motion.h2 className="mb-2 text-2xl font-bold text-white" variants={itemVariants}>
                                 {post.content.title}
                             </motion.h2>
-                            <motion.p className="text-sm text-white/90 md:text-base" variants={itemVariants}>
+                            <motion.p className="line-clamp-2 text-sm text-white/90 md:text-base" variants={itemVariants}>
                                 {post.content.description}
                             </motion.p>
+                            <motion.div className="mt-4" variants={itemVariants}>
+                                <Link href={`/theend/${post.slug}`}>
+                                    <Button variant="outline" className="group border-white/20 bg-black/30 text-white hover:bg-white/10">
+                                        Voir la page
+                                        <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                                    </Button>
+                                </Link>
+                            </motion.div>
                         </motion.div>
                     </div>
                 </div>

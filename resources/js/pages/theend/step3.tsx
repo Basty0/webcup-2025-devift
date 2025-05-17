@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Theend } from '@/types/theend';
 import { useForm } from '@inertiajs/react';
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // Médias organisés par ton
 const mediaByTone: Record<string, MediaItem[]> = {
@@ -32,29 +32,29 @@ const mediaByTone: Record<string, MediaItem[]> = {
         { id: 'classe3', url: '/media/classe/gif1.gif', tone: 'classe', type: 'gif' },
         { id: 'classe4', url: '/media/classe/sound1.mp3', tone: 'classe', type: 'sound' },
     ],
-    happy: [
-        { id: 'happy1', url: '/media/happy/image1.jpg', tone: 'happy', type: 'image' },
-        { id: 'happy2', url: '/media/happy/image2.jpg', tone: 'happy', type: 'image' },
-        { id: 'happy3', url: '/media/happy/gif1.gif', tone: 'happy', type: 'gif' },
-        { id: 'happy4', url: '/media/happy/sound1.mp3', tone: 'happy', type: 'sound' },
+    touchant: [
+        { id: 'touchant1', url: '/media/touchant/image1.jpg', tone: 'touchant', type: 'image' },
+        { id: 'touchant2', url: '/media/touchant/image2.jpg', tone: 'touchant', type: 'image' },
+        { id: 'touchant3', url: '/media/touchant/gif1.gif', tone: 'touchant', type: 'gif' },
+        { id: 'touchant4', url: '/media/touchant/sound1.mp3', tone: 'touchant', type: 'sound' },
     ],
-    sad: [
-        { id: 'sad1', url: '/media/sad/image1.jpg', tone: 'sad', type: 'image' },
-        { id: 'sad2', url: '/media/sad/image2.jpg', tone: 'sad', type: 'image' },
-        { id: 'sad3', url: '/media/sad/gif1.gif', tone: 'sad', type: 'gif' },
-        { id: 'sad4', url: '/media/sad/sound1.mp3', tone: 'sad', type: 'sound' },
+    absurde: [
+        { id: 'absurde1', url: '/media/absurde/image1.jpg', tone: 'absurde', type: 'image' },
+        { id: 'absurde2', url: '/media/absurde/image2.jpg', tone: 'absurde', type: 'image' },
+        { id: 'absurde3', url: '/media/absurde/gif1.gif', tone: 'absurde', type: 'gif' },
+        { id: 'absurde4', url: '/media/absurde/sound1.mp3', tone: 'absurde', type: 'sound' },
     ],
-    angry: [
-        { id: 'angry1', url: '/media/angry/image1.jpg', tone: 'angry', type: 'image' },
-        { id: 'angry2', url: '/media/angry/image2.jpg', tone: 'angry', type: 'image' },
-        { id: 'angry3', url: '/media/angry/gif1.gif', tone: 'angry', type: 'gif' },
-        { id: 'angry4', url: '/media/angry/sound1.mp3', tone: 'angry', type: 'sound' },
+    passif_agressif: [
+        { id: 'passif_agressif1', url: '/media/passif_agressif/image1.jpg', tone: 'passif_agressif', type: 'image' },
+        { id: 'passif_agressif2', url: '/media/passif_agressif/image2.jpg', tone: 'passif_agressif', type: 'image' },
+        { id: 'passif_agressif3', url: '/media/passif_agressif/gif1.gif', tone: 'passif_agressif', type: 'gif' },
+        { id: 'passif_agressif4', url: '/media/passif_agressif/sound1.mp3', tone: 'passif_agressif', type: 'sound' },
     ],
-    scared: [
-        { id: 'scared1', url: '/media/scared/image1.jpg', tone: 'scared', type: 'image' },
-        { id: 'scared2', url: '/media/scared/image2.jpg', tone: 'scared', type: 'image' },
-        { id: 'scared3', url: '/media/scared/gif1.gif', tone: 'scared', type: 'gif' },
-        { id: 'scared4', url: '/media/scared/sound1.mp3', tone: 'scared', type: 'sound' },
+    honnête: [
+        { id: 'honnête1', url: '/media/honnête/image1.jpg', tone: 'honnête', type: 'image' },
+        { id: 'honnête2', url: '/media/honnête/image2.jpg', tone: 'honnête', type: 'image' },
+        { id: 'honnête3', url: '/media/honnête/gif1.gif', tone: 'honnête', type: 'gif' },
+        { id: 'honnête4', url: '/media/honnête/sound1.mp3', tone: 'honnête', type: 'sound' },
     ],
 };
 
@@ -89,6 +89,7 @@ const itemVariants = {
 
 export default function Step3({ theend }: Step3Props) {
     const [activeTab, setActiveTab] = useState<'image' | 'gif' | 'sound'>('image');
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     // Stocker des informations sur l'upload pour les images uniquement
     const [uploadedImage, setUploadedImage] = useState<{ file: File | null; previewUrl: string | null }>({
@@ -96,11 +97,12 @@ export default function Step3({ theend }: Step3Props) {
         previewUrl: null,
     });
 
-    const { data, setData, post } = useForm({
+    const { data, setData, post, errors } = useForm({
         image_url: theend.image_url || '',
         gif_url: theend.gif_url || '',
         sound_url: theend.sound_url || '',
         is_public: theend.is_public ?? true,
+        image: null as File | null,
     });
 
     // Pre-select media based on tone when tab changes
@@ -118,7 +120,16 @@ export default function Step3({ theend }: Step3Props) {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(`/exprimer-vous/step3/${theend.slug}`);
+        post(`/exprimer-vous/step3/${theend.slug}`, {
+            forceFormData: true,
+            preserveScroll: true,
+            onSuccess: () => {
+                // Reset file input
+                if (fileInputRef.current) {
+                    fileInputRef.current.value = '';
+                }
+            },
+        });
     };
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,7 +137,14 @@ export default function Step3({ theend }: Step3Props) {
         if (file) {
             const url = URL.createObjectURL(file);
             setUploadedImage({ file, previewUrl: url });
-            setData('image_url', url);
+
+            // Clear previously selected image URL if from predefined options
+            if (data.image_url.startsWith('/media/')) {
+                setData('image_url', '');
+            }
+
+            // Set the image file for form submission
+            setData('image', file);
         }
     };
 
@@ -144,16 +162,42 @@ export default function Step3({ theend }: Step3Props) {
         return currentUrl === url;
     };
 
+    // Sélectionne une image prédéfinie
+    const selectPredefinedImage = (url: string) => {
+        // Clear uploaded file
+        setUploadedImage({ file: null, previewUrl: null });
+        setData('image', null);
+        setData('image_url', url);
+    };
+
     return (
         <motion.div className="mx-auto max-w-4xl p-6" variants={containerVariants} initial="hidden" animate="visible">
             <motion.div className="mb-8 text-center" variants={itemVariants}>
-                <img
-                    src="/images/media-selection.jpg"
-                    alt="Sélection de médias"
-                    className="mx-auto mb-6 h-64 w-auto rounded-lg object-cover shadow-md"
-                />
-                <h1 className="text-3xl font-bold">Ajoute des médias à ton histoire</h1>
-                <p className="text-muted-foreground mt-2">Choisis une image, un GIF ou un son pour illustrer ton histoire</p>
+                {/* Afficher l'image sélectionnée en haut si disponible, sinon afficher l'image par défaut */}
+                <div className="relative overflow-hidden rounded-lg shadow-md">
+                    {data.image_url || uploadedImage.previewUrl ? (
+                        <>
+                            <img
+                                src={uploadedImage.previewUrl || data.image_url}
+                                alt="Image sélectionnée"
+                                className="mx-auto h-64 w-full object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                            <div className="absolute right-0 bottom-0 left-0 p-4 text-white">
+                                <h1 className="text-3xl font-bold">Image sélectionnée</h1>
+                                <p className="mt-1 text-white/90">Tu peux choisir une autre image ci-dessous</p>
+                            </div>
+                        </>
+                    ) : (
+                        <img src="/images/media-selection.jpg" alt="Sélection de médias" className="mx-auto h-64 w-full object-cover" />
+                    )}
+                </div>
+                {!(data.image_url || uploadedImage.previewUrl) && (
+                    <>
+                        <h1 className="mt-6 text-3xl font-bold">Ajoute des médias à ton histoire</h1>
+                        <p className="text-muted-foreground mt-2">Choisis une image, un GIF ou un son pour illustrer ton histoire</p>
+                    </>
+                )}
             </motion.div>
 
             <motion.form onSubmit={handleSubmit} className="space-y-10" variants={containerVariants}>
@@ -210,7 +254,7 @@ export default function Step3({ theend }: Step3Props) {
                                             className={`aspect-square cursor-pointer overflow-hidden rounded-lg border-2 p-1 ${
                                                 isMediaSelected('image', media.url) ? 'border-primary' : 'border-transparent'
                                             }`}
-                                            onClick={() => setData('image_url', media.url)}
+                                            onClick={() => selectPredefinedImage(media.url)}
                                             whileHover={{ scale: 1.05 }}
                                             whileTap={{ scale: 0.95 }}
                                         >
@@ -220,13 +264,32 @@ export default function Step3({ theend }: Step3Props) {
                             </div>
 
                             <div className="bg-muted/50 mt-6 rounded-lg p-4">
-                                <Label className="mb-2 block font-medium">Ou télécharge ta propre image</Label>
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleImageUpload}
-                                    className="file:bg-secondary file:text-secondary-foreground hover:file:bg-secondary/90 block w-full text-sm file:mr-4 file:rounded-md file:border-0 file:px-4 file:py-2"
-                                />
+                                <div className="mb-4">
+                                    <Label className="mb-2 block font-medium">Ou télécharge ta propre image</Label>
+                                    <div className="relative">
+                                        <div
+                                            className={`rounded-lg border-2 bg-slate-50 ${data.image || uploadedImage.previewUrl ? 'border-primary' : 'border-dashed border-slate-300'} p-4 text-center`}
+                                        >
+                                            {uploadedImage.previewUrl ? (
+                                                <p className="text-sm text-slate-600">
+                                                    Image sélectionnée: <span className="font-medium">{uploadedImage.file?.name}</span>
+                                                </p>
+                                            ) : data.image_url ? (
+                                                <p className="text-sm text-slate-600">Image sélectionnée à partir de la galerie</p>
+                                            ) : (
+                                                <p className="text-sm text-slate-500">Sélectionne une image depuis ton ordinateur</p>
+                                            )}
+                                        </div>
+                                        <input
+                                            ref={fileInputRef}
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handleImageUpload}
+                                            className="file:bg-secondary file:text-secondary-foreground hover:file:bg-secondary/90 mt-2 block w-full text-sm file:mr-4 file:rounded-md file:border-0 file:px-4 file:py-2"
+                                        />
+                                    </div>
+                                    {errors.image && <p className="mt-1 text-sm text-red-500">{errors.image}</p>}
+                                </div>
                             </div>
                         </TabsContent>
 

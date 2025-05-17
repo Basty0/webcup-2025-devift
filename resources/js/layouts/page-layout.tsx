@@ -12,12 +12,13 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
+import SearchCommandDialog from '@/components/ui/SearchCommandDialog';
+import { Toaster } from '@/components/ui/sonner';
 import { useInitials } from '@/hooks/use-initials';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { Bell, Component, HomeIcon, LogOut, Package, Plus, Search, Settings, SunMoon, UserRound } from 'lucide-react';
 import React, { type ReactNode } from 'react';
-import SearchCommandDialog from '@/components/ui/SearchCommandDialog';
 
 interface AppLayoutProps {
     children: ReactNode;
@@ -94,7 +95,7 @@ export default function PageLayout({ children, breadcrumbs = [] }: AppLayoutProp
                             <div className="relative">
                                 <button
                                     type="button"
-                                    className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+                                    className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2"
                                     onClick={() => setSearchOpen(true)}
                                     tabIndex={-1}
                                 >
@@ -167,7 +168,10 @@ export default function PageLayout({ children, breadcrumbs = [] }: AppLayoutProp
             </header>
 
             {/* Main content */}
-            <main className="pt-20">{children}</main>
+            <main className="pt-20">
+                <Toaster />
+                {children}
+            </main>
 
             <AppleStyleDock currentPath={currentPath} />
         </div>
