@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('types', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // ex: "Divorce", "Démission", "Abandon"
+            $table->string('label'); // ex: "Divorce", "Démission", "Abandon"
             $table->timestamps();
         });
     }

@@ -15,13 +15,14 @@ return new class extends Migration {
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('type_id')->constrained('types');
             $table->string('slug')->unique();
-            $table->string('title')->nullable();
+            $table->string('title')->required();
             $table->text('content');
             $table->boolean('is_public')->default(true);
             $table->enum('tone', ['dramatique', 'ironique', 'cringe', 'classe', 'touchant', 'absurde', 'passif_agressif', 'honnête']);
             $table->string('image_url')->nullable();
             $table->string('gif_url')->nullable();
             $table->string('sound_url')->nullable();
+            $table->boolean('is_draft')->default(true);
             $table->unsignedBigInteger('views')->default(0);
             $table->timestamps();
         });

@@ -18,7 +18,8 @@ class Theend extends Model
         'image_url',
         'gif_url',
         'sound_url',
-        'views'
+        'views',
+        'is_draft'
     ];
 
     public function user()

@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input';
 import { useInitials } from '@/hooks/use-initials';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { Activity, Bell, Component, HomeIcon, LogOut, Package, Search, Settings, SunMoon, UserRound,Plus } from 'lucide-react';
+import { Bell, Component, HomeIcon, LogOut, Package, Plus, Search, Settings, SunMoon, UserRound } from 'lucide-react';
 import React, { type ReactNode } from 'react';
 import SearchCommandDialog from '@/components/ui/SearchCommandDialog';
 
@@ -42,7 +42,7 @@ const data = [
     },
     {
         title: 'Creer un TheEnd',
-        icon: <Plus className="h-10 w-10 text-neutral-600 dark:text-neutral-300 rounded-full" />,
+        icon: <Plus className="h-10 w-10 rounded-full text-neutral-600 dark:text-neutral-300" />,
         href: '/theends/create',
     },
     {
