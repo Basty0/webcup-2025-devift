@@ -74,7 +74,7 @@ export default function Step1({ types }: Step1Props) {
                     <RadioGroup
                         value={data.tone}
                         onValueChange={(value) => setData('tone', value)}
-                        className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
+                        className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4"
                     >
                         <div>
                             <RadioGroupItem value="dramatique" id="dramatique" className="peer sr-only" />
@@ -117,43 +117,43 @@ export default function Step1({ types }: Step1Props) {
                             </Label>
                         </div>
                         <div>
-                            <RadioGroupItem value="happy" id="happy" className="peer sr-only" />
+                            <RadioGroupItem value="touchant" id="touchant" className="peer sr-only" />
                             <Label
-                                htmlFor="happy"
+                                htmlFor="touchant"
                                 className="border-muted bg-popover hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary flex flex-col items-center justify-between rounded-md border-2 p-4"
                             >
-                                <span className="text-2xl">😁</span>
-                                <span className="mt-2 text-center text-sm font-medium">Joyeux</span>
+                                <span className="text-2xl">🥹</span>
+                                <span className="mt-2 text-center text-sm font-medium">Touchant</span>
                             </Label>
                         </div>
                         <div>
-                            <RadioGroupItem value="sad" id="sad" className="peer sr-only" />
+                            <RadioGroupItem value="absurde" id="absurde" className="peer sr-only" />
                             <Label
-                                htmlFor="sad"
+                                htmlFor="absurde"
                                 className="border-muted bg-popover hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary flex flex-col items-center justify-between rounded-md border-2 p-4"
                             >
-                                <span className="text-2xl">😥</span>
-                                <span className="mt-2 text-center text-sm font-medium">Triste</span>
+                                <span className="text-2xl">🤪</span>
+                                <span className="mt-2 text-center text-sm font-medium">Absurde</span>
                             </Label>
                         </div>
                         <div>
-                            <RadioGroupItem value="angry" id="angry" className="peer sr-only" />
+                            <RadioGroupItem value="passif_agressif" id="passif_agressif" className="peer sr-only" />
                             <Label
-                                htmlFor="angry"
+                                htmlFor="passif_agressif"
                                 className="border-muted bg-popover hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary flex flex-col items-center justify-between rounded-md border-2 p-4"
                             >
-                                <span className="text-2xl">😡</span>
-                                <span className="mt-2 text-center text-sm font-medium">En colère</span>
+                                <span className="text-2xl">😒</span>
+                                <span className="mt-2 text-center text-sm font-medium">Passif-agressif</span>
                             </Label>
                         </div>
                         <div>
-                            <RadioGroupItem value="scared" id="scared" className="peer sr-only" />
+                            <RadioGroupItem value="honnête" id="honnête" className="peer sr-only" />
                             <Label
-                                htmlFor="scared"
+                                htmlFor="honnête"
                                 className="border-muted bg-popover hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary flex flex-col items-center justify-between rounded-md border-2 p-4"
                             >
-                                <span className="text-2xl">😱</span>
-                                <span className="mt-2 text-center text-sm font-medium">Effrayé</span>
+                                <span className="text-2xl">😊</span>
+                                <span className="mt-2 text-center text-sm font-medium">Honnête</span>
                             </Label>
                         </div>
                     </RadioGroup>
