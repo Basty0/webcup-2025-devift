@@ -40,29 +40,41 @@ export function HeroSection() {
                     <ParticleCanvas />
 
                     <motion.div style={{ y: heroY, opacity: heroOpacity }} className="relative z-10 container mx-auto px-6">
-                        <div className="mx-auto max-w-5xl">
-                            <TextReveal
-                                text="CRÉATIVITÉ SANS LIMITES"
-                                className="mb-6 text-5xl leading-tight font-bold md:text-8xl"
-                                inView={heroInView}
-                            />
+                        <div className="flex items-center gap-2">
+                            <div className="mx-auto max-w-full">
+                                <TextReveal
+                                    text="CRÉATIVITÉ SANS LIMITES MALAGASY"
+                                    className="mb-6 text-5xl leading-tight font-bold md:text-6xl"
+                                    inView={heroInView}
+                                />
 
+                                <motion.div
+                                    initial={{ opacity: 0, y: 50 }}
+                                    animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+                                    transition={{ duration: 1, delay: 0.5 }}
+                                    className="max-w-2xl"
+                                >
+                                    <p className="mb-8 text-xl md:text-2xl">
+                                        Nous créons des expériences numériques immersives qui repoussent les limites du design et de la technologie.
+                                    </p>
+
+                                    <MagneticButton>
+                                        <Button size={'lg'} variant={'border'}>
+                                            Découvrir
+                                            <ArrowDown className="ml-2 h-4 w-4" />
+                                        </Button>
+                                    </MagneticButton>
+                                </motion.div>
+                            </div>
                             <motion.div
                                 initial={{ opacity: 0, y: 50 }}
                                 animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
                                 transition={{ duration: 1, delay: 0.5 }}
                                 className="max-w-2xl"
                             >
-                                <p className="mb-8 text-xl md:text-2xl">
-                                    Nous créons des expériences numériques immersives qui repoussent les limites du design et de la technologie.
-                                </p>
-
-                                <MagneticButton>
-                                    <Button className="rounded-full bg-white px-8 py-3 text-black hover:bg-white/90">
-                                        Découvrir
-                                        <ArrowDown className="ml-2 h-4 w-4" />
-                                    </Button>
-                                </MagneticButton>
+                                <div className="transition-transform duration-3000 hover:scale-105 hover:rotate-1 hover:shadow-lg">
+                                    <img className="h-90 w-70 rounded-lg transition-all duration-700 ease-in-out" src="/images/3.jpeg" alt="" />
+                                </div>
                             </motion.div>
                         </div>
                     </motion.div>
