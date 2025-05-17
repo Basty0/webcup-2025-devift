@@ -13,6 +13,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+    Route::get('/recherche', function () {
+        return Inertia::render('resulatrecherche/resulats-recherche');
+    })->name('resulatrecherche');
+
 
     Route::get('/profil', [UserControlleur::class, 'ViewProfil'])
         ->name('profil.ViewProfil');

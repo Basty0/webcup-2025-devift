@@ -1,5 +1,3 @@
-'use client';
-
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Image } from '@/components/ui/image';
 import { motion } from 'framer-motion';
@@ -24,9 +22,10 @@ interface ContentCardProps {
     isMobile: boolean;
     direction: number;
     index: number;
+    interactionBar?: React.ReactNode;
 }
 
-export default function ContentCard({ post, isActive, isMobile, direction, index }: ContentCardProps) {
+export default function ContentCard({ post, isActive, isMobile, direction, index, interactionBar }: ContentCardProps) {
     // Animations variants
     const cardVariants = {
         hidden: (direction: number) => ({
@@ -103,51 +102,65 @@ export default function ContentCard({ post, isActive, isMobile, direction, index
             custom={direction}
         >
             {/* Background Image with Animation */}
-            <motion.div className="absolute inset-0 z-0 flex items-center justify-center overflow-hidden" variants={imageVariants}>
-                <Image
-                    src={post.content.image || '/placeholder.svg'}
-                    alt={post.content.title}
-                    fill
-                    className={`rounded-2xl object-cover brightness-[0.85] ${isMobile ? '' : 'md:object-contain'}`}
-                    priority={index === 0}
-                />
+            <motion.div className="absolute inset-0 z-0 overflow-hidden" variants={imageVariants}>
+                {isMobile ? (
+                    <Image
+                        src={post.content.image || '/placeholder.svg'}
+                        alt={post.content.title}
+                        fill
+                        className="rounded-2xl object-cover brightness-[0.85]"
+                        priority={index === 0}
+                    />
+                ) : (
+                    <Image
+                        src={post.content.image || '/placeholder.svg'}
+                        alt={post.content.title}
+                        className="rounded-2xl object-cover brightness-[0.85] w-full h-full"
+                        priority={index === 0}
+                    />
+                )}
             </motion.div>
 
             {/* Overlay for better readability */}
             <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/70 via-transparent to-black/70"></div>
 
-            {/* Content Container */}
+            {/* Content + InteractionBar (desktop) */}
             <div
                 className={`relative z-10 w-full ${
-                    isMobile ? 'flex h-full flex-col justify-between' : 'mx-auto flex h-full max-w-4xl flex-col justify-between'
+                    isMobile ? 'flex h-full flex-col justify-between' : 'mx-auto flex h-full max-w-5xl flex-row justify-between items-center'
                 }`}
             >
-                {/* Header - Publicateur */}
-                <motion.div className="p-4" variants={contentVariants}>
-                    <motion.div className="flex items-center gap-3" variants={itemVariants}>
-                        <Avatar className="h-10 w-10 border-2 border-white">
-                            <AvatarImage src={post.author.image || '/placeholder.svg'} alt={post.author.name} />
-                            <AvatarFallback>{post.author.name.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                            <h3 className="font-semibold text-white">{post.author.name}</h3>
-                            <p className="text-xs text-white/80">{post.author.type}</p>
-                        </div>
+                {/* Bloc principal (texte, auteur) */}
+                <div className={isMobile ? '' : ' flex flex-col justify-start'}>
+                    {/* Header - Publicateur */}
+                    <motion.div className="p-4" variants={contentVariants}>
+                        <motion.div className="flex items-center gap-3" variants={itemVariants}>
+                            <Avatar className="h-10 w-10 border-2 border-white">
+                                <AvatarImage src={post.author.image || '/placeholder.svg'} alt={post.author.name} />
+                                <AvatarFallback>{post.author.name.charAt(0)}</AvatarFallback>
+                            </Avatar>
+                            <div>
+                                <h3 className="font-semibold text-white">{post.author.name}</h3>
+                                <p className="text-xs text-white/80">{post.author.type}</p>
+                            </div>
+                        </motion.div>
                     </motion.div>
-                </motion.div>
 
-                {/* Main Content */}
-                <div className="relative mb-8 flex justify-center">
-                    {/* Content Text (Main) - Centré avec un espace à gauche pour la barre d'interaction fixe */}
-                    <motion.div className={`${isMobile ? 'ml-12 px-4' : 'max-w-2xl px-8'}`} variants={contentVariants}>
-                        <motion.h2 className="mb-2 text-2xl font-bold text-white" variants={itemVariants}>
-                            {post.content.title}
-                        </motion.h2>
-                        <motion.p className="text-sm text-white/90 md:text-base" variants={itemVariants}>
-                            {post.content.description}
-                        </motion.p>
-                    </motion.div>
+                    {/* Main Content */}
+                    <div className=" flex justify-start">
+                        {/* Content Text (Main) - Centré avec un espace à gauche pour la barre d'interaction fixe */}
+                        <motion.div className={`${isMobile ? 'ml-12 px-4' : 'max-w-2xl px-8'}`} variants={contentVariants}>
+                            <motion.h2 className="mb-2 text-2xl font-bold text-white" variants={itemVariants}>
+                                {post.content.title}
+                            </motion.h2>
+                            <motion.p className="text-sm text-white/90 md:text-base" variants={itemVariants}>
+                                {post.content.description}
+                            </motion.p>
+                        </motion.div>
+                    </div>
                 </div>
+                {/* Affichage de la barre d'interaction à droite sur desktop */}
+                {!isMobile && interactionBar}
             </div>
         </motion.div>
     );

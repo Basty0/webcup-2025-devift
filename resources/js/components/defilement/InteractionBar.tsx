@@ -134,7 +134,7 @@ export default function InteractionBar({ stats, postId, isMobile = false }: Inte
                 </AnimatePresence>
             </motion.div>
 
-            <motion.div className="flex flex-col items-center" variants={itemVariants} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+            <motion.div className="flex flex-col items-center" variants={itemVariants} whileHover={{ scale: 1. }} whileTap={{ scale: 0.9 }}>
                 <button
                     className={`flex items-center justify-center rounded-full bg-gray-800 ${isMobile ? 'h-8 w-8' : 'h-12 w-12'}`}
                     onClick={() => setBookmarked(!bookmarked)}

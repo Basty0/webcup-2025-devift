@@ -17,6 +17,7 @@ import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { Activity, Bell, Component, HomeIcon, LogOut, Package, Search, Settings, SunMoon, UserRound,Plus } from 'lucide-react';
 import React, { type ReactNode } from 'react';
+import SearchCommandDialog from '@/components/ui/SearchCommandDialog';
 
 interface AppLayoutProps {
     children: ReactNode;
@@ -68,6 +69,9 @@ export default function PageLayout({ children, breadcrumbs = [] }: AppLayoutProp
     // Récupérer le chemin actuel de l'URL
     const currentPath = ziggy?.location;
 
+    // Ajout pour la recherche
+    const [searchOpen, setSearchOpen] = React.useState(false);
+
     return (
         <div className="bg-background relative min-h-screen pb-20">
             {/* Header */}
@@ -88,15 +92,25 @@ export default function PageLayout({ children, breadcrumbs = [] }: AppLayoutProp
                     <div className="hidden flex-1 items-center justify-center px-4 md:flex">
                         <div className="w-full max-w-xl">
                             <div className="relative">
-                                <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
+                                <button
+                                    type="button"
+                                    className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+                                    onClick={() => setSearchOpen(true)}
+                                    tabIndex={-1}
+                                >
+                                    <Search className="h-4 w-4" />
+                                </button>
                                 <Input
                                     type="search"
                                     placeholder="Rechercher..."
                                     className="bg-background/50 w-full rounded-full pl-9 backdrop-blur-sm"
+                                    onFocus={() => setSearchOpen(true)}
+                                    readOnly
                                 />
                             </div>
                         </div>
                     </div>
+                    <SearchCommandDialog open={searchOpen} onOpenChange={setSearchOpen} />
 
                     <div className="flex items-center gap-2">
                         <Button variant="ghost" className="size-10 rounded-full p-1">
