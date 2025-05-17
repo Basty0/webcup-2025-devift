@@ -14,12 +14,13 @@ import {
 import { useInitials } from '@/hooks/use-initials';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { Activity, Component, HomeIcon, LogOut, Package, ScrollText, Settings, SunMoon } from 'lucide-react';
+import { Activity, Component, HomeIcon, LogOut, Package, ScrollText, Settings, SunMoon,UserRound } from 'lucide-react';
 import React, { type ReactNode } from 'react';
 
 interface AppLayoutProps {
     children: ReactNode;
     breadcrumbs?: BreadcrumbItem[];
+   
 }
 
 const data = [
@@ -44,9 +45,9 @@ const data = [
         href: '#',
     },
     {
-        title: 'Change Log',
-        icon: <ScrollText className="h-full w-full text-neutral-600 dark:text-neutral-300" />,
-        href: '#',
+        title: 'Profil',
+        icon: <UserRound className="h-full w-full text-neutral-600 dark:text-neutral-300" />,
+        href: '/profil',
     },
     {
         title: 'Paramètres',
@@ -61,6 +62,7 @@ const data = [
 ];
 
 export default function PageLayout({ children, breadcrumbs = [] }: AppLayoutProps) {
+  
     const { auth, ziggy } = usePage<SharedData>().props;
     const getInitials = useInitials();
 

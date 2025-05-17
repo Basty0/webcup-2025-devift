@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\Itilusateur\UserControlleur;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -13,6 +14,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 
+    Route::get('/profil', [UserControlleur::class, 'ViewProfil'])
+        ->name('profil.ViewProfil');
+
     // Sample Email Testing
     Route::get('/email/sample', function () {
         return Inertia::render('emails/sample');
@@ -23,9 +27,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 
-Route::get('/email/verify', function () {
-    return view('auth.verify-email');
-})->middleware('auth')->name('verification.notice');
+// Route::get('/email/verify', function () {
+//     return view('auth.verify-email');
+// })->middleware('auth')->name('verification.notice');
 
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';
