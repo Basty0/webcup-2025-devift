@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input';
 import { useInitials } from '@/hooks/use-initials';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { Activity, Component, HomeIcon, LogOut, Package, ScrollText, Settings, SunMoon } from 'lucide-react';
+import { Activity, Bell, Component, HomeIcon, LogOut, Package, Search, Settings, SunMoon, UserRound } from 'lucide-react';
 import React, { type ReactNode } from 'react';
 
 interface AppLayoutProps {
