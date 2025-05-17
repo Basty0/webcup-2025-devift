@@ -4,9 +4,9 @@ import { GalleryDetail } from '@/components/gallery-detail';
 import { HeroSection } from '@/components/hero-section-1';
 import { HorizontalScrollGallery } from '@/components/horizontal-scroll-gallery';
 import { MagneticButton } from '@/components/magnetic-button';
-import ModelViewer from '@/components/model-viewer';
 import { ScrollProgress } from '@/components/scroll-progress';
 import ScrollableCard from '@/components/scrollable-card';
+import RevealImageSection from '@/components/sections/revealImage-section';
 import TextReveal from '@/components/text-reveal';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
@@ -163,28 +163,28 @@ export default function Welcome() {
             name: 'Alexandre Moreau',
             position: 'Directeur Créatif',
             bio: "Visionnaire du design avec 10 ans d'expérience dans la création d'expériences numériques primées.",
-            avatar: '/placeholder.svg?height=400&width=400',
+            avatar: '/images/2.jpeg',
             social: { twitter: '#', linkedin: '#', behance: '#' },
         },
         {
             name: 'Emma Laurent',
             position: 'Lead Developer',
             bio: 'Experte en technologies front-end qui transforme les concepts créatifs en expériences interactives fluides.',
-            avatar: '/placeholder.svg?height=400&width=400',
+            avatar: '/images/3.jpeg',
             social: { twitter: '#', linkedin: '#', github: '#' },
         },
         {
             name: 'Lucas Bernard',
             position: 'Motion Designer',
             bio: "Spécialiste de l'animation qui donne vie aux interfaces avec des mouvements fluides et expressifs.",
-            avatar: '/placeholder.svg?height=400&width=400',
+            avatar: '/images/4.jpeg',
             social: { twitter: '#', linkedin: '#', dribbble: '#' },
         },
         {
             name: 'Camille Petit',
             position: 'UX Strategist',
             bio: "Passionnée par la création d'expériences utilisateur intuitives et centrées sur l'humain.",
-            avatar: '/placeholder.svg?height=400&width=400',
+            avatar: '/images/5.jpeg',
             social: { twitter: '#', linkedin: '#', medium: '#' },
         },
     ];
@@ -255,6 +255,11 @@ export default function Welcome() {
             {/* Hero Section with Particle Canvas */}
 
             <HeroSection />
+            <div>
+                <div style={{ height: '100vh' }} />
+                <RevealImageSection />
+                <div style={{ height: '100vh' }} />
+            </div>
             {/* About Section */}
             <section id="about" className="relative bg-black py-32 md:py-40">
                 <div className="container mx-auto px-6">
@@ -421,7 +426,7 @@ export default function Welcome() {
             </section>
 
             <h1 className="mb-4 text-2xl font-bold dark:text-white">Modèle 3D</h1>
-            <div className="grid w-full grid-cols-1 gap-4 p-2 md:grid-cols-2">
+            {/* <div className="grid w-full grid-cols-1 gap-4 p-2 md:grid-cols-2">
                 <div
                     className="flex h-80 w-full flex-col gap-4 rounded-2xl"
                     style={{
@@ -449,7 +454,7 @@ export default function Welcome() {
                 >
                     <ModelViewer animate={true} scale={1.5} url="/3d/logo.glb" />
                 </div>
-            </div>
+            </div> */}
 
             <div className="flex flex-col items-center justify-center p-4 md:hidden">
                 <h1 className="font-poppins w-full max-w-[420px] text-5xl leading-tight font-bold md:text-[84px] md:leading-[88px] dark:text-white">

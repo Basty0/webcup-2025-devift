@@ -86,62 +86,62 @@
     --popover-foreground: oklch(0.141 0.005 285.823);
     --primary: #b300a4;
     --primary-foreground: oklch(0.969 0.016 293.756);
-    --secondary: oklch(0.967 0.001 286.375);
-    --secondary-foreground: oklch(0.21 0.006 285.885);
-    --muted: oklch(0.967 0.001 286.375);
-    --muted-foreground: oklch(0.552 0.016 285.938);
-    --accent: oklch(0.967 0.001 286.375);
-    --accent-foreground: oklch(0.21 0.006 285.885);
+    --secondary: #f2e6f0;
+    --secondary-foreground: #4d0045;
+    --muted: #f7edf6;
+    --muted-foreground: #8c4085;
+    --accent: #f0d9ed;
+    --accent-foreground: #4d0045;
     --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.92 0.004 286.32);
-    --input: oklch(0.92 0.004 286.32);
+    --border: #e6c6e2;
+    --input: #e6c6e2;
     --ring: #b300a4;
-    --chart-1: oklch(0.646 0.222 41.116);
-    --chart-2: oklch(0.6 0.118 184.704);
-    --chart-3: oklch(0.398 0.07 227.392);
-    --chart-4: oklch(0.828 0.189 84.429);
-    --chart-5: oklch(0.769 0.188 70.08);
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.141 0.005 285.823);
+    --chart-1: #b300a4;
+    --chart-2: #d94fc6;
+    --chart-3: #8c0080;
+    --chart-4: #ff66f0;
+    --chart-5: #590052;
+    --sidebar: #fcf5fb;
+    --sidebar-foreground: #4d0045;
     --sidebar-primary: #b300a4;
     --sidebar-primary-foreground: oklch(0.969 0.016 293.756);
-    --sidebar-accent: oklch(0.967 0.001 286.375);
-    --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
-    --sidebar-border: oklch(0.92 0.004 286.32);
+    --sidebar-accent: #f0d9ed;
+    --sidebar-accent-foreground: #4d0045;
+    --sidebar-border: #e6c6e2;
     --sidebar-ring: #b300a4;
 }
 
 .dark {
-    --background: oklch(0.141 0.005 285.823);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.21 0.006 285.885);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.21 0.006 285.885);
-    --popover-foreground: oklch(0.985 0 0);
+    --background: #1a0017;
+    --foreground: #f9f0f8;
+    --card: #2d0029;
+    --card-foreground: #f9f0f8;
+    --popover: #2d0029;
+    --popover-foreground: #f9f0f8;
     --primary: #b300a4;
-    --primary-foreground: oklch(0.969 0.016 293.756);
-    --secondary: oklch(0.274 0.006 286.033);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.274 0.006 286.033);
-    --muted-foreground: oklch(0.705 0.015 286.067);
-    --accent: oklch(0.274 0.006 286.033);
-    --accent-foreground: oklch(0.985 0 0);
+    --primary-foreground: #ffd9f9;
+    --secondary: #3d0038;
+    --secondary-foreground: #f9f0f8;
+    --muted: #3d0038;
+    --muted-foreground: #cc99c7;
+    --accent: #3d0038;
+    --accent-foreground: #f9f0f8;
     --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
+    --border: rgba(255, 255, 255, 0.1);
+    --input: rgba(255, 255, 255, 0.15);
     --ring: #b300a4;
-    --chart-1: oklch(0.488 0.243 264.376);
-    --chart-2: oklch(0.696 0.17 162.48);
-    --chart-3: oklch(0.769 0.188 70.08);
-    --chart-4: oklch(0.627 0.265 303.9);
-    --chart-5: oklch(0.645 0.246 16.439);
-    --sidebar: oklch(0.21 0.006 285.885);
-    --sidebar-foreground: oklch(0.985 0 0);
+    --chart-1: #d94fc6;
+    --chart-2: #ff66f0;
+    --chart-3: #8c0080;
+    --chart-4: #e600d4;
+    --chart-5: #590052;
+    --sidebar: #2d0029;
+    --sidebar-foreground: #f9f0f8;
     --sidebar-primary: #b300a4;
-    --sidebar-primary-foreground: oklch(0.969 0.016 293.756);
-    --sidebar-accent: oklch(0.274 0.006 286.033);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-primary-foreground: #ffd9f9;
+    --sidebar-accent: #3d0038;
+    --sidebar-accent-foreground: #f9f0f8;
+    --sidebar-border: rgba(255, 255, 255, 0.1);
     --sidebar-ring: #b300a4;
 }
 
@@ -166,4 +166,31 @@
     body {
         @apply bg-background text-foreground;
     }
+}
+
+@layer utilities {
+    .animation-skew-scroll {
+        animation: skew-scroll 20s linear infinite;
+    }
+}
+
+@keyframes skew-scroll {
+    0% {
+        transform: rotateX(20deg) rotateZ(-20deg) skewX(20deg);
+    }
+    100% {
+        transform: rotateX(20deg) rotateZ(-20deg) skewX(20deg) translateY(-100%);
+    }
+}
+
+@keyframes vertical-scroll {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-50%);
+    }
+}
+.tilted-scroll-animate {
+    animation: vertical-scroll 8s linear infinite;
 }

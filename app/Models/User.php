@@ -21,6 +21,16 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'photo',
+        'photo_cover',
+        'bio',
+        'location',
+        'twitter',
+        'tiktok',
+        'instagram',
+        'facebook',
+        'linkedin',
+        'play_song',
     ];
 
     /**
@@ -44,5 +54,25 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function theends()
+    {
+        return $this->hasMany(Theend::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function reactions()
+    {
+        return $this->hasMany(Reaction::class);
+    }
+
+    public function views()
+    {
+        return $this->hasMany(View::class);
     }
 }

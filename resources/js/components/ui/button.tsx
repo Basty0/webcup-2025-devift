@@ -22,7 +22,7 @@ const buttonVariants = cva(
         gradient:
           "bg-gradient-to-r from-blue-500 via-violet-500 to-pink-500 text-white rounded-full  shadow-xs hover:opacity-90 transition-opacity",
         border:
-          "border-2 bg-primary/20 border-primary  rounded-full  shadow-xs hover:opacity-90 transition-opacity",
+          "border-2 bg-primary/10 hover:border-primary hover:bg-primary/20 border-primary/50  rounded-full  shadow-xs hover:opacity-90 transition-opacity",
       },
       size: {
         default: "h-10 px-4 py-2 has-[>svg]:px-3",
