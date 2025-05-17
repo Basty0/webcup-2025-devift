@@ -3,6 +3,7 @@ import PageLayout from '@/layouts/page-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 import SettingsLayout from '@/layouts/settings/layout';
+import ProfilePage from './ProfilePage';
 
 
 export default function ProfilUser({user}: {user: any}) {
@@ -17,12 +18,7 @@ export default function ProfilUser({user}: {user: any}) {
         <PageLayout breadcrumbs={breadcrumbs}>
             <Head title="ProfilUser" />
             <SettingsLayout>
-            <div className="max-w-4xl mx-auto mt-10 bg-white dark:bg-gray-900 p-6 rounded-lg shadow">
-                    <h1 className="text-2xl font-bold mb-4">Profil de {user.name}</h1>
-                    <p><strong>Email :</strong> {user.email}</p>
-                    <p><strong>ID :</strong> {user.id}</p>
-                    
-                </div>
+            <ProfilePage />
             </SettingsLayout>
         </PageLayout>
     );

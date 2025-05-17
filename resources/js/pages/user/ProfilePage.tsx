@@ -146,7 +146,7 @@ export default function ProfilePage() {
   ]
 
   return (
-    <div className="container mx-auto px-4 pb-8">
+    <div className="container mx-auto px-4 pb-8 bg-background">
       {/* Section de couverture et profil */}
       <div className="relative mb-6">
         {/* Photo de couverture */}
