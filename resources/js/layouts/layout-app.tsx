@@ -55,9 +55,9 @@ export default ({ children }: AppLayoutProps) => {
 };
 
 const menuItems = [
-    { name: 'Tons', href: '#Tons' },
-    { name: 'TheEndPost', href: '#TheEndPost' },
-    { name: 'À propos', href: '#apropos' },
+    { name: 'Tons'  , id:'Tons'},
+    { name: 'TheEndPost',id:'TheEndPost'},
+    { name: 'À propos' ,id:'apropos'},
 ]
 
 const HeroHeader = () => {
@@ -102,10 +102,12 @@ const HeroHeader = () => {
                         <div className="absolute inset-0 m-auto hidden size-fit lg:block">
                             <ul className="flex gap-8 text-sm">
                                 {menuItems.map((item, index) => (
-                                    <li key={index}>
-                                        <Link href={item.href} className="text-muted-foreground hover:text-accent-foreground block duration-150">
-                                            <span>{item.name}</span>
-                                        </Link>
+                                    <li key={index}  onClick={() => {
+                                       
+                                        const section = document.getElementById(item.id);
+                                        section?.scrollIntoView({ behavior: 'smooth' });
+                                    }}>
+                                        <span>{item.name}</span>
                                     </li>
                                 ))}
                             </ul>
@@ -116,9 +118,10 @@ const HeroHeader = () => {
                                 <ul className="space-y-6 text-base">
                                     {menuItems.map((item, index) => (
                                         <li key={index}>
-                                            <Link href={item.href} className="text-muted-foreground hover:text-accent-foreground block duration-150">
-                                                <span>{item.name}</span>
-                                            </Link>
+                                            <span className="text-muted-foreground hover:text-accent-foreground block duration-150 cursor-pointer" onClick={() => {
+                                                const section = document.getElementById(item.name);
+                                                section?.scrollIntoView({ behavior: 'smooth' });
+                                            }}>{item.name}</span>
                                         </li>
                                     ))}
                                 </ul>
