@@ -33,7 +33,7 @@ class DashboardController extends Controller
         $theends = Theend::with(['user', 'type', 'comments', 'reactions'])
             ->where('is_public', true)
             ->where('is_draft', false)
-            ->orderBy('created_at', 'desc')
+            ->inRandomOrder() // Randomize the order
             ->take(30)
             ->get()
             ->map(function ($theend) use ($user) {

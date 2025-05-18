@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Theend;
 use App\Models\Type;
+use App\Models\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -114,6 +115,21 @@ class TheEndController extends Controller
 
     public function show(Theend $theend)
     {
+        // Create view record if user is authenticated and hasn't viewed this theend before
+        if (auth()->check()) {
+            $user = auth()->user();
+            $existingView = View::where('user_id', $user->id)
+                ->where('theend_id', $theend->id)
+                ->first();
+
+            if (!$existingView) {
+                View::create([
+                    'user_id' => $user->id,
+                    'theend_id' => $theend->id
+                ]);
+            }
+        }
+
         return Inertia::render('theend/show', [
             'theend' => $theend->load([
                 'user',
