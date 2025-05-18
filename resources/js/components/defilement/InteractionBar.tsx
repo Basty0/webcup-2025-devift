@@ -1,7 +1,7 @@
 import ShareModal from '@/components/share/ShareModal';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import axios from 'axios';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useAnimate } from 'framer-motion';
 import { Angry, Award, Eye, Flame, Frown, Heart, MessageCircle, Share2, SmilePlus, ThumbsUp, Zap } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { type ReactionType } from '../reactions/ReactionHandler';
@@ -53,6 +53,7 @@ export default function InteractionBar({ stats, postId, slug, isMobile = false, 
     const [isReactionModalOpen, setIsReactionModalOpen] = useState(false);
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
     const [currentReaction, setCurrentReaction] = useState<ReactionType | null>(userReaction);
+    const [scope, animate] = useAnimate();
 
     useEffect(() => {
         setCommentCount(stats.comments);
@@ -61,7 +62,14 @@ export default function InteractionBar({ stats, postId, slug, isMobile = false, 
         setCurrentReaction(userReaction);
     }, [stats, userReaction]);
 
-    const handleSelectReaction = (type: ReactionType) => {
+    // Add animation when reaction changes
+    useEffect(() => {
+        if (currentReaction) {
+            animate(scope.current, { scale: [1.2, 1] }, { duration: 0.4, type: 'spring', stiffness: 400, damping: 10 });
+        }
+    }, [currentReaction, animate, scope]);
+
+    const handleSelectReaction = async (type: ReactionType) => {
         const isCurrentlyActive = currentReaction === type;
 
         // Si c'est la même réaction, on ne fait rien
@@ -79,63 +87,148 @@ export default function InteractionBar({ stats, postId, slug, isMobile = false, 
             setTotalReactions((prev) => prev + 1);
         }
 
+        // Animation for the reaction change
+        animate(scope.current, { scale: [1.2, 1] }, { duration: 0.4, type: 'spring', stiffness: 400, damping: 10 });
+
         // Envoyer au serveur
-        axios
-            .get(`/reaction/${postId}/react`, {
+        try {
+            await axios.get(`/reaction/${postId}/react`, {
                 params: {
                     type: type,
                 },
-            })
-            .catch((error) => {
-                console.error('Error processing reaction:', error);
-                setCurrentReaction(currentReaction);
-
-                // Revert total reactions count on error
-                if (!currentReaction) {
-                    setTotalReactions((prev) => prev - 1);
-                }
             });
+        } catch (error) {
+            console.error('Error processing reaction:', error);
+            setCurrentReaction(currentReaction);
+
+            // Revert total reactions count on error
+            if (!currentReaction) {
+                setTotalReactions((prev) => prev - 1);
+            }
+        }
     };
 
     const handleComment = () => {
         window.location.href = `/theend/${slug}`;
     };
 
+    // Enhanced TikTok-like animation variants
     const containerVariants = {
         hidden: { opacity: 0, scale: 0.8 },
         visible: {
             opacity: 1,
             scale: 1,
             transition: {
-                duration: 0.5,
-                staggerChildren: 0.1,
+                duration: 0.4,
+                type: 'spring',
+                stiffness: 400,
+                damping: 25,
+                staggerChildren: 0.08,
+                delayChildren: 0.1,
+            },
+        },
+        exit: {
+            opacity: 0,
+            scale: 0.8,
+            transition: {
+                duration: 0.3,
+                staggerChildren: 0.05,
+                staggerDirection: -1,
             },
         },
     };
 
     const itemVariants = {
-        hidden: { opacity: 0, scale: 0.8 },
+        hidden: { opacity: 0, y: 20, scale: 0.8 },
         visible: {
             opacity: 1,
+            y: 0,
             scale: 1,
             transition: {
                 type: 'spring',
-                stiffness: 300,
-                damping: 20,
+                stiffness: 400,
+                damping: 25,
+                mass: 0.8, // Lower mass makes motion more responsive
+            },
+        },
+        exit: {
+            opacity: 0,
+            y: 10,
+            scale: 0.9,
+            transition: { duration: 0.2 },
+        },
+        hover: {
+            scale: 1.1,
+            y: -5,
+            transition: {
+                type: 'spring',
+                stiffness: 400,
+                damping: 10,
+            },
+        },
+        tap: {
+            scale: 0.9,
+            transition: {
+                type: 'spring',
+                stiffness: 400,
+                damping: 10,
             },
         },
     };
 
     const countVariants = {
-        initial: { opacity: 0, y: -10 },
+        initial: {
+            opacity: 0,
+            y: -10,
+            scale: 0.8,
+        },
         animate: {
             opacity: 1,
             y: 0,
-            transition: { duration: 0.3 },
+            scale: 1,
+            transition: {
+                type: 'spring',
+                stiffness: 400,
+                damping: 20,
+                duration: 0.3,
+            },
         },
         exit: {
             opacity: 0,
             y: 10,
+            scale: 0.8,
+            transition: { duration: 0.2 },
+        },
+    };
+
+    // Button animations for react dialogue
+    const buttonVariants = {
+        initial: { scale: 0.9, opacity: 0 },
+        animate: {
+            scale: 1,
+            opacity: 1,
+            transition: {
+                type: 'spring',
+                stiffness: 400,
+                damping: 20,
+            },
+        },
+        hover: {
+            scale: 1.05,
+            y: -3,
+            transition: {
+                type: 'spring',
+                stiffness: 400,
+                damping: 10,
+            },
+        },
+        tap: {
+            scale: 0.95,
+            transition: { duration: 0.1 },
+        },
+        exit: {
+            scale: 0.9,
+            opacity: 0,
             transition: { duration: 0.2 },
         },
     };
@@ -143,20 +236,23 @@ export default function InteractionBar({ stats, postId, slug, isMobile = false, 
     return (
         <>
             <motion.div
-                className={`flex flex-col items-center gap-${isMobile ? '3' : '6'} bg-background/30 rounded-full p-${isMobile ? '2' : '4'} py-${isMobile ? '4' : '6'} backdrop-blur-md`}
+                className={`flex flex-col items-center gap-${isMobile ? '3' : '6'} bg-background/40 rounded-full shadow-xl backdrop-saturate-150 p-${isMobile ? '2' : '4'} py-${isMobile ? '4' : '6'} backdrop-blur-lg`}
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
+                exit="exit"
                 key={`interaction-bar-${postId}`}
+                style={{ willChange: 'transform, opacity' }}
             >
                 {/* Views counter */}
-                <motion.div className="flex flex-col items-center" variants={itemVariants}>
-                    <div
-                        className={`flex items-center justify-center rounded-full ${interactionColors.views} transition-all duration-200 ${isMobile ? 'h-8 w-8' : 'h-12 w-12'}`}
+                <motion.div className="flex flex-col items-center" variants={itemVariants} whileHover="hover" whileTap="tap">
+                    <motion.div
+                        className={`flex items-center justify-center rounded-full ${interactionColors.views} shadow-lg transition-colors ${isMobile ? 'h-8 w-8' : 'h-12 w-12'}`}
+                        whileHover={{ boxShadow: '0 0 15px rgba(0, 87, 255, 0.6)' }}
                     >
                         <Eye className={`${isMobile ? 'h-4 w-4' : 'h-6 w-6'} text-white`} />
-                    </div>
-                    <AnimatePresence mode="sync">
+                    </motion.div>
+                    <AnimatePresence mode="popLayout" initial={false}>
                         <motion.span
                             key={`views-${viewCount}`}
                             className={`mt-1 font-medium text-white ${isMobile ? 'text-[10px]' : 'text-xs'}`}
@@ -164,6 +260,7 @@ export default function InteractionBar({ stats, postId, slug, isMobile = false, 
                             animate="animate"
                             exit="exit"
                             variants={countVariants}
+                            layoutId={`views-label-${postId}`}
                         >
                             {viewCount}
                         </motion.span>
@@ -171,14 +268,15 @@ export default function InteractionBar({ stats, postId, slug, isMobile = false, 
                 </motion.div>
 
                 {/* Comment button */}
-                <motion.div className="flex flex-col items-center" variants={itemVariants} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                    <button
-                        className={`flex items-center justify-center rounded-full ${interactionColors.comments} transition-all duration-200 ${isMobile ? 'h-8 w-8' : 'h-12 w-12'}`}
+                <motion.div className="flex flex-col items-center" variants={itemVariants} whileHover="hover" whileTap="tap">
+                    <motion.button
+                        className={`flex items-center justify-center rounded-full ${interactionColors.comments} shadow-lg transition-colors ${isMobile ? 'h-8 w-8' : 'h-12 w-12'}`}
                         onClick={handleComment}
+                        whileHover={{ boxShadow: '0 0 15px rgba(128, 0, 255, 0.6)' }}
                     >
                         <MessageCircle className={`${isMobile ? 'h-4 w-4' : 'h-6 w-6'} text-white`} />
-                    </button>
-                    <AnimatePresence mode="sync">
+                    </motion.button>
+                    <AnimatePresence mode="popLayout" initial={false}>
                         <motion.span
                             key={`comments-${commentCount}`}
                             className={`mt-1 font-medium text-white ${isMobile ? 'text-[10px]' : 'text-xs'}`}
@@ -186,6 +284,7 @@ export default function InteractionBar({ stats, postId, slug, isMobile = false, 
                             animate="animate"
                             exit="exit"
                             variants={countVariants}
+                            layoutId={`comments-label-${postId}`}
                         >
                             {commentCount}
                         </motion.span>
@@ -193,23 +292,29 @@ export default function InteractionBar({ stats, postId, slug, isMobile = false, 
                 </motion.div>
 
                 {/* Share button */}
-                <motion.div className="flex flex-col items-center" variants={itemVariants} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                    <button
-                        className={`flex items-center justify-center rounded-full ${interactionColors.share} transition-all duration-200 ${isMobile ? 'h-8 w-8' : 'h-12 w-12'}`}
+                <motion.div className="flex flex-col items-center" variants={itemVariants} whileHover="hover" whileTap="tap">
+                    <motion.button
+                        className={`flex items-center justify-center rounded-full ${interactionColors.share} shadow-lg transition-colors ${isMobile ? 'h-8 w-8' : 'h-12 w-12'}`}
                         onClick={() => setIsShareModalOpen(true)}
+                        whileHover={{ boxShadow: '0 0 15px rgba(0, 200, 81, 0.6)' }}
                     >
                         <Share2 className={`${isMobile ? 'h-4 w-4' : 'h-6 w-6'} text-white`} />
-                    </button>
-                    <span className={`mt-1 font-medium text-white ${isMobile ? 'text-[10px]' : 'text-xs'}`}>Partager</span>
+                    </motion.button>
+                    <motion.span className={`mt-1 font-medium text-white ${isMobile ? 'text-[10px]' : 'text-xs'}`} variants={countVariants}>
+                        Partager
+                    </motion.span>
                 </motion.div>
 
                 {/* Reaction button */}
-                <motion.div className="flex flex-col items-center" variants={itemVariants} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                    <button
+                <motion.div className="flex flex-col items-center" variants={itemVariants} whileHover="hover" whileTap="tap" ref={scope}>
+                    <motion.button
                         className={`relative flex items-center justify-center rounded-full ${
                             currentReaction ? reactionColors[currentReaction] : interactionColors.default
-                        } ${isMobile ? 'h-8 w-8' : 'h-12 w-12'} z-40 transition-all duration-200`}
+                        } ${isMobile ? 'h-8 w-8' : 'h-12 w-12'} z-40 shadow-lg transition-colors`}
                         onClick={() => setIsReactionModalOpen(true)}
+                        whileHover={{
+                            boxShadow: currentReaction ? '0 0 15px rgba(255, 100, 100, 0.6)' : '0 0 15px rgba(255, 46, 99, 0.6)',
+                        }}
                     >
                         {currentReaction ? (
                             React.cloneElement(reactionIcons[currentReaction], {
@@ -218,18 +323,34 @@ export default function InteractionBar({ stats, postId, slug, isMobile = false, 
                         ) : (
                             <ThumbsUp className={`${isMobile ? 'h-4 w-4' : 'h-6 w-6'} text-white`} />
                         )}
-                    </button>
-                    <AnimatePresence mode="sync">
-                        <motion.div className="flex flex-col items-center" initial="initial" animate="animate" exit="exit" variants={countVariants}>
+                    </motion.button>
+                    <AnimatePresence mode="popLayout" initial={false}>
+                        <motion.div
+                            className="flex flex-col items-center"
+                            initial="initial"
+                            animate="animate"
+                            exit="exit"
+                            variants={countVariants}
+                            layoutId={`reaction-label-${postId}`}
+                        >
                             <motion.span
                                 key={`total-reactions-${totalReactions}`}
                                 className={`mt-1 font-medium text-white ${isMobile ? 'text-[10px]' : 'text-xs'}`}
                             >
                                 {totalReactions}
                             </motion.span>
-                            <span className={`font-medium text-white ${isMobile ? 'text-[10px]' : 'text-xs'}`}>
+                            <motion.span
+                                className={`font-medium text-white ${isMobile ? 'text-[10px]' : 'text-xs'}`}
+                                animate={{
+                                    scale: currentReaction ? [1, 1.1, 1] : 1,
+                                    transition: {
+                                        repeat: currentReaction ? 1 : 0,
+                                        duration: 0.5,
+                                    },
+                                }}
+                            >
                                 {currentReaction ? 'Changer' : 'Réagir'}
-                            </span>
+                            </motion.span>
                         </motion.div>
                     </AnimatePresence>
                 </motion.div>
@@ -242,7 +363,12 @@ export default function InteractionBar({ stats, postId, slug, isMobile = false, 
                         {currentReaction ? 'Changer de réaction' : 'Choisir une réaction'}
                     </DialogTitle>
 
-                    <div className="grid grid-cols-4 gap-4">
+                    <motion.div
+                        className="grid grid-cols-4 gap-4"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ staggerChildren: 0.05, delayChildren: 0.1 }}
+                    >
                         {(Object.keys(reactionIcons) as ReactionType[]).map((type) => (
                             <motion.button
                                 key={type}
@@ -250,14 +376,29 @@ export default function InteractionBar({ stats, postId, slug, isMobile = false, 
                                     currentReaction === type ? 'ring-2 ring-white' : ''
                                 } ${reactionColors[type]}`}
                                 onClick={() => handleSelectReaction(type)}
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.95 }}
+                                variants={buttonVariants}
+                                initial="initial"
+                                animate="animate"
+                                exit="exit"
+                                whileHover="hover"
+                                whileTap="tap"
                             >
-                                <motion.div whileHover={{ y: -5 }}>{reactionIcons[type]}</motion.div>
+                                <motion.div
+                                    animate={{
+                                        y: currentReaction === type ? [0, -5, 0] : 0,
+                                    }}
+                                    transition={{
+                                        repeat: currentReaction === type ? Infinity : 0,
+                                        duration: 1.5,
+                                        repeatType: 'mirror',
+                                    }}
+                                >
+                                    {reactionIcons[type]}
+                                </motion.div>
                                 <span className="mt-2 text-xs font-medium">{type.charAt(0).toUpperCase() + type.slice(1)}</span>
                             </motion.button>
                         ))}
-                    </div>
+                    </motion.div>
                 </DialogContent>
             </Dialog>
 

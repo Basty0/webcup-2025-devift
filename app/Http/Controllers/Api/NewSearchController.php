@@ -75,8 +75,7 @@ class NewSearchController extends Controller
      */
     public function search($query)
     {
-        // Log pour le débogage
-        Log::info('Search query: ' . $query);
+
 
         if (!$query || strlen($query) < 2) {
             return Inertia::render('resulatrecherche/resulats-recherche', [
@@ -136,6 +135,7 @@ class NewSearchController extends Controller
                     'name' => $user->name,
                     'email' => $user->email,
                     'bio' => $user->bio,
+                    'slug' => $user->slug,
                     'avatar_url' => $user->photo,
                     'created_at' => $user->created_at
                 ];

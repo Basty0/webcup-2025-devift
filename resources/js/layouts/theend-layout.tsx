@@ -12,7 +12,7 @@ const toneStyles = {
         background: 'bg-gradient-to-br from-slate-950 via-red-950 to-slate-950',
         text: 'text-slate-100 font-serif',
         heading: 'uppercase tracking-wider text-red-200',
-        card: 'border-slate-800 bg-black/40 backdrop-blur-sm shadow-xl shadow-red-950/30',
+        card: 'border-slate-800 bg-black/60 backdrop-blur-md shadow-xl shadow-red-950/30 rounded-xl',
         button: {
             primary:
                 'bg-gradient-to-r from-red-900 to-red-800 text-white border border-red-700 shadow-lg hover:from-red-800 hover:to-red-700 transition-all duration-300',
@@ -26,7 +26,7 @@ const toneStyles = {
         background: 'bg-gradient-to-r from-amber-200 via-rose-100 to-violet-200',
         text: 'text-slate-800 font-sans',
         heading: 'font-bold text-fuchsia-600',
-        card: 'border-2 border-dashed border-fuchsia-400 bg-white/70 rounded-3xl backdrop-blur-sm shadow-md',
+        card: 'border-2 border-dashed border-fuchsia-400 bg-white/80 backdrop-blur-md rounded-3xl shadow-lg shadow-fuchsia-200/30',
         button: {
             primary:
                 'bg-gradient-to-r from-fuchsia-500 to-amber-400 text-white rounded-full hover:shadow-lg hover:translate-y-[-2px] transition-all duration-300 font-medium',
@@ -38,9 +38,9 @@ const toneStyles = {
     },
     cringe: {
         background: 'bg-gradient-to-r from-lime-300 via-fuchsia-500 to-cyan-400',
-        text: 'text-slate-900 font-comic',
+        text: 'text-slate-900 font-sans',
         heading: 'font-extrabold text-shadow text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-lime-500',
-        card: 'border-4 border-dotted border-lime-400 bg-white/30 rounded-xl shadow-lg shadow-fuchsia-500/20 backdrop-blur-sm',
+        card: 'border-4 border-dotted border-lime-400 bg-white/50 backdrop-blur-md rounded-xl shadow-lg shadow-fuchsia-500/20',
         button: {
             primary:
                 'bg-gradient-to-r from-lime-500 to-fuchsia-500 text-white font-bold text-lg px-6 rounded-lg border-b-4 border-lime-700 hover:translate-y-[-2px] hover:shadow-xl transition-all',
@@ -51,17 +51,16 @@ const toneStyles = {
         animation: 'animate-pulse',
     },
     classe: {
-        background: 'bg-gradient-to-b from-neutral-950 via-neutral-900 to-slate-900',
-        text: 'text-neutral-200 font-sans',
-        heading: 'font-light tracking-wider text-amber-100',
-        card: 'border-t border-amber-700 bg-black/30 backdrop-blur-sm rounded-none',
+        background: 'bg-gradient-to-r from-indigo-600 to-blue-500',
+        text: 'text-slate-800 font-sans',
+        heading: 'font-semibold text-slate-900 tracking-wide',
+        card: 'border border-white/20 bg-white/95 backdrop-blur-md rounded-xl shadow-lg',
         button: {
-            primary:
-                'bg-black hover:bg-neutral-900 text-amber-500 border-b border-amber-700 hover:border-amber-500 rounded-none uppercase tracking-wide transition-all duration-300',
+            primary: 'bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 font-medium',
             secondary:
-                'bg-neutral-900 hover:bg-black text-neutral-200 border-b border-neutral-800 hover:border-amber-700 rounded-none transition-all duration-300',
-            outline: 'border border-amber-800 text-amber-600 hover:bg-black hover:border-amber-600 rounded-none transition-all duration-300',
-            ghost: 'text-neutral-300 hover:text-amber-500 hover:bg-black/40 rounded-none uppercase tracking-wide transition-all duration-300',
+                'bg-white hover:bg-gray-50 text-indigo-600 border border-indigo-100 rounded-lg shadow-sm hover:shadow transition-all duration-300',
+            outline: 'border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all duration-300',
+            ghost: 'text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-all duration-300',
         },
         animation: 'animate-fadeIn',
     },
@@ -69,7 +68,7 @@ const toneStyles = {
         background: 'bg-gradient-to-br from-rose-200 via-pink-100 to-indigo-200',
         text: 'text-slate-700 font-sans',
         heading: 'font-semibold text-rose-600',
-        card: 'border border-rose-200 bg-white/60 rounded-2xl shadow-lg shadow-rose-200/50 backdrop-blur-sm',
+        card: 'border border-rose-200 bg-white/70 backdrop-blur-md rounded-2xl shadow-lg shadow-rose-200/50',
         button: {
             primary:
                 'bg-gradient-to-r from-rose-400 to-pink-400 text-white rounded-xl hover:shadow-lg hover:translate-y-[-2px] transition-all duration-300 font-medium',
@@ -81,31 +80,31 @@ const toneStyles = {
     },
     absurde: {
         background: 'bg-gradient-to-r from-purple-400 via-yellow-300 to-emerald-400',
-        text: 'text-violet-950 font-serif',
-        heading: 'font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-purple-600 rotate-1',
-        card: 'border-4 border-dashed border-yellow-400 bg-white/30 backdrop-blur-sm rounded-xl shadow-lg rotate-1',
+        text: 'text-violet-950 font-sans',
+        heading: 'font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-purple-600',
+        card: 'border-4 border-dashed border-yellow-400 bg-white/50 backdrop-blur-md rounded-xl shadow-2xl shadow-purple-500/20 rotate-0',
         button: {
             primary:
-                'bg-gradient-to-r from-yellow-400 to-purple-500 text-white rounded-xl transform rotate-1 hover:rotate-0 border-2 border-dotted border-emerald-400 hover:shadow-xl transition-all font-extrabold',
+                'bg-gradient-to-r from-yellow-400 to-purple-500 text-white rounded-xl transform hover:rotate-0 border-2 border-dotted border-emerald-400 hover:shadow-xl transition-all font-extrabold',
             secondary:
-                'bg-emerald-300 hover:bg-purple-300 text-violet-900 rounded-xl border-2 border-purple-400 -rotate-1 hover:rotate-0 transform transition-all duration-300',
+                'bg-emerald-300 hover:bg-purple-300 text-violet-900 rounded-xl border-2 border-purple-400 hover:rotate-0 transform transition-all duration-300',
             outline:
-                'border-3 border-yellow-500 text-purple-700 hover:bg-emerald-100 border-dotted rounded-xl rotate-1 hover:rotate-0 transform transition-all duration-300',
-            ghost: 'text-purple-700 hover:text-emerald-700 hover:bg-yellow-200/30 rounded-xl -rotate-1 hover:rotate-0 transform transition-all',
+                'border-3 border-yellow-500 text-purple-700 hover:bg-emerald-100 border-dotted rounded-xl hover:rotate-0 transform transition-all duration-300',
+            ghost: 'text-purple-700 hover:text-emerald-700 hover:bg-yellow-200/30 rounded-xl hover:rotate-0 transform transition-all',
         },
         animation: 'animate-bounce',
     },
     passif_agressif: {
         background: 'bg-gradient-to-br from-slate-300 via-zinc-100 to-slate-200',
-        text: 'text-slate-800 font-mono',
+        text: 'text-slate-800 font-sans',
         heading: 'font-medium text-slate-700 uppercase tracking-widest',
-        card: 'border-l-4 border-red-400 bg-white/80 backdrop-blur-sm rounded-sm shadow-none',
+        card: 'border-l-4 border-red-400 bg-white/90 backdrop-blur-md rounded-sm shadow-md',
         button: {
             primary:
-                'bg-slate-200 hover:bg-red-100 text-slate-700 border border-slate-300 rounded-none hover:text-red-600 uppercase tracking-wide transition-all font-medium',
-            secondary: 'bg-white hover:bg-slate-100 text-slate-500 border border-slate-200 rounded-none hover:text-slate-900 transition-colors',
-            outline: 'border border-slate-300 text-slate-600 hover:bg-red-50 hover:text-red-600 rounded-none transition-colors',
-            ghost: 'text-slate-500 hover:text-red-600 hover:bg-white rounded-none uppercase transition-colors',
+                'bg-slate-200 hover:bg-red-100 text-slate-700 border border-slate-300 rounded-md hover:text-red-600 uppercase tracking-wide transition-all font-medium',
+            secondary: 'bg-white hover:bg-slate-100 text-slate-500 border border-slate-200 rounded-md hover:text-slate-900 transition-colors',
+            outline: 'border border-slate-300 text-slate-600 hover:bg-red-50 hover:text-red-600 rounded-md transition-colors',
+            ghost: 'text-slate-500 hover:text-red-600 hover:bg-white rounded-md uppercase transition-colors',
         },
         animation: 'animate-fadeIn',
     },
@@ -113,7 +112,7 @@ const toneStyles = {
         background: 'bg-gradient-to-b from-slate-50 to-blue-50',
         text: 'text-slate-800 font-sans',
         heading: 'font-medium text-slate-900',
-        card: 'border border-slate-200 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm',
+        card: 'border border-slate-200 bg-white/90 backdrop-blur-md rounded-lg shadow-md',
         button: {
             primary: 'bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md hover:shadow-md transition-all duration-300',
             secondary: 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-md transition-colors',

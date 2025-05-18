@@ -32,9 +32,9 @@ const data = [
         href: '/dashboard',
     },
     {
-        title: 'Les TheEnds',
+        title: 'Populaires',
         icon: <BookOpen className="h-10 w-10 rounded-full text-neutral-600 dark:text-neutral-300" />,
-        href: '/les-theends',
+        href: '/populaire',
     },
     {
         title: 'TheEnd pages',
@@ -249,9 +249,9 @@ export function AppleStyleDock({ currentPath }: { currentPath?: string }) {
                                     // Active for content creation flow
                                     isActive = currentPath.startsWith('/exprimer-vous') || currentPath.includes('/step');
                                     break;
-                                case '/les-theends':
+                                case '/populaire':
                                     // Active for theend listing pages
-                                    isActive = currentPath.startsWith('/les-theends');
+                                    isActive = currentPath.startsWith('/populaire');
                                     break;
                                 case '/dashboard':
                                     // Active only for exact dashboard path or root

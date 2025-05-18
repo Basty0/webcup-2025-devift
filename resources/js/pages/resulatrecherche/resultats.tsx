@@ -33,6 +33,7 @@ interface UserResult {
     bio: string | null;
     avatar_url: string | null;
     created_at: string;
+    slug: string;
 }
 
 interface SearchResults {
@@ -203,13 +204,13 @@ export default function Resultat() {
                                                     <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                                                 </Avatar>
                                                 <div className="flex-1">
-                                                    <Link href={route('user.profile', user.email.split('@')[0])}>
+                                                    <Link href={user.slug ? route('user.profile', user.slug) : route('user.profile', user.id)}>
                                                         <h3 className="hover:text-primary text-xl font-semibold">{user.name}</h3>
                                                     </Link>
                                                     <p className="text-muted-foreground mb-2 text-sm">{user.email}</p>
                                                     {user.bio && <p className="text-muted-foreground line-clamp-2">{user.bio}</p>}
                                                 </div>
-                                                <Link href={route('user.profile', user.email.split('@')[0])}>
+                                                <Link href={user.slug ? route('user.profile', user.slug) : route('user.profile', user.id)}>
                                                     <Button size="sm">Voir profil</Button>
                                                 </Link>
                                             </div>

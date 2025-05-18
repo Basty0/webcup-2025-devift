@@ -5,6 +5,7 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\Itilusateur\UserControlleur;
 use App\Http\Controllers\TheEndController;
 use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\PopularController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Api\ReactionController;
@@ -32,6 +33,10 @@ Route::get('/content/{id}', function ($id) {
 
 // Route de recherche accessible sans authentification
 Route::get('/search/{query}', [NewSearchController::class, 'search'])->name('search');
+
+// Popular content routes
+Route::get('/populaire', [PopularController::class, 'index'])->name('popular.index');
+Route::get('/populaire/categorie/{typeId}', [PopularController::class, 'showCategory'])->name('popular.category');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
