@@ -55,11 +55,10 @@ export default ({ children }: AppLayoutProps) => {
 };
 
 const menuItems = [
-    { name: 'Fonctionnalités', href: '#link' },
-    { name: 'Solutions', href: '#link' },
-    { name: 'Tarifs', href: '#link' },
-    { name: 'À propos', href: '#link' },
-];
+    { name: 'Tons', href: '#Tons' },
+    { name: 'TheEndPost', href: '#TheEndPost' },
+    { name: 'À propos', href: '#apropos' },
+]
 
 const HeroHeader = () => {
     const [menuState, setMenuState] = React.useState(false);
