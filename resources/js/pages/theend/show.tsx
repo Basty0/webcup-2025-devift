@@ -14,6 +14,7 @@ import axios from 'axios';
 import { motion } from 'framer-motion';
 import {
     Angry,
+    ArrowLeftIcon,
     ArrowRight,
     Award,
     Bookmark,
@@ -76,6 +77,10 @@ interface ShowProps {
             id: number;
             name: string;
             avatar_url: string | null;
+            email?: string;
+            bio?: string | null;
+            photo?: string | null;
+            slug: string;
         };
         type: {
             id: number;
@@ -88,6 +93,8 @@ interface ShowProps {
                 id: number;
                 name: string;
                 avatar_url: string | null;
+                bio?: string | null;
+                photo?: string | null;
             };
             created_at: string;
         }>;
@@ -159,211 +166,8 @@ const toneStyles = {
     },
 };
 
-// Définition des animations par ton
+// Simplify animations for brevity
 const toneAnimations = {
-    dramatique: {
-        container: {
-            hidden: { opacity: 0 },
-            visible: {
-                opacity: 1,
-                transition: {
-                    duration: 1.8,
-                    staggerChildren: 0.3,
-                    ease: 'easeOut',
-                },
-            },
-        },
-        item: {
-            hidden: { y: 40, opacity: 0 },
-            visible: {
-                y: 0,
-                opacity: 1,
-                transition: {
-                    duration: 1.2,
-                    ease: [0.22, 0.61, 0.36, 1],
-                },
-            },
-        },
-    },
-    ironique: {
-        container: {
-            hidden: { opacity: 0, scale: 0.95 },
-            visible: {
-                opacity: 1,
-                scale: 1,
-                transition: {
-                    duration: 0.5,
-                    staggerChildren: 0.1,
-                },
-            },
-        },
-        item: {
-            hidden: { y: 20, opacity: 0, rotate: -2 },
-            visible: {
-                y: 0,
-                opacity: 1,
-                rotate: 0,
-                transition: {
-                    type: 'spring',
-                    stiffness: 300,
-                    damping: 15,
-                },
-            },
-        },
-    },
-    cringe: {
-        container: {
-            hidden: { opacity: 0 },
-            visible: {
-                opacity: 1,
-                transition: {
-                    duration: 0.4,
-                    staggerChildren: 0.08,
-                },
-            },
-        },
-        item: {
-            hidden: { y: 0, opacity: 0, scale: 0.9, rotate: 1 },
-            visible: {
-                y: 0,
-                opacity: 1,
-                scale: 1,
-                rotate: 0,
-                transition: {
-                    type: 'spring',
-                    stiffness: 400,
-                    damping: 10,
-                    yoyo: 3,
-                },
-            },
-        },
-    },
-    classe: {
-        container: {
-            hidden: { opacity: 0 },
-            visible: {
-                opacity: 1,
-                transition: {
-                    duration: 1,
-                    staggerChildren: 0.15,
-                    ease: 'easeOut',
-                },
-            },
-        },
-        item: {
-            hidden: { y: 15, opacity: 0 },
-            visible: {
-                y: 0,
-                opacity: 1,
-                transition: {
-                    duration: 0.7,
-                    ease: [0.22, 0.61, 0.36, 1],
-                },
-            },
-        },
-    },
-    touchant: {
-        container: {
-            hidden: { opacity: 0, y: 20 },
-            visible: {
-                opacity: 1,
-                y: 0,
-                transition: {
-                    duration: 0.8,
-                    staggerChildren: 0.12,
-                    ease: 'easeOut',
-                },
-            },
-        },
-        item: {
-            hidden: { y: 15, opacity: 0, scale: 0.98 },
-            visible: {
-                y: 0,
-                opacity: 1,
-                scale: 1,
-                transition: {
-                    type: 'spring',
-                    stiffness: 250,
-                    damping: 15,
-                },
-            },
-        },
-    },
-    absurde: {
-        container: {
-            hidden: { opacity: 0, rotate: -2 },
-            visible: {
-                opacity: 1,
-                rotate: 0,
-                transition: {
-                    duration: 0.6,
-                    staggerChildren: 0.1,
-                    ease: 'easeOut',
-                },
-            },
-        },
-        item: {
-            hidden: { y: 20, opacity: 0, rotate: Math.random() * 5 - 2.5 },
-            visible: {
-                y: 0,
-                opacity: 1,
-                rotate: Math.random() * 3 - 1.5,
-                transition: {
-                    type: 'spring',
-                    stiffness: 300,
-                    damping: 15,
-                },
-            },
-        },
-    },
-    passif_agressif: {
-        container: {
-            hidden: { opacity: 0 },
-            visible: {
-                opacity: 1,
-                transition: {
-                    duration: 0.8,
-                    staggerChildren: 0.2,
-                    ease: 'linear',
-                },
-            },
-        },
-        item: {
-            hidden: { x: -5, opacity: 0 },
-            visible: {
-                x: 0,
-                opacity: 1,
-                transition: {
-                    duration: 0.4,
-                    ease: 'easeInOut',
-                },
-            },
-        },
-    },
-    honnête: {
-        container: {
-            hidden: { opacity: 0 },
-            visible: {
-                opacity: 1,
-                transition: {
-                    duration: 0.5,
-                    staggerChildren: 0.08,
-                    ease: 'easeOut',
-                },
-            },
-        },
-        item: {
-            hidden: { y: 10, opacity: 0 },
-            visible: {
-                y: 0,
-                opacity: 1,
-                transition: {
-                    duration: 0.4,
-                    ease: 'easeOut',
-                },
-            },
-        },
-    },
     default: {
         container: {
             hidden: { opacity: 0 },
@@ -408,6 +212,17 @@ export default function Show({ theend }: ShowProps) {
         ),
     );
 
+    // Check URL query parameters for showComments
+    useEffect(() => {
+        // Check if the URL contains showComments=true
+        const urlParams = new URLSearchParams(window.location.search);
+        const shouldShowComments = urlParams.get('showComments') === 'true';
+
+        if (shouldShowComments) {
+            setShowComments(true);
+        }
+    }, []);
+
     // Ajout des états pour le lecteur audio
     const audioRef = useRef<HTMLAudioElement>(null);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -418,7 +233,7 @@ export default function Show({ theend }: ShowProps) {
     // Obtenir le style et l'animation en fonction du ton
     const tone = theend.tone?.toLowerCase() || 'default';
     const style = toneStyles[tone as keyof typeof toneStyles] || toneStyles.default;
-    const animation = toneAnimations[tone as keyof typeof toneAnimations] || toneAnimations.default;
+    const animation = toneAnimations.default;
 
     // Récupérer les styles personnalisés pour les boutons
     const theendStyles = getTheendStyles(tone);
@@ -507,21 +322,34 @@ export default function Show({ theend }: ShowProps) {
         <TheendLayout theend={theend}>
             {/* Lecteur audio en arrière-plan */}
             {theend.sound_url && <audio ref={audioRef} src={theend.sound_url} preload="metadata" />}
-
+            <Link href={route('dashboard')} className="absolute top-4 left-4 flex items-center gap-2">
+                <ArrowLeftIcon className="h-6 w-6" />
+                <span>Accueil</span>
+            </Link>
             <motion.div className="mx-auto max-w-4xl p-6" variants={animation.container} initial="hidden" animate="visible">
                 {/* En-tête */}
                 <motion.div className="mb-8" variants={animation.item}>
                     <Card className={style.cardClass}>
                         <CardHeader>
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center space-x-4">
-                                    <Avatar>
-                                        <AvatarImage src={theend.user.avatar_url || undefined} />
-                                        <AvatarFallback>{theend.user.name[0]}</AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <h2 className={`text-lg font-semibold ${style.headingClass}`}>{theend.user.name}</h2>
-                                        <div className="text-muted-foreground flex items-center space-x-2 text-sm">
+                            <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+                                <div className="flex items-start gap-4">
+                                    <Link href={route('user.profile', theend.user.slug)} className="group flex flex-col items-center">
+                                        <Avatar className="group-hover:border-primary/50 h-16 w-16 cursor-pointer border-2 border-white/20 transition-all">
+                                            <AvatarImage src={theend.user.photo || theend.user.avatar_url || undefined} alt={theend.user.name} />
+                                            <AvatarFallback>{theend.user.name[0]}</AvatarFallback>
+                                        </Avatar>
+                                    </Link>
+                                    <div className="flex flex-col">
+                                        <Link
+                                            href={route('user.profile', theend.user.slug)}
+                                            className={`text-lg font-semibold ${style.headingClass} hover:underline`}
+                                        >
+                                            {theend.user.name}
+                                        </Link>
+                                        {theend.user.bio && (
+                                            <p className={`text-muted-foreground mt-1 line-clamp-2 max-w-md text-sm`}>{theend.user.bio}</p>
+                                        )}
+                                        <div className="text-muted-foreground mt-1 flex items-center space-x-2 text-sm">
                                             <span>{new Date(theend.created_at).toLocaleDateString()}</span>
                                             <span>•</span>
                                             <div className="flex items-center space-x-1">
@@ -598,7 +426,7 @@ export default function Show({ theend }: ShowProps) {
                                 </div>
                             )}
 
-                            {/* Actions */}
+                            {/* Actions section - fixed version */}
                             <motion.div className="mt-6 mb-8 flex items-center justify-between" variants={animation.item}>
                                 <div className="flex items-center space-x-6">
                                     {/* React button */}
@@ -657,16 +485,18 @@ export default function Show({ theend }: ShowProps) {
                                         </Button>
                                     )}
 
+                                    {/* Comment button */}
                                     <Button
                                         onClick={() => setShowComments(!showComments)}
                                         className={showComments ? theendStyles.button.primary : theendStyles.button.secondary}
                                     >
-                                        <MessageCircle className="mr-2" />
-                                        <span>{theend.comments.length}</span>
+                                        <MessageCircle className="mr-2 h-5 w-5" />
+                                        <span>{theend.comments.length} Commentaires</span>
                                     </Button>
 
+                                    {/* Share button */}
                                     <Button onClick={() => setIsShareModalOpen(true)} className={theendStyles.button.secondary}>
-                                        <Share2 className="mr-2" />
+                                        <Share2 className="mr-2 h-5 w-5" />
                                         <span>Partager</span>
                                     </Button>
                                 </div>
@@ -720,6 +550,7 @@ export default function Show({ theend }: ShowProps) {
                                         cardClass={style.cardClass}
                                         headingClass={style.headingClass}
                                         textClass={style.textClass}
+                                        currentUserId={auth.user?.id}
                                     />
                                 ) : (
                                     <>
@@ -737,6 +568,7 @@ export default function Show({ theend }: ShowProps) {
                                             cardClass={style.cardClass}
                                             headingClass={style.headingClass}
                                             textClass={style.textClass}
+                                            currentUserId={auth.user?.id}
                                         />
                                     </>
                                 )}

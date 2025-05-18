@@ -1,688 +1,774 @@
+// Import pour les composants UI
+import ShareModal from '@/components/share/ShareModal';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Image } from '@/components/ui/image';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Pencil, MessageCircle, Share2, ChevronDown, ChevronUp } from "lucide-react"
-import { useState } from "react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Link, router } from '@inertiajs/react';
+import { ChevronDown, ChevronUp, MessageCircle, Pencil, Share2, Trash2 } from 'lucide-react';
+import { useState } from 'react';
 import Modifuser from './modif-user';
-export default function ProfilePage({ user }: { user: any }) {
-        console.log(user)
-     const [isModal,setIsmodal] =  useState(false);
 
-     const OpenModal = () => {
-        setIsmodal(!isModal)
-     }
-  // Données fictives pour les publications
-  const publishedPosts = [
-    {
-      id: 1,
-      content: "Voici ma dernière publication TheEnd !",
-      date: "Il y a 2 heures",
-      reactions: {
-        like: 15,
-        love: 5,
-        care: 2,
-        haha: 1,
-        angry: 1,
-      },
-      comments: [
-        {
-          id: 101,
-          author: "Marie Dubois",
-          avatar:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80",
-          content: "Super publication ! J'adore ton contenu.",
-          date: "Il y a 1 heure",
-          reactions: {
-            like: 2,
-            love: 1,
-          },
-          replies: [
-            {
-              id: 1011,
-              author: "Jean Dupont",
-              avatar:
-                "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=40&h=40&q=80",
-              content: "Merci beaucoup Marie !",
-              date: "Il y a 45 minutes",
-              reactions: {
-                like: 1,
-              },
-            },
-          ],
-        },
-        {
-          id: 102,
-          author: "Thomas Martin",
-          avatar:
-            "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80",
-          content: "Très intéressant, merci pour le partage !",
-          date: "Il y a 30 minutes",
-          reactions: {},
-          replies: [],
-        },
-      ],
-      shares: 2,
-      image:
-        "https://images.unsplash.com/photo-1682687220063-4742bd7fd538?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&h=300&q=80",
-    },
-    {
-      id: 2,
-      content: "J'ai passé une journée incroyable à explorer la ville. Voici quelques photos de mon aventure !",
-      date: "Il y a 1 jour",
-      reactions: {
-        like: 30,
-        love: 15,
-        care: 5,
-        haha: 4,
-        angry: 2,
-      },
-      comments: [
-        {
-          id: 201,
-          author: "Sophie Bernard",
-          avatar:
-            "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80",
-          content: "Quelle belle journée ! Les photos sont magnifiques.",
-          date: "Il y a 20 heures",
-          reactions: {
-            like: 3,
-            love: 2,
-          },
-          replies: [],
-        },
-        {
-          id: 202,
-          author: "Lucas Petit",
-          avatar:
-            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80",
-          content: "J'adore cette ville ! Tu as visité le musée ?",
-          date: "Il y a 18 heures",
-          reactions: {
-            like: 1,
-          },
-          replies: [
-            {
-              id: 2021,
-              author: "Jean Dupont",
-              avatar:
-                "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=40&h=40&q=80",
-              content: "Oui, c'était incroyable ! Je recommande vivement.",
-              date: "Il y a 17 heures",
-              reactions: {
-                like: 2,
-                haha: 1,
-              },
-            },
-          ],
-        },
-        {
-          id: 203,
-          author: "Emma Leroy",
-          avatar:
-            "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80",
-          content: "Superbes photos ! J'aimerais y aller aussi.",
-          date: "Il y a 12 heures",
-          reactions: {},
-          replies: [],
-        },
-      ],
-      shares: 8,
-      image:
-        "https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&h=300&q=80",
-    },
-  ]
+// Define types for Theend posts
+interface Reaction {
+    id: number;
+    user_id: number;
+    theend_id?: number;
+    comment_id?: number;
+    type: string;
+    created_at: string;
+    updated_at: string;
+}
 
-  const draftPosts = [
-    {
-      id: 3,
-      content: "Brouillon de ma prochaine publication...",
-      date: "Modifié il y a 3 jours",
-      image:
-        "https://images.unsplash.com/photo-1682687220063-4742bd7fd538?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&h=300&q=80",
-    },
-    {
-      id: 4,
-      content: "Idées pour mon prochain projet TheEnd",
-      date: "Modifié il y a 1 semaine",
-      image:
-        "https://images.unsplash.com/photo-1664575599736-c5197c684128?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&h=300&q=80",
-    },
-  ]
+// Simplified comment structure for the UI
+interface UIComment {
+    id: number;
+    author: string;
+    avatar: string;
+    content: string;
+    date: string;
+    reactions: Record<string, number>;
+    replies: UIComment[];
+}
 
-  return (
-    <div className="container mx-auto px-4 pb-8 bg-background">
-      {/* Section de couverture et profil */}
-      <div className="relative mb-6">
-        {/* Photo de couverture */}
-        <div className="relative h-[200px] md:h-[300px] w-full rounded-b-lg overflow-hidden">
-          <Image
-            src={user.photo_cover}
-            alt="Photo de couverture"
-            fill
-            className="object-cover"
-            priority
-          />
-        </div>
+interface Comment {
+    id: number;
+    user_id: number;
+    theend_id: number;
+    content: string;
+    created_at: string;
+    updated_at: string;
+    user: {
+        id: number;
+        name: string;
+        email: string;
+        photo: string | null;
+    };
+}
 
-        {/* Photo de profil et informations */}
-        <div className="flex flex-col md:flex-row items-center md:items-end gap-4 -mt-16 md:-mt-20 px-4 relative z-10">
-          <Avatar className="h-32 w-32 md:h-40 md:w-40 border-4 border-background">
-            <AvatarImage
-             src={user.photo}
-              alt="Photo de profil"
-            />
-            <AvatarFallback>JP</AvatarFallback>
-          </Avatar>
+interface Theend {
+    id: number;
+    user_id: number;
+    slug: string;
+    title: string;
+    content: string;
+    is_public: boolean;
+    tone: string;
+    type_id: number;
+    image_url: string | null;
+    gif_url: string | null;
+    sound_url: string | null;
+    views: number;
+    is_draft: boolean;
+    created_at: string;
+    updated_at: string;
+    comments: Comment[];
+    reactions: Reaction[];
+}
 
-          <div className="flex flex-col md:flex-row items-center md:items-end justify-between w-full pb-4">
-            <div className="text-center md:text-left">
-              <h1 className="text-2xl font-bold">{user.name}</h1>
-              <p className="text-muted-foreground">{user.bio}</p>
+interface User {
+    id: number;
+    name: string;
+    email: string;
+    bio: string | null;
+    photo: string | null;
+    photo_cover: string | null;
+    slug: string;
+}
+
+interface ProfilePageProps {
+    user: User;
+    publishedPosts: Theend[];
+    draftPosts: Theend[];
+}
+
+export default function ProfilePage({ user, publishedPosts = [], draftPosts = [] }: ProfilePageProps) {
+    // S'assurer que publishedPosts et draftPosts sont des tableaux
+    const safePublishedPosts = Array.isArray(publishedPosts) ? publishedPosts : [];
+    const safeDraftPosts = Array.isArray(draftPosts) ? draftPosts : [];
+
+    return (
+        <div className="bg-background container mx-auto px-4 pb-8">
+            {/* Section de couverture et profil */}
+            <div className="relative mb-6">
+                {/* Photo de couverture */}
+                <div className="relative h-[200px] w-full overflow-hidden rounded-b-lg md:h-[300px]">
+                    <Image src={user?.photo_cover || '/placeholder-cover.jpeg'} alt="Photo de couverture" fill className="object-cover" priority />
+                </div>
+
+                {/* Photo de profil et informations */}
+                <div className="relative z-10 -mt-16 flex flex-col items-center gap-4 px-4 md:-mt-20 md:flex-row md:items-end">
+                    <Avatar className="border-background h-32 w-32 border-4 md:h-40 md:w-40">
+                        <AvatarImage src={user?.photo || '/placeholder-avatar.jpg'} alt="Photo de profil" />
+                        <AvatarFallback>{user?.name?.charAt(0) || 'U'}</AvatarFallback>
+                    </Avatar>
+
+                    <div className="flex w-full flex-col items-center justify-between pb-4 md:flex-row md:items-end">
+                        <div className="text-center md:text-left">
+                            <h1 className="text-2xl font-bold">{user?.name || 'Utilisateur'}</h1>
+                            <p className="text-muted-foreground">{user?.bio || 'Aucune biographie'}</p>
+                        </div>
+
+                        <div className="mt-2 md:mt-0">
+                            <Modifuser />
+                            {user?.slug && (
+                                <Link href={route('user.profile', user.slug)} className="ml-2">
+                                    <Button variant="secondary" size="sm">
+                                        <span className="mr-2">👁️</span>
+                                        Voir profil public
+                                    </Button>
+                                </Link>
+                            )}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="mt-4 border-b" />
             </div>
 
-            <div className="mt-2 md:mt-0">
-            <Modifuser />
-            </div>
-          </div>
+            {/* Section des publications */}
+            <Tabs defaultValue="published" className="mx-auto w-full max-w-3xl">
+                <TabsList className="mb-6 grid w-full grid-cols-2">
+                    <TabsTrigger value="published">Publications</TabsTrigger>
+                    <TabsTrigger value="drafts">Brouillons</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="published" className="space-y-6">
+                    {safePublishedPosts.length > 0 ? (
+                        safePublishedPosts.map((post) => <PostCard key={post.id} theend={post} user={user} isPublished={true} />)
+                    ) : (
+                        <div className="py-8 text-center">
+                            <p className="text-muted-foreground">Aucune publication pour le moment</p>
+                        </div>
+                    )}
+                </TabsContent>
+
+                <TabsContent value="drafts" className="space-y-6">
+                    {safeDraftPosts.length > 0 ? (
+                        safeDraftPosts.map((post) => <PostCard key={post.id} theend={post} user={user} isPublished={false} />)
+                    ) : (
+                        <div className="py-8 text-center">
+                            <p className="text-muted-foreground">Aucun brouillon pour le moment</p>
+                        </div>
+                    )}
+                </TabsContent>
+            </Tabs>
         </div>
-
-        <div className="border-b mt-4" />
-      </div>
-
-      {/* Section des publications */}
-      <Tabs defaultValue="published" className="w-full max-w-3xl mx-auto">
-        <TabsList className="grid w-full grid-cols-2 mb-6">
-          <TabsTrigger value="published">Publications</TabsTrigger>
-          <TabsTrigger value="drafts">Brouillons</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="published" className="space-y-6">
-          {publishedPosts.map((post) => (
-            <PostCard
-              key={post.id}
-              content={post.content}
-              date={post.date}
-              reactions={post.reactions}
-              comments={post.comments}
-              shares={post.shares}
-              image={post.image}
-              isPublished={true}
-            />
-          ))}
-        </TabsContent>
-
-        <TabsContent value="drafts" className="space-y-6">
-          {draftPosts.map((post) => (
-            <PostCard key={post.id} content={post.content} date={post.date} image={post.image} isPublished={false} />
-          ))}
-        </TabsContent>
-      </Tabs>
-    </div>
-  )
+    );
 }
 
 // Composant pour les cartes de publication
-function PostCard({ content, date, reactions = {}, comments = [], shares = 0, image, isPublished = true }) {
-  const [showComments, setShowComments] = useState(false)
-  const [showReactions, setShowReactions] = useState(false)
-  const [userReaction, setUserReaction] = useState(null)
-  const [postReactions, setPostReactions] = useState(
-    reactions || {
-      like: 0,
-      love: 0,
-      care: 0,
-      haha: 0,
-      angry: 0,
-    },
-  )
-  const [postComments, setPostComments] = useState(comments || [])
-  const [replyingTo, setReplyingTo] = useState(null)
-  const [commentText, setCommentText] = useState("")
+interface PostCardProps {
+    theend: Theend;
+    user: User;
+    isPublished: boolean;
+}
 
-  // Définition des réactions disponibles avec des emojis
-  const reactionTypes = [
-    {
-      type: "like",
-      label: "J'aime",
-      emoji: "👍",
-      color: "text-blue-500",
-      bgColor: "bg-blue-100",
-    },
-    {
-      type: "love",
-      label: "J'adore",
-      emoji: "❤️",
-      color: "text-rose-500",
-      bgColor: "bg-rose-100",
-    },
-    {
-      type: "care",
-      label: "Solidaire",
-      emoji: "👐",
-      color: "text-amber-500",
-      bgColor: "bg-amber-100",
-    },
-    {
-      type: "haha",
-      label: "Haha",
-      emoji: "😂",
-      color: "text-yellow-500",
-      bgColor: "bg-yellow-100",
-    },
-    {
-      type: "angry",
-      label: "Grrrr",
-      emoji: "😡",
-      color: "text-red-500",
-      bgColor: "bg-red-100",
-    },
-  ]
+// Définir des valeurs par défaut pour les propriétés Theend
+const ensureTheendProperties = (theend: Theend): Theend => {
+    return {
+        ...theend,
+        content: theend.content || '',
+        image_url: theend.image_url || null,
+        gif_url: theend.gif_url || null,
+        sound_url: theend.sound_url || null,
+        views: theend.views || 0,
+        created_at: theend.created_at || new Date().toISOString(),
+        updated_at: theend.updated_at || new Date().toISOString(),
+        reactions: theend.reactions || [],
+        comments: theend.comments || [],
+    };
+};
 
-  // Trouver la réaction actuelle de l'utilisateur
-  const currentReaction = userReaction ? reactionTypes.find((r) => r.type === userReaction) : reactionTypes[0]
+function PostCard({ theend: rawTheend, user, isPublished }: PostCardProps) {
+    // Assurer que toutes les propriétés nécessaires sont définies
+    const theend = ensureTheendProperties(rawTheend);
 
-  // Calculer le total des réactions
-  const totalReactions = Object.values(postReactions).reduce((sum, count) => sum + count, 0)
+    const [showComments, setShowComments] = useState(false);
+    const [showReactions, setShowReactions] = useState(false);
+    const [userReaction] = useState<string | null>(null);
+    const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
-  // Gérer le clic sur une réaction
-  const handleReactionClick = (reactionType) => {
-    // Si l'utilisateur clique sur la même réaction, on la retire
-    if (userReaction === reactionType) {
-      setUserReaction(null)
-      setPostReactions({
-        ...postReactions,
-        [reactionType]: Math.max(0, postReactions[reactionType] - 1),
-      })
-    } else {
-      // Si l'utilisateur avait déjà réagi, on retire l'ancienne réaction
-      if (userReaction) {
-        setPostReactions({
-          ...postReactions,
-          [userReaction]: Math.max(0, postReactions[userReaction] - 1),
-          [reactionType]: (postReactions[reactionType] || 0) + 1,
-        })
-      } else {
-        // Sinon on ajoute simplement la nouvelle réaction
-        setPostReactions({
-          ...postReactions,
-          [reactionType]: (postReactions[reactionType] || 0) + 1,
-        })
-      }
-      setUserReaction(reactionType)
+    // Group reactions by type
+    const reactionsByType = theend.reactions
+        ? theend.reactions.reduce(
+              (acc, reaction) => {
+                  const type = reaction.type;
+                  if (!acc[type]) acc[type] = 0;
+                  acc[type]++;
+                  return acc;
+              },
+              {} as Record<string, number>,
+          )
+        : {};
+
+    // Convert comments to the format we need for UI
+    const [postComments, setPostComments] = useState<UIComment[]>(
+        theend.comments
+            ? theend.comments.map((comment) => {
+                  if (!comment.user) {
+                      // Fallback for comments without user data
+                      return {
+                          id: comment.id,
+                          author: 'Utilisateur inconnu',
+                          avatar: '/placeholder-avatar.jpg',
+                          content: comment.content,
+                          date: formatDate(comment.created_at),
+                          reactions: {},
+                          replies: [],
+                      };
+                  }
+
+                  return {
+                      id: comment.id,
+                      author: comment.user.name,
+                      avatar: comment.user.photo || '/placeholder-avatar.jpg',
+                      content: comment.content,
+                      date: formatDate(comment.created_at),
+                      reactions: {},
+                      replies: [],
+                  };
+              })
+            : [],
+    );
+
+    const [replyingTo, setReplyingTo] = useState<number | null>(null);
+    const [commentText, setCommentText] = useState('');
+
+    // Définition des réactions disponibles avec des emojis
+    const reactionTypes = [
+        {
+            type: 'like',
+            label: "J'aime",
+            emoji: '👍',
+            color: 'text-blue-500',
+            bgColor: 'bg-blue-100',
+        },
+        {
+            type: 'love',
+            label: "J'adore",
+            emoji: '❤️',
+            color: 'text-rose-500',
+            bgColor: 'bg-rose-100',
+        },
+        {
+            type: 'care',
+            label: 'Solidaire',
+            emoji: '👐',
+            color: 'text-amber-500',
+            bgColor: 'bg-amber-100',
+        },
+        {
+            type: 'haha',
+            label: 'Haha',
+            emoji: '😂',
+            color: 'text-yellow-500',
+            bgColor: 'bg-yellow-100',
+        },
+        {
+            type: 'angry',
+            label: 'Grrrr',
+            emoji: '😡',
+            color: 'text-red-500',
+            bgColor: 'bg-red-100',
+        },
+    ];
+
+    // Format date helper function
+    function formatDate(dateString: string): string {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffMs = now.getTime() - date.getTime();
+        const diffSecs = Math.floor(diffMs / 1000);
+        const diffMins = Math.floor(diffSecs / 60);
+        const diffHours = Math.floor(diffMins / 60);
+        const diffDays = Math.floor(diffHours / 24);
+
+        if (diffSecs < 60) return "À l'instant";
+        if (diffMins < 60) return `Il y a ${diffMins} minute${diffMins > 1 ? 's' : ''}`;
+        if (diffHours < 24) return `Il y a ${diffHours} heure${diffHours > 1 ? 's' : ''}`;
+        if (diffDays < 7) return `Il y a ${diffDays} jour${diffDays > 1 ? 's' : ''}`;
+
+        return date.toLocaleDateString('fr-FR');
     }
-    setShowReactions(false)
-  }
 
-  // Gérer l'ajout d'un commentaire
-  const handleAddComment = (parentId = null) => {
-    if (!commentText.trim()) return
+    // Trouver la réaction actuelle de l'utilisateur
+    const currentReaction = userReaction ? reactionTypes.find((r) => r.type === userReaction) : reactionTypes[0];
 
-    const newComment = {
-      id: Date.now(),
-      author: "Jean Dupont",
-      avatar:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=40&h=40&q=80",
-      content: commentText,
-      date: "À l'instant",
-      reactions: {},
-      replies: [],
-    }
+    // Calculer le total des réactions
+    const totalReactions = Object.values(reactionsByType).reduce((sum, count) => sum + count, 0);
 
-    if (parentId) {
-      // Ajouter une réponse à un commentaire existant
-      const updatedComments = postComments.map((comment) => {
-        if (comment.id === parentId) {
-          return {
-            ...comment,
-            replies: [...comment.replies, newComment],
-          }
+    // Gérer l'ajout d'un commentaire
+    const handleAddComment = (parentId: number | null = null) => {
+        if (!commentText.trim()) return;
+
+        // Ici vous pourriez ajouter un appel API pour enregistrer le commentaire
+        const newComment: UIComment = {
+            id: Date.now(), // Temporaire, l'API fournirait un vrai ID
+            author: user.name,
+            avatar: user.photo || '/placeholder-avatar.jpg',
+            content: commentText,
+            date: "À l'instant",
+            reactions: {} as Record<string, number>,
+            replies: [],
+        };
+
+        if (parentId) {
+            // Ajouter une réponse à un commentaire existant
+            const updatedComments = postComments.map((comment) => {
+                if (comment.id === parentId) {
+                    return {
+                        ...comment,
+                        replies: [...comment.replies, newComment],
+                    };
+                }
+                return comment;
+            });
+            setPostComments(updatedComments);
+            setReplyingTo(null);
+        } else {
+            // Ajouter un nouveau commentaire principal
+            setPostComments([...postComments, newComment]);
         }
-        return comment
-      })
-      setPostComments(updatedComments)
-      setReplyingTo(null)
-    } else {
-      // Ajouter un nouveau commentaire principal
-      setPostComments([...postComments, newComment])
-    }
 
-    setCommentText("")
-  }
+        setCommentText('');
+    };
 
-  // Gérer la réaction à un commentaire
-  const handleCommentReaction = (commentId, reactionType, isReply = false, parentId = null) => {
-    if (isReply && parentId) {
-      // Réagir à une réponse
-      const updatedComments = postComments.map((comment) => {
-        if (comment.id === parentId) {
-          const updatedReplies = comment.replies.map((reply) => {
-            if (reply.id === commentId) {
-              const currentCount = reply.reactions[reactionType] || 0
-              return {
-                ...reply,
-                reactions: {
-                  ...reply.reactions,
-                  [reactionType]: currentCount + 1,
-                },
-              }
-            }
-            return reply
-          })
-          return {
-            ...comment,
-            replies: updatedReplies,
-          }
+    // Gérer la réaction à un commentaire
+    const handleCommentReaction = (commentId: number, reactionType: string, isReply = false, parentId: number | null = null) => {
+        // Ici vous pourriez ajouter un appel API pour enregistrer la réaction au commentaire
+        if (isReply && parentId) {
+            // Réagir à une réponse
+            const updatedComments = postComments.map((comment) => {
+                if (comment.id === parentId) {
+                    const updatedReplies = comment.replies.map((reply) => {
+                        if (reply.id === commentId) {
+                            return {
+                                ...reply,
+                                reactions: {
+                                    ...reply.reactions,
+                                    [reactionType]: (reply.reactions[reactionType] || 0) + 1,
+                                },
+                            };
+                        }
+                        return reply;
+                    });
+                    return {
+                        ...comment,
+                        replies: updatedReplies,
+                    };
+                }
+                return comment;
+            });
+            setPostComments(updatedComments);
+        } else {
+            // Réagir à un commentaire principal
+            const updatedComments = postComments.map((comment) => {
+                if (comment.id === commentId) {
+                    return {
+                        ...comment,
+                        reactions: {
+                            ...comment.reactions,
+                            [reactionType]: (comment.reactions[reactionType] || 0) + 1,
+                        },
+                    };
+                }
+                return comment;
+            });
+            setPostComments(updatedComments);
         }
-        return comment
-      })
-      setPostComments(updatedComments)
-    } else {
-      // Réagir à un commentaire principal
-      const updatedComments = postComments.map((comment) => {
-        if (comment.id === commentId) {
-          const currentCount = comment.reactions[reactionType] || 0
-          return {
-            ...comment,
-            reactions: {
-              ...comment.reactions,
-              [reactionType]: currentCount + 1,
-            },
-          }
-        }
-        return comment
-      })
-      setPostComments(updatedComments)
-    }
-  }
+    };
 
-  return (
-    <Card>
-      <CardHeader className="flex flex-row items-center gap-4 pb-2">
-        <Avatar>
-          <AvatarImage
-            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=40&h=40&q=80"
-            alt="Avatar"
-          />
-          <AvatarFallback>JD</AvatarFallback>
-        </Avatar>
-        <div>
-          <h3 className="font-semibold">Jean Dupont</h3>
-          <p className="text-sm text-muted-foreground">{date}</p>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <p>{content}</p>
-        {/* Image de la publication */}
-        {image && (
-          <div className="mt-4 rounded-md overflow-hidden">
-            <Image
-              src={image || "/placeholder.svg"}
-              alt="Contenu de la publication"
-              width={600}
-              height={300}
-              className="w-full object-cover"
-            />
-          </div>
-        )}
-      </CardContent>
-      <CardFooter className="flex flex-col">
-        {/* Affichage des compteurs de réactions */}
-        {isPublished && totalReactions > 0 && (
-          <div className="w-full flex justify-start mb-2">
-            <div className="flex items-center text-sm text-muted-foreground">
-              {reactionTypes.map(
-                (reaction) =>
-                  postReactions[reaction.type] > 0 && (
-                    <div key={reaction.type} className="flex items-center mr-3">
-                      <span className="mr-1">{reaction.emoji}</span>
-                      <span>{postReactions[reaction.type]}</span>
+    // Navigate to theend show page
+    const navigateToTheend = () => {
+        if (isPublished && theend.slug) {
+            router.visit(route('theend.show', theend.slug));
+        }
+    };
+
+    // Navigate to theend show page with comments open
+    const navigateToTheendWithComments = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (isPublished && theend.slug) {
+            router.visit(`${route('theend.show', theend.slug)}?showComments=true`);
+        }
+    };
+
+    // Navigate to edit page for both published posts and drafts
+    const navigateToEdit = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (theend.slug) {
+            router.visit(route('theend.step2', theend.slug));
+        }
+    };
+
+    // Handle publish draft
+    const publishDraft = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (!isPublished && theend.slug) {
+            // Logic to publish the draft
+            router.post(route('theend.update', theend.slug), {
+                is_draft: false,
+            });
+        }
+    };
+
+    return (
+        <Card className="border-none bg-transparent shadow-none">
+            <CardHeader className="flex cursor-pointer flex-row items-center gap-4 pb-2" onClick={navigateToTheend}>
+                <Avatar>
+                    <AvatarImage src={user.photo || '/placeholder-avatar.jpg'} alt={user.name} />
+                    <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                </Avatar>
+                <div>
+                    <h3 className="font-semibold">{user.name}</h3>
+                    <p className="text-muted-foreground text-sm">
+                        {isPublished ? formatDate(theend.created_at) : `Modifié ${formatDate(theend.updated_at)}`}
+                    </p>
+                </div>
+            </CardHeader>
+            <CardContent className={isPublished ? 'cursor-pointer' : ''} onClick={isPublished ? navigateToTheend : undefined}>
+                <p>{theend.content}</p>
+                {/* Image de la publication */}
+                {theend.image_url && (
+                    <div className="mt-4 h-[350px] overflow-hidden rounded-md">
+                        <Image src={theend.image_url} alt="Contenu de la publication" width={600} height={300} className="w-full object-cover" />
                     </div>
-                  ),
-              )}
-            </div>
-          </div>
-        )}
-
-        <div className="border-t w-full pt-4 pb-2">
-          {isPublished ? (
-            <div className="flex justify-between w-full">
-              <div className="relative">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className={userReaction ? `${currentReaction.color}` : ""}
-                  onClick={() => setShowReactions(!showReactions)}
-                >
-                  <span className="text-lg mr-2">
-                    {userReaction ? reactionTypes.find((r) => r.type === userReaction).emoji : "👍"}
-                  </span>
-                  <span>{userReaction ? reactionTypes.find((r) => r.type === userReaction).label : "J'aime"}</span>
-                </Button>
-
-                {/* Menu de réactions au clic */}
-                {showReactions && (
-                  <div className="absolute -top-16 left-0 flex gap-2 bg-background border rounded-full p-2 shadow-lg z-10">
-                    {reactionTypes.map((reaction) => (
-                      <button
-                        key={reaction.type}
-                        className={`p-2 rounded-full hover:${reaction.bgColor} transition-transform hover:scale-125 ${
-                          userReaction === reaction.type ? reaction.bgColor : ""
-                        }`}
-                        onClick={() => handleReactionClick(reaction.type)}
-                        title={`${reaction.label} (${postReactions[reaction.type] || 0})`}
-                      >
-                        <span className="text-xl">{reaction.emoji}</span>
-                      </button>
-                    ))}
-                  </div>
                 )}
-              </div>
-
-              <Button variant="ghost" size="sm" onClick={() => setShowComments(!showComments)}>
-                <MessageCircle className="mr-2 h-4 w-4" />
-                {postComments.length}
-                {showComments ? <ChevronUp className="ml-1 h-3 w-3" /> : <ChevronDown className="ml-1 h-3 w-3" />}
-              </Button>
-              <Button variant="ghost" size="sm">
-                <Share2 className="mr-2 h-4 w-4" />
-                {shares}
-              </Button>
-            </div>
-          ) : (
-            <div className="flex justify-end w-full">
-              <Button variant="outline" size="sm" className="mr-2">
-                <Pencil className="mr-2 h-4 w-4" />
-                Modifier
-              </Button>
-              <Button>Publier</Button>
-            </div>
-          )}
-        </div>
-
-        {/* Section des commentaires */}
-        {isPublished && showComments && (
-          <div className="w-full mt-2 space-y-3 pt-2 border-t">
-            {postComments.map((comment) => (
-              <div key={comment.id} className="space-y-3">
-                {/* Commentaire principal */}
-                <div className="flex gap-3">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={comment.avatar || "/placeholder.svg"} alt={comment.author} />
-                    <AvatarFallback>{comment.author.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1">
-                    <div className="bg-muted rounded-lg px-3 py-2">
-                      <div className="flex justify-between items-start">
-                        <h4 className="text-sm font-medium">{comment.author}</h4>
-                        <span className="text-xs text-muted-foreground">{comment.date}</span>
-                      </div>
-                      <p className="text-sm mt-1">{comment.content}</p>
-                    </div>
-
-                    {/* Actions du commentaire */}
-                    <div className="flex items-center mt-1 text-xs text-muted-foreground">
-                      <div className="flex space-x-2">
-                        <div className="relative group">
-                          <button className="hover:text-primary">J'aime</button>
-                          <div className="absolute bottom-full left-0 hidden group-hover:flex bg-background border rounded-full p-1 shadow-md mb-1">
-                            {reactionTypes.map((reaction) => (
-                              <button
-                                key={reaction.type}
-                                className="p-1 hover:scale-125 transition-transform"
-                                onClick={() => handleCommentReaction(comment.id, reaction.type)}
-                                title={reaction.label}
-                              >
-                                <span className="text-lg">{reaction.emoji}</span>
-                              </button>
-                            ))}
-                          </div>
+            </CardContent>
+            <CardFooter className="flex flex-col">
+                {/* Affichage des compteurs de réactions */}
+                {isPublished && totalReactions > 0 && (
+                    <div className="mb-2 flex w-full justify-start">
+                        <div className="text-muted-foreground flex items-center text-sm">
+                            {reactionTypes.map(
+                                (reaction) =>
+                                    reactionsByType[reaction.type] > 0 && (
+                                        <div key={reaction.type} className="mr-3 flex items-center">
+                                            <span className="mr-1">{reaction.emoji}</span>
+                                            <span>{reactionsByType[reaction.type]}</span>
+                                        </div>
+                                    ),
+                            )}
                         </div>
-                        <button
-                          className="hover:text-primary"
-                          onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)}
-                        >
-                          Répondre
-                        </button>
-                      </div>
-
-                      {/* Affichage des réactions au commentaire */}
-                      {Object.keys(comment.reactions).length > 0 && (
-                        <div className="ml-auto flex items-center">
-                          {Object.entries(comment.reactions).map(([type, count]) => {
-                            const reaction = reactionTypes.find((r) => r.type === type)
-                            return (
-                              <div key={type} className="flex items-center ml-1">
-                                <span className="text-sm">{reaction.emoji}</span>
-                                <span className="text-xs ml-1">{count}</span>
-                              </div>
-                            )
-                          })}
-                        </div>
-                      )}
                     </div>
+                )}
 
-                    {/* Formulaire de réponse */}
-                    {replyingTo === comment.id && (
-                      <div className="flex items-center mt-2">
-                        <Avatar className="h-6 w-6 mr-2">
-                          <AvatarImage
-                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=40&h=40&q=80"
-                            alt="Votre avatar"
-                          />
-                          <AvatarFallback>JD</AvatarFallback>
-                        </Avatar>
-                        <input
-                          type="text"
-                          value={commentText}
-                          onChange={(e) => setCommentText(e.target.value)}
-                          placeholder={`Répondre à ${comment.author}...`}
-                          className="flex-1 bg-muted rounded-lg px-3 py-1 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
-                        />
-                        <Button size="sm" className="ml-2" onClick={() => handleAddComment(comment.id)}>
-                          Commenter
-                        </Button>
-                      </div>
+                <div className="w-full border-t pt-4 pb-2">
+                    {isPublished ? (
+                        <div className="flex w-full justify-between">
+                            <div className="flex space-x-4">
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className={userReaction && currentReaction ? `${currentReaction.color}` : ''}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        if (isPublished) {
+                                            navigateToTheend();
+                                        } else {
+                                            setShowReactions(!showReactions);
+                                        }
+                                    }}
+                                >
+                                    <span className="mr-2 text-lg">{userReaction && currentReaction ? currentReaction.emoji : '👍'}</span>
+                                    <span>{userReaction && currentReaction ? currentReaction.label : "J'aime"}</span>
+                                    {totalReactions > 0 && <span className="ml-1">({totalReactions})</span>}
+                                </Button>
+
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={(e) => {
+                                        if (isPublished) {
+                                            navigateToTheendWithComments(e);
+                                        } else {
+                                            e.stopPropagation();
+                                            setShowComments(!showComments);
+                                        }
+                                    }}
+                                >
+                                    <MessageCircle className="mr-2 h-4 w-4" />
+                                    {theend.comments ? theend.comments.length : 0}
+                                    {showComments ? <ChevronUp className="ml-1 h-3 w-3" /> : <ChevronDown className="ml-1 h-3 w-3" />}
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setIsShareModalOpen(true);
+                                    }}
+                                >
+                                    <Share2 className="mr-2 h-4 w-4" />
+                                    Partager
+                                </Button>
+                            </div>
+                            <div>
+                                <Button variant="outline" size="sm" className="mr-2" onClick={navigateToEdit}>
+                                    <Pencil className="mr-2 h-4 w-4" />
+                                    Modifier
+                                </Button>
+                                <AlertDialog>
+                                    <AlertDialogTrigger>
+                                        <Button variant="destructive" size="sm" onClick={(e: React.MouseEvent) => e.stopPropagation()}>
+                                            <Trash2 className="mr-2 h-4 w-4" />
+                                            Supprimer
+                                        </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                Êtes-vous sûr de vouloir supprimer cette publication ? Cette action est irréversible.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel onClick={(e: React.MouseEvent) => e.stopPropagation()}>Annuler</AlertDialogCancel>
+                                            <AlertDialogAction
+                                                onClick={(e: React.MouseEvent) => {
+                                                    e.stopPropagation();
+                                                    router.delete(route('theend.destroy', theend.slug));
+                                                }}
+                                            >
+                                                Supprimer
+                                            </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="flex w-full justify-end">
+                            <Button variant="outline" size="sm" className="mr-2" onClick={navigateToEdit}>
+                                <Pencil className="mr-2 h-4 w-4" />
+                                Modifier
+                            </Button>
+                            <AlertDialog>
+                                <AlertDialogTrigger>
+                                    <Button variant="destructive" size="sm" className="mr-2" onClick={(e: React.MouseEvent) => e.stopPropagation()}>
+                                        <Trash2 className="mr-2 h-4 w-4" />
+                                        Supprimer
+                                    </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            Êtes-vous sûr de vouloir supprimer ce brouillon ? Cette action est irréversible.
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel onClick={(e: React.MouseEvent) => e.stopPropagation()}>Annuler</AlertDialogCancel>
+                                        <AlertDialogAction
+                                            onClick={(e: React.MouseEvent) => {
+                                                e.stopPropagation();
+                                                router.delete(route('theend.destroy', theend.slug));
+                                            }}
+                                        >
+                                            Supprimer
+                                        </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
+                            <Button onClick={publishDraft}>Publier</Button>
+                        </div>
                     )}
-                  </div>
                 </div>
 
-                {/* Réponses aux commentaires */}
-                {comment.replies && comment.replies.length > 0 && (
-                  <div className="ml-11 space-y-3">
-                    {comment.replies.map((reply) => (
-                      <div key={reply.id} className="flex gap-3">
-                        <Avatar className="h-7 w-7">
-                          <AvatarImage src={reply.avatar || "/placeholder.svg"} alt={reply.author} />
-                          <AvatarFallback>{reply.author.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1">
-                          <div className="bg-muted rounded-lg px-3 py-2">
-                            <div className="flex justify-between items-start">
-                              <h4 className="text-sm font-medium">{reply.author}</h4>
-                              <span className="text-xs text-muted-foreground">{reply.date}</span>
-                            </div>
-                            <p className="text-sm mt-1">{reply.content}</p>
-                          </div>
+                {/* Modal de partage */}
+                <ShareModal open={isShareModalOpen} onOpenChange={setIsShareModalOpen} slug={theend.slug} />
 
-                          {/* Actions de la réponse */}
-                          <div className="flex items-center mt-1 text-xs text-muted-foreground">
-                            <div className="flex space-x-2">
-                              <div className="relative group">
-                                <button className="hover:text-primary">J'aime</button>
-                                <div className="absolute bottom-full left-0 hidden group-hover:flex bg-background border rounded-full p-1 shadow-md mb-1">
-                                  {reactionTypes.map((reaction) => (
-                                    <button
-                                      key={reaction.type}
-                                      className="p-1 hover:scale-125 transition-transform"
-                                      onClick={() => handleCommentReaction(reply.id, reaction.type, true, comment.id)}
-                                      title={reaction.label}
-                                    >
-                                      <span className="text-lg">{reaction.emoji}</span>
-                                    </button>
-                                  ))}
-                                </div>
-                              </div>
-                              <button
-                                className="hover:text-primary"
-                                onClick={() => {
-                                  setReplyingTo(comment.id)
-                                  setCommentText(`@${reply.author} `)
-                                }}
-                              >
-                                Répondre
-                              </button>
-                            </div>
+                {/* Section des commentaires */}
+                {isPublished && showComments && (
+                    <div className="mt-2 w-full space-y-3 border-t pt-2">
+                        {postComments.map((comment) => (
+                            <div key={comment.id} className="space-y-3">
+                                {/* Commentaire principal */}
+                                <div className="flex gap-3">
+                                    <Avatar className="h-8 w-8">
+                                        <AvatarImage src={comment.avatar || '/placeholder-avatar.jpg'} alt={comment.author} />
+                                        <AvatarFallback>{comment.author.charAt(0)}</AvatarFallback>
+                                    </Avatar>
+                                    <div className="flex-1">
+                                        <div className="bg-muted rounded-lg px-3 py-2">
+                                            <div className="flex items-start justify-between">
+                                                <h4 className="text-sm font-medium">{comment.author}</h4>
+                                                <span className="text-muted-foreground text-xs">{comment.date}</span>
+                                            </div>
+                                            <p className="mt-1 text-sm">{comment.content}</p>
+                                        </div>
 
-                            {/* Affichage des réactions à la réponse */}
-                            {Object.keys(reply.reactions).length > 0 && (
-                              <div className="ml-auto flex items-center">
-                                {Object.entries(reply.reactions).map(([type, count]) => {
-                                  const reaction = reactionTypes.find((r) => r.type === type)
-                                  return (
-                                    <div key={type} className="flex items-center ml-1">
-                                      <span className="text-sm">{reaction.emoji}</span>
-                                      <span className="text-xs ml-1">{count}</span>
+                                        {/* Actions du commentaire */}
+                                        <div className="text-muted-foreground mt-1 flex items-center text-xs">
+                                            <div className="flex space-x-2">
+                                                <div className="group relative">
+                                                    <button className="hover:text-primary">J'aime</button>
+                                                    <div className="bg-background absolute bottom-full left-0 mb-1 hidden rounded-full border p-1 shadow-md group-hover:flex">
+                                                        {reactionTypes.map((reaction) => (
+                                                            <button
+                                                                key={reaction.type}
+                                                                className="p-1 transition-transform hover:scale-125"
+                                                                onClick={() => handleCommentReaction(comment.id, reaction.type)}
+                                                                title={reaction.label}
+                                                            >
+                                                                <span className="text-lg">{reaction.emoji}</span>
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    className="hover:text-primary"
+                                                    onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)}
+                                                >
+                                                    Répondre
+                                                </button>
+                                            </div>
+
+                                            {/* Affichage des réactions au commentaire */}
+                                            {Object.keys(comment.reactions).length > 0 && (
+                                                <div className="ml-auto flex items-center">
+                                                    {Object.entries(comment.reactions).map(([type, count]) => {
+                                                        const reaction = reactionTypes.find((r) => r.type === type);
+                                                        return reaction ? (
+                                                            <div key={type} className="ml-1 flex items-center">
+                                                                <span className="text-sm">{reaction.emoji}</span>
+                                                                <span className="ml-1 text-xs">{count}</span>
+                                                            </div>
+                                                        ) : null;
+                                                    })}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* Formulaire de réponse */}
+                                        {replyingTo === comment.id && (
+                                            <div className="mt-2 flex items-center">
+                                                <Avatar className="mr-2 h-6 w-6">
+                                                    <AvatarImage src={user.photo || '/placeholder-avatar.jpg'} alt="Votre avatar" />
+                                                    <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                                                </Avatar>
+                                                <input
+                                                    type="text"
+                                                    value={commentText}
+                                                    onChange={(e) => setCommentText(e.target.value)}
+                                                    placeholder={`Répondre à ${comment.author}...`}
+                                                    className="bg-muted focus:ring-primary flex-1 rounded-lg px-3 py-1 text-sm focus:ring-1 focus:outline-none"
+                                                />
+                                                <Button size="sm" className="ml-2" onClick={() => handleAddComment(comment.id)}>
+                                                    Commenter
+                                                </Button>
+                                            </div>
+                                        )}
                                     </div>
-                                  )
-                                })}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
+                                </div>
 
-            {/* Formulaire pour ajouter un commentaire */}
-            <div className="flex gap-3 mt-3">
-              <Avatar className="h-8 w-8">
-                <AvatarImage
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=40&h=40&q=80"
-                  alt="Votre avatar"
-                />
-                <AvatarFallback>JD</AvatarFallback>
-              </Avatar>
-              <div className="flex-1 flex">
-                <input
-                  type="text"
-                  value={commentText}
-                  onChange={(e) => setCommentText(e.target.value)}
-                  placeholder="Écrire un commentaire..."
-                  className="flex-1 bg-muted rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
-                />
-                <Button size="sm" className="ml-2" onClick={() => handleAddComment()}>
-                  Commenter
-                </Button>
-              </div>
-            </div>
-          </div>
-        )}
-      </CardFooter>
-    </Card>
-  )
+                                {/* Réponses aux commentaires */}
+                                {comment.replies && comment.replies.length > 0 && (
+                                    <div className="ml-11 space-y-3">
+                                        {comment.replies.map((reply) => (
+                                            <div key={reply.id} className="flex gap-3">
+                                                <Avatar className="h-7 w-7">
+                                                    <AvatarImage src={reply.avatar || '/placeholder-avatar.jpg'} alt={reply.author} />
+                                                    <AvatarFallback>{reply.author.charAt(0)}</AvatarFallback>
+                                                </Avatar>
+                                                <div className="flex-1">
+                                                    <div className="bg-muted rounded-lg px-3 py-2">
+                                                        <div className="flex items-start justify-between">
+                                                            <h4 className="text-sm font-medium">{reply.author}</h4>
+                                                            <span className="text-muted-foreground text-xs">{reply.date}</span>
+                                                        </div>
+                                                        <p className="mt-1 text-sm">{reply.content}</p>
+                                                    </div>
+
+                                                    {/* Actions de la réponse */}
+                                                    <div className="text-muted-foreground mt-1 flex items-center text-xs">
+                                                        <div className="flex space-x-2">
+                                                            <div className="group relative">
+                                                                <button className="hover:text-primary">J'aime</button>
+                                                                <div className="bg-background absolute bottom-full left-0 mb-1 hidden rounded-full border p-1 shadow-md group-hover:flex">
+                                                                    {reactionTypes.map((reaction) => (
+                                                                        <button
+                                                                            key={reaction.type}
+                                                                            className="p-1 transition-transform hover:scale-125"
+                                                                            onClick={() =>
+                                                                                handleCommentReaction(reply.id, reaction.type, true, comment.id)
+                                                                            }
+                                                                            title={reaction.label}
+                                                                        >
+                                                                            <span className="text-lg">{reaction.emoji}</span>
+                                                                        </button>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                            <button
+                                                                className="hover:text-primary"
+                                                                onClick={() => {
+                                                                    setReplyingTo(comment.id);
+                                                                    setCommentText(`@${reply.author} `);
+                                                                }}
+                                                            >
+                                                                Répondre
+                                                            </button>
+                                                        </div>
+
+                                                        {/* Affichage des réactions à la réponse */}
+                                                        {Object.keys(reply.reactions).length > 0 && (
+                                                            <div className="ml-auto flex items-center">
+                                                                {Object.entries(reply.reactions).map(([type, count]) => {
+                                                                    const reaction = reactionTypes.find((r) => r.type === type);
+                                                                    return reaction ? (
+                                                                        <div key={type} className="ml-1 flex items-center">
+                                                                            <span className="text-sm">{reaction.emoji}</span>
+                                                                            <span className="ml-1 text-xs">{count}</span>
+                                                                        </div>
+                                                                    ) : null;
+                                                                })}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+
+                        {/* Formulaire pour ajouter un commentaire */}
+                        <div className="mt-3 flex gap-3">
+                            <Avatar className="h-8 w-8">
+                                <AvatarImage src={user.photo || '/placeholder-avatar.jpg'} alt="Votre avatar" />
+                                <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                            </Avatar>
+                            <div className="flex flex-1">
+                                <input
+                                    type="text"
+                                    value={commentText}
+                                    onChange={(e) => setCommentText(e.target.value)}
+                                    placeholder="Écrire un commentaire..."
+                                    className="bg-muted focus:ring-primary flex-1 rounded-lg px-3 py-2 text-sm focus:ring-1 focus:outline-none"
+                                />
+                                <Button size="sm" className="ml-2" onClick={() => handleAddComment()}>
+                                    Commenter
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </CardFooter>
+        </Card>
+    );
 }

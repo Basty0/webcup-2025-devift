@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Theend;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Inertia\Inertia;
 
 class NewSearchController extends Controller
 {
@@ -68,58 +70,48 @@ class NewSearchController extends Controller
     /**
      * Méthode de recherche simplifiée pour les TheEnd
      *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param string $query
+     * @return \Inertia\Response
      */
-    public function search(Request $request)
+    public function search($query)
     {
-        $query = $request->input('q');
-
         // Log pour le débogage
         Log::info('Search query: ' . $query);
 
         if (!$query || strlen($query) < 2) {
-            return response()->json([]);
+            return Inertia::render('resulatrecherche/resulats-recherche', [
+                'results' => [],
+                'query' => $query
+            ]);
         }
 
         try {
-            $results = Theend::with('user')
+            // Recherche dans les TheEnds
+            $theendResults = Theend::with('user')
                 ->with('type')
+                ->with('comments')
+                ->with('reactions')
                 ->where(function ($q) use ($query) {
                     $q->where('title', 'like', "%{$query}%")
                         ->orWhere('content', 'like', "%{$query}%");
                 })
                 ->orderBy('created_at', 'desc')
-                ->limit(10)
+                ->limit(5)
                 ->get();
 
-            Log::info('Search results count: ' . $results->count());
+            // Recherche dans les utilisateurs 
+            $userResults = User::where('name', 'like', "%{$query}%")
+                ->orWhere('email', 'like', "%{$query}%")
+                ->orWhere('bio', 'like', "%{$query}%")
+                ->limit(5)
+                ->get();
 
-            // Pour le débogage
-            if ($results->isEmpty()) {
-                Log::info('No results found');
-                // Retourner des données de test si aucun résultat
-                return response()->json([
-                    [
-                        'id' => 1,
-                        'slug' => 'test-theend',
-                        'title' => 'TheEnd de test',
-                        'content' => 'Ceci est un TheEnd de test pour ' . $query,
-                        'created_at' => now(),
-                        'user' => [
-                            'name' => 'Utilisateur Test',
-                            'avatar_url' => null
-                        ],
-                        'type' => [
-                            'label' => 'post'
-                        ]
-                    ]
-                ]);
-            }
+            Log::info('Search results - TheEnds: ' . $theendResults->count() . ', Users: ' . $userResults->count());
 
-            // Transformer les résultats
-            $data = $results->map(function ($theend) {
+            // Transformer les résultats TheEnd
+            $theendData = $theendResults->map(function ($theend) {
                 return [
+                    'type' => 'theend',
                     'id' => $theend->id,
                     'slug' => $theend->slug,
                     'title' => $theend->title ?: 'Sans titre',
@@ -130,15 +122,42 @@ class NewSearchController extends Controller
                         'name' => $theend->user ? $theend->user->name : 'Anonyme',
                         'avatar_url' => $theend->user ? $theend->user->photo : null
                     ],
-                    'type' => $theend->type ? $theend->type->label : 'post'
+                    'content_type' => $theend->type ? $theend->type->label : 'post',
+                    'reactions_count' => $theend->reactions->count(),
+                    'comments_count' => $theend->comments->count()
                 ];
             });
 
-            return response()->json($data);
+            // Transformer les résultats User
+            $userData = $userResults->map(function ($user) {
+                return [
+                    'type' => 'user',
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'bio' => $user->bio,
+                    'avatar_url' => $user->photo,
+                    'created_at' => $user->created_at
+                ];
+            });
+
+            // Combiner les résultats
+            $combinedResults = [
+                'theends' => $theendData,
+                'users' => $userData
+            ];
+
+            return Inertia::render('resulatrecherche/resulats-recherche', [
+                'results' => $combinedResults,
+                'query' => $query
+            ]);
 
         } catch (\Exception $e) {
             Log::error('Search error: ' . $e->getMessage());
-            return response()->json(['error' => $e->getMessage()], 500);
+            return Inertia::render('resulatrecherche/resulats-recherche', [
+                'error' => $e->getMessage(),
+                'query' => $query
+            ]);
         }
     }
 }

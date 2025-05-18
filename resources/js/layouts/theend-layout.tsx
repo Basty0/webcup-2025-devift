@@ -152,6 +152,8 @@ export default function TheendLayout({ children, theend }: TheendLayoutProps) {
 
     return (
         <div className={`min-h-screen ${style.background}`}>
+            {/* iconne pour aller en homme */}
+
             <div className={`${style.text}`}>{children}</div>
         </div>
     );
