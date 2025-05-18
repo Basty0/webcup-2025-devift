@@ -44,7 +44,7 @@ export function HeroSection() {
                             <div className="mx-auto max-w-full">
                                 <TextReveal
                                     text="Tu pars ? Laisse une trace."
-                                    className="mb-6 text-8xl leading-tight font-extrabold md:text-6xl"
+                                    className="mb-6 text-6xl leading-tight font-extrabold md:text-7xl text-center"
                                     inView={heroInView}
                                 />
 
@@ -52,9 +52,9 @@ export function HeroSection() {
                                     initial={{ opacity: 0, y: 50 }}
                                     animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
                                     transition={{ duration: 1, delay: 0.5 }}
-                                    className="max-w-2xl text-center"
+                                    className="w-full text-center"
                                 >
-                                   <p className="mb-8 text-xl md:text-2xl font-sans font-bold">
+                                   <p className="mb-8 text-xl md:text-2xl font-sans font-bold ">
                                     Crée ta page de fin personnalisée, drôle ou touchante, pour marquer les esprits une dernière fois.
                                     </p>
                                     
