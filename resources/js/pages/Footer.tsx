@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 
-export function Footer() {
+export function Footer({ id }: { id: string }) {
   return (
-    <footer className="bg-slate-950 text-slate-200">
+    <footer id={id} className="bg-slate-950 text-slate-200">
       <div className="container px-4 py-12 mx-auto">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           {/* Company Info */}
