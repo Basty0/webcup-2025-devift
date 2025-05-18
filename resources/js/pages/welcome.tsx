@@ -16,7 +16,7 @@ import { Head } from '@inertiajs/react';
 import { AnimatePresence, motion, useInView, useMotionValue, useScroll, useSpring } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import PublicationsParTon from './publications-par-ton';
-
+import { Footer } from './Footer';
 export default function Welcome() {
     // const { auth } = usePage<SharedData>().props;
 
@@ -197,30 +197,7 @@ export default function Welcome() {
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
 
-            {/* Navigation */}
-            {/* <header className="fixed top-0 left-0 z-50 w-full mix-blend-difference">
-                <div className="container mx-auto flex items-center justify-between px-6 py-8">
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 1, delay: 0.2 }}
-                        className="text-xl font-bold text-white"
-                    >
-                        STUDIO.25
-                    </motion.div>
-
-                    <motion.button
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 1, delay: 0.2 }}
-                        onClick={() => setMenuOpen(!menuOpen)}
-                        className="z-50 text-white"
-                        aria-label="Menu"
-                    >
-                        <Menu size={24} />
-                    </motion.button>
-                </div>
-            </header> */}
+           
 
             {/* Fullscreen Menu */}
             <AnimatePresence>
@@ -258,121 +235,7 @@ export default function Welcome() {
 
             <HorizontalScrollGallery mouseX={mouseX} mouseY={mouseY} />
 
-            {/* Work Section
-            <section id="work" className="relative bg-neutral-950 py-32 md:py-40">
-                <div className="container mx-auto px-6">
-                    <motion.h2
-                        initial={{ opacity: 0, y: 100 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1.2, ease: [0.25, 1, 0.5, 1] }}
-                        className="mb-16 text-center text-3xl font-bold text-white md:text-5xl"
-                    >
-                        Projets sélectionnés
-                    </motion.h2>
-
-                    <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12 lg:grid-cols-3">
-                        {[
-                            {
-                                title: 'Néomorphisme 3D',
-                                description: 'Une exploration des interfaces néomorphiques avec des interactions 3D avancées',
-                                category: "Design d'interface",
-                                image: '/placeholder.svg?height=600&width=800',
-                                color: 'from-rose-400 to-orange-300',
-                            },
-                            {
-                                title: 'Réalité Augmentée Web',
-                                description: 'Expérience immersive combinant le monde réel et virtuel via le navigateur',
-                                category: 'Technologie immersive',
-                                image: '/placeholder.svg?height=600&width=800',
-                                color: 'from-cyan-400 to-blue-500',
-                            },
-                            {
-                                title: 'Intelligence Artificielle Créative',
-                                description: 'Génération de contenu visuel et sonore par IA en temps réel',
-                                category: 'IA & Design',
-                                image: '/placeholder.svg?height=600&width=800',
-                                color: 'from-violet-400 to-indigo-500',
-                            },
-                        ].map((project, i) => (
-                            <motion.div
-                                key={project.title}
-                                initial={{ opacity: 0, y: 50 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.8, delay: 0.15 * i }}
-                                whileHover={{ y: -10, scale: 1.02, transition: { duration: 0.3 } }}
-                                className="group relative"
-                            >
-                                <div className="relative aspect-[4/5] overflow-hidden rounded-xl">
-                                    <div
-                                        className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-80 transition-opacity duration-500 group-hover:opacity-90`}
-                                    />
-
-                                    <motion.div
-                                        className="absolute inset-0 opacity-20 transition-opacity duration-500 group-hover:opacity-30"
-                                        style={{
-                                            backgroundImage: `url(${project.image})`,
-                                            backgroundSize: 'cover',
-                                            backgroundPosition: 'center',
-                                        }}
-                                        whileHover={{ scale: 1.05 }}
-                                        transition={{ duration: 0.8 }}
-                                    />
-
-                                    <div className="absolute inset-0 flex flex-col justify-between p-8">
-                                        <div>
-                                            <span className="mb-4 inline-block rounded-full bg-white/10 px-3 py-1 text-xs text-white/90 backdrop-blur-sm">
-                                                {project.category}
-                                            </span>
-                                            <h3 className="mb-2 text-2xl font-bold text-white">{project.title}</h3>
-                                            <p className="text-white/80">{project.description}</p>
-                                        </div>
-
-                                        <motion.div initial={{ opacity: 0, y: 20 }} whileHover={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-                                            <Button
-                                                variant="outline"
-                                                className="rounded-full border-white text-white hover:bg-white hover:text-black"
-                                            >
-                                                Voir le projet
-                                            </Button>
-                                        </motion.div>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section> */}
-
-
-            {/* <div className="grid w-full grid-cols-1 gap-4 p-2 md:grid-cols-2">
-                <div
-                    className="flex h-80 w-full flex-col gap-4 rounded-2xl"
-                    style={{
-                        background: 'linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d)',
-                        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.2)',
-                    }}
-                >
-                    <ModelViewer scale={0.8} url="/3d/voiture.glb" />
-                </div>
-                <div
-                    className="flex h-80 w-full flex-col gap-4 rounded-2xl"
-                    style={{
-                        background: 'linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d)',
-                        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.2)',
-                    }}
-                >
-                    <ModelViewer animate={true} scale={1.5} url="/3d/ordinateur.glb" />
-                </div>
-                <div
-                    className="flex h-80 w-full flex-col gap-4 rounded-2xl md:col-span-2"
-                    style={{
-                        background: 'linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d)',
-                        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.2)',
-                    }}
-                >
-                    <ModelViewer animate={true} scale={1.5} url="/3d/logo.glb" />
-                </div>
-            </div> */}
+            
 
             <div className="flex flex-col items-center justify-center p-4 md:hidden">
                 <h1 className="font-poppins w-full max-w-[420px] text-5xl leading-tight font-bold md:text-[84px] md:leading-[88px] dark:text-white">
@@ -420,50 +283,7 @@ export default function Welcome() {
 
 
             {/* Footer in dark style from home.tsx */}
-            <footer className="border-t border-white/10 bg-black py-12">
-                <div className="container mx-auto px-6">
-                    <div className="flex flex-col items-center justify-between md:flex-row">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8 }}
-                            className="mb-6 text-xl font-bold text-white md:mb-0"
-                        >
-                            DEV iFT
-                        </motion.div>
-
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.2 }}
-                            className="flex space-x-8"
-                        >
-                            {['Instagram', 'Twitter', 'LinkedIn', 'Behance'].map((social) => (
-                                <a key={social} href="#" className="text-white/60 transition-colors hover:text-white">
-                                    {social}
-                                </a>
-                            ))}
-                        </motion.div>
-                    </div>
-
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
-                        className="mt-12 flex flex-col items-center justify-between border-t border-white/10 pt-6 md:flex-row"
-                    >
-                        <p className="mb-4 text-sm text-white/60 md:mb-0">© 2025  DEV iFT.25. Tous droits réservés.</p>
-
-                        <div className="flex space-x-6">
-                            {['Politique de confidentialité', 'Mentions légales'].map((link) => (
-                                <a key={link} href="#" className="text-sm text-white/60 transition-colors hover:text-white">
-                                    {link}
-                                </a>
-                            ))}
-                        </div>
-                    </motion.div>
-                </div>
-            </footer>
+            <Footer />
         </LayoutApp>
     );
 }
