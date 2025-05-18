@@ -72,6 +72,7 @@ export default function PageLayout({ children, breadcrumbs = [] }: AppLayoutProp
 
     // Ajout pour la recherche
     const [searchOpen, setSearchOpen] = React.useState(false);
+    const searchAnchorRef = React.useRef<HTMLDivElement>(null);
 
     return (
         <div className="bg-background relative min-h-screen pb-20">
@@ -92,7 +93,7 @@ export default function PageLayout({ children, breadcrumbs = [] }: AppLayoutProp
                     {/* Search Bar */}
                     <div className="hidden flex-1 items-center justify-center px-4 md:flex">
                         <div className="w-full max-w-xl">
-                            <div className="relative">
+                            <div className="relative" ref={searchAnchorRef}>
                                 <button
                                     type="button"
                                     className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2"
@@ -111,7 +112,7 @@ export default function PageLayout({ children, breadcrumbs = [] }: AppLayoutProp
                             </div>
                         </div>
                     </div>
-                    <SearchCommandDialog open={searchOpen} onOpenChange={setSearchOpen} />
+                    <SearchCommandDialog open={searchOpen} onOpenChange={setSearchOpen} anchorRef={searchAnchorRef} />
 
                     <div className="flex items-center gap-2">
                         <Button variant="ghost" className="size-10 rounded-full p-1">

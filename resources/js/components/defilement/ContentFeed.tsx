@@ -155,7 +155,7 @@ export default function ContentFeed({ isMobile, posts }: ContentFeedProps) {
 
             <div
                 ref={containerRef}
-                className="scrollbar-hide h-[calc(100vh-6rem)] snap-y snap-mandatory overflow-y-scroll [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                className="scrollbar-hide h-[calc(100vh-10rem)] snap-y snap-mandatory overflow-y-scroll [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                 onScroll={handleScroll}
             >
                 <AnimatePresence initial={false} mode="sync">

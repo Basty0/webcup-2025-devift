@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ReactionController;
+use App\Http\Controllers\Api\SearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Add reaction route
 Route::middleware('auth:sanctum')->post('/theend/{theend}/react', [ReactionController::class, 'react']);
+
+// Route de recherche accessible sans authentification
