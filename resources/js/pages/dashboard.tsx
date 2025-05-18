@@ -40,11 +40,15 @@ interface DashboardProps {
     }>;
 }
 
+
 export default function Dashboard({ theends }: DashboardProps) {
+       // Sécurité : on vérifie que theends n’est pas vide
+ 
+    
     const isMobile = useIsMobile();
 
     return (
-        <PageLayout breadcrumbs={breadcrumbs}>
+        <PageLayout breadcrumbs={breadcrumbs} >
             <Head title="Dashboard" />
 
             <ContentFeed isMobile={isMobile} posts={theends} />

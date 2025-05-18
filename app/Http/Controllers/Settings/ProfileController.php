@@ -33,7 +33,7 @@ class ProfileController extends Controller
         'name' => 'required|string',
         'email' => 'required|email',
         'bio' => 'nullable|string',
-        'photo' => 'nullable|image|max:2048',
+        'photo' => 'nullable|image|max:4096',
         'photo_cover' => 'nullable|image|max:4096',
     ]);
 
