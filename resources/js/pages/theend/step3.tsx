@@ -136,9 +136,6 @@ export default function Step3({ theend }: Step3Props) {
         image_url: theend.image_url || '',
         is_public: theend.is_public ?? true,
         image: null as File | null,
-        // Explicitly set these values to null to override any existing values
-        sound_url: null,
-        gif_url: null,
     });
 
     // Get all images to display
@@ -164,32 +161,15 @@ export default function Step3({ theend }: Step3Props) {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-
-        // Create form data explicitly to control what's being sent
-        const formData = new FormData();
-        formData.append('image_url', data.image_url);
-        formData.append('is_public', data.is_public ? '1' : '0');
-
-        // Add image file if it exists
-        if (data.image instanceof File) {
-            formData.append('image', data.image);
-        }
-
-        // Explicitly set sound_url and gif_url to null
-        formData.append('sound_url', '');
-        formData.append('gif_url', '');
-
         post(`/exprimer-vous/step3/${theend.slug}`, {
-            _method: 'POST',
-            preserveScroll: true,
             forceFormData: true,
+            preserveScroll: true,
             onSuccess: () => {
                 // Reset file input
                 if (fileInputRef.current) {
                     fileInputRef.current.value = '';
                 }
             },
-            data: formData,
         });
     };
 

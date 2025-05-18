@@ -55,7 +55,7 @@ const data = [
     },
 ];
 
-export default function PageLayout({ children, breadcrumbs = [] }: AppLayoutProps) {
+export default function PageLayout({ children = [] }: AppLayoutProps) {
     const { auth, ziggy } = usePage<SharedData>().props;
     const getInitials = useInitials();
 
@@ -63,36 +63,36 @@ export default function PageLayout({ children, breadcrumbs = [] }: AppLayoutProp
     const currentPath = ziggy?.location;
 
     // Determine active section
-    const getActiveSection = () => {
-        if (!currentPath) return null;
+    // const getActiveSection = () => {
+    //     if (!currentPath) return null;
 
-        // Special case for single theend view
-        if (currentPath.startsWith('/theend/') && currentPath.length > 8) {
-            return 'Contenu';
-        }
+    //     // Special case for single theend view
+    //     if (currentPath.startsWith('/theend/') && currentPath.length > 8) {
+    //         return 'Contenu';
+    //     }
 
-        // Find the matching navigation item
-        const activeItem = data.find((item) => {
-            switch (item.href) {
-                case '/recherche':
-                    return currentPath.includes('/search/') || currentPath.includes('/recherche');
-                case '/profil':
-                    return currentPath.startsWith('/profil') || currentPath.startsWith('/settings') || currentPath === '/user/profile';
-                case '/exprimer-vous':
-                    return currentPath.startsWith('/exprimer-vous') || currentPath.includes('/step');
-                case '/les-theends':
-                    return currentPath.startsWith('/les-theends');
-                case '/dashboard':
-                    return currentPath === '/dashboard' || currentPath === '/';
-                default:
-                    return item.href !== '#' && currentPath.startsWith(item.href);
-            }
-        });
+    //     // Find the matching navigation item
+    //     const activeItem = data.find((item) => {
+    //         switch (item.href) {
+    //             case '/recherche':
+    //                 return currentPath.includes('/search/') || currentPath.includes('/recherche');
+    //             case '/profil':
+    //                 return currentPath.startsWith('/profil') || currentPath.startsWith('/settings') || currentPath === '/user/profile';
+    //             case '/exprimer-vous':
+    //                 return currentPath.startsWith('/exprimer-vous') || currentPath.includes('/step');
+    //             case '/les-theends':
+    //                 return currentPath.startsWith('/les-theends');
+    //             case '/dashboard':
+    //                 return currentPath === '/dashboard' || currentPath === '/';
+    //             default:
+    //                 return item.href !== '#' && currentPath.startsWith(item.href);
+    //         }
+    //     });
 
-        return activeItem?.title || null;
-    };
+    //     return activeItem?.title || null;
+    // };
 
-    const activeSection = getActiveSection();
+    // const activeSection = getActiveSection();
 
     // Ajout pour la recherche
     const [searchOpen, setSearchOpen] = React.useState(false);
@@ -116,17 +116,17 @@ export default function PageLayout({ children, breadcrumbs = [] }: AppLayoutProp
                     <div className="flex items-center gap-4">
                         <div className="flex items-center">
                             <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-md">
-                                <AppLogoIcon className="size-5 fill-current text-white dark:text-black" />
+                                <AppLogoIcon className="size-10 rounded-full fill-current text-white dark:text-black" />
                             </div>
                         </div>
-                        {activeSection && (
+                        {/* {activeSection && (
                             <div className="hidden text-lg font-medium md:block">
                                 <span className="text-primary">{activeSection}</span>
                             </div>
                         )}
                         {!activeSection && breadcrumbs.length > 0 && (
                             <div className="hidden text-lg font-medium md:block">{breadcrumbs[breadcrumbs.length - 1].title}</div>
-                        )}
+                        )} */}
                     </div>
 
                     {/* Search Bar */}

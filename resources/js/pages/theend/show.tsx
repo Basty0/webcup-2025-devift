@@ -14,6 +14,7 @@ import axios from 'axios';
 import { motion } from 'framer-motion';
 import {
     Angry,
+    ArrowLeftIcon,
     ArrowRight,
     Award,
     Bookmark,
@@ -321,7 +322,10 @@ export default function Show({ theend }: ShowProps) {
         <TheendLayout theend={theend}>
             {/* Lecteur audio en arrière-plan */}
             {theend.sound_url && <audio ref={audioRef} src={theend.sound_url} preload="metadata" />}
-
+            <Link href={route('dashboard')} className="absolute top-4 left-4 flex items-center gap-2">
+                <ArrowLeftIcon className="h-6 w-6" />
+                <span>Accueil</span>
+            </Link>
             <motion.div className="mx-auto max-w-4xl p-6" variants={animation.container} initial="hidden" animate="visible">
                 {/* En-tête */}
                 <motion.div className="mb-8" variants={animation.item}>
