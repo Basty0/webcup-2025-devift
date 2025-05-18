@@ -43,7 +43,7 @@ export function HeroSection() {
                         <div className="flex items-center gap-2">
                             <div className="mx-auto max-w-full">
                                 <TextReveal
-                                    text="CRÉATIVITÉ SANS LIMITES MALAGASY"
+                                    text="Tu pars ? Laisse une trace."
                                     className="mb-6 text-5xl leading-tight font-bold md:text-6xl"
                                     inView={heroInView}
                                 />
@@ -52,30 +52,21 @@ export function HeroSection() {
                                     initial={{ opacity: 0, y: 50 }}
                                     animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
                                     transition={{ duration: 1, delay: 0.5 }}
-                                    className="max-w-2xl"
+                                    className="max-w-2xl text-center"
                                 >
                                     <p className="mb-8 text-xl md:text-2xl">
-                                        Nous créons des expériences numériques immersives qui repoussent les limites du design et de la technologie.
+                                    Crée ta page de fin personnalisée, drôle ou touchante, pour marquer les esprits une dernière fois.
                                     </p>
 
                                     <MagneticButton>
-                                        <Button size={'lg'} variant={'border'}>
-                                            Découvrir
-                                            <ArrowDown className="ml-2 h-4 w-4" />
+                                        <Button className='bg-primary' size={'lg'} variant={'border'}>
+                                        Créer ma TheEndPage
+                                            
                                         </Button>
                                     </MagneticButton>
                                 </motion.div>
                             </div>
-                            <motion.div
-                                initial={{ opacity: 0, y: 50 }}
-                                animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-                                transition={{ duration: 1, delay: 0.5 }}
-                                className="max-w-2xl"
-                            >
-                                <div className="transition-transform duration-3000 hover:scale-105 hover:rotate-1 hover:shadow-lg">
-                                    <img className="h-90 w-70 rounded-lg transition-all duration-700 ease-in-out" src="/images/3.jpeg" alt="" />
-                                </div>
-                            </motion.div>
+                            
                         </div>
                     </motion.div>
 
