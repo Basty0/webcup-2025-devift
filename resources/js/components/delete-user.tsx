@@ -10,7 +10,11 @@ import HeadingSmall from '@/components/heading-small';
 
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
-export default function DeleteUser() {
+interface DeleteUserProps {
+    onSuccess?: () => void;
+}
+
+export default function DeleteUser({ onSuccess }: DeleteUserProps) {
     const passwordInput = useRef<HTMLInputElement>(null);
     const { data, setData, delete: destroy, processing, reset, errors, clearErrors } = useForm<Required<{ password: string }>>({ password: '' });
 
@@ -19,7 +23,10 @@ export default function DeleteUser() {
 
         destroy(route('profile.destroy'), {
             preserveScroll: true,
-            onSuccess: () => closeModal(),
+            onSuccess: () => {
+                closeModal();
+                if (onSuccess) onSuccess();
+            },
             onError: () => passwordInput.current?.focus(),
             onFinish: () => reset(),
         });

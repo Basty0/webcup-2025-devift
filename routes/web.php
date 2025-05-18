@@ -22,20 +22,23 @@ Route::get('/recherche', function () {
 
 Route::get('/theend/{theend}', [TheEndController::class, 'show'])->name('theend.show');
 
+// Public user profile route
+Route::get('/u/{slug}', [UserControlleur::class, 'viewPublicProfile'])->name('user.profile');
+
 // Content detail page route
 Route::get('/content/{id}', function ($id) {
     return Inertia::render('content/[id]', ['id' => $id]);
 })->name('content.show');
 
 // Route de recherche accessible sans authentification
-Route::get('/api/search', [NewSearchController::class, 'search'])->name('api.search');
+Route::get('/search/{query}', [NewSearchController::class, 'search'])->name('search');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/profil', [UserControlleur::class, 'ViewProfil'])
         ->name('profil.ViewProfil');
-       
+
     // Sample Email Testing
     Route::get('/email/sample', function () {
         return Inertia::render('emails/sample');

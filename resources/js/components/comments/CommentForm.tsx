@@ -26,6 +26,7 @@ interface CommentFormProps {
     cardClass?: string;
     headingClass?: string;
     textClass?: string;
+    currentUserId?: number;
 }
 
 interface CommentPageProps {
@@ -38,7 +39,7 @@ interface ValidationErrors {
     [key: string]: string | undefined;
 }
 
-export default function CommentForm({ theendSlug, comments: initialComments, cardClass, headingClass, textClass }: CommentFormProps) {
+export default function CommentForm({ theendSlug, comments: initialComments, cardClass, headingClass, textClass, currentUserId }: CommentFormProps) {
     const { auth } = usePage<SharedData>().props;
     const isAuthenticated = !!auth.user;
     const [comments, setComments] = useState<Comment[]>(initialComments);
@@ -123,7 +124,7 @@ export default function CommentForm({ theendSlug, comments: initialComments, car
                 </form>
             )}
             {/* Afficher la liste des commentaires en premier */}
-            <CommentList comments={comments} cardClass={cardClass} headingClass={headingClass} textClass={textClass} />
+            <CommentList comments={comments} cardClass={cardClass} headingClass={headingClass} textClass={textClass} currentUserId={currentUserId} />
         </div>
     );
 }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Str;
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -31,6 +32,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'facebook',
         'linkedin',
         'play_song',
+        'slug',
     ];
 
     /**
@@ -75,4 +77,15 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(View::class);
     }
+    //creeation de slug automatique generer 
+
+
+    protected static function booted()
+    {
+        static::creating(function ($user) {
+            $user->slug = Str::slug($user->name) . '-' . Str::random(6);
+        });
+    }
+
+
 }

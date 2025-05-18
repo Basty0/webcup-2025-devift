@@ -16,8 +16,8 @@ import SearchCommandDialog from '@/components/ui/SearchCommandDialog';
 import { Toaster } from '@/components/ui/sonner';
 import { useInitials } from '@/hooks/use-initials';
 import { type BreadcrumbItem, type SharedData } from '@/types';
-import { Link, usePage } from '@inertiajs/react';
-import { Bell, Component, HomeIcon, LogOut, Package, Plus, Search, Settings, SunMoon, UserRound } from 'lucide-react';
+import { Link, router, usePage } from '@inertiajs/react';
+import { Bell, BookOpen, HomeIcon, LogOut, Plus, Search, Settings, UserRound } from 'lucide-react';
 import React, { type ReactNode } from 'react';
 
 interface AppLayoutProps {
@@ -32,34 +32,26 @@ const data = [
         href: '/dashboard',
     },
     {
-        title: 'Products',
-        icon: <Package className="h-full w-full text-neutral-600 dark:text-neutral-300" />,
-        href: '#',
+        title: 'Les TheEnds',
+        icon: <BookOpen className="h-10 w-10 rounded-full text-neutral-600 dark:text-neutral-300" />,
+        href: '/les-theends',
     },
     {
-        title: 'Components',
-        icon: <Component className="h-full w-full text-neutral-600 dark:text-neutral-300" />,
-        href: '#',
+        title: 'TheEnd pages',
+        icon: <Plus className="h-12 w-12 rounded-full text-neutral-600 dark:text-neutral-300" />,
+        href: '/exprimer-vous',
     },
+
     {
-        title: 'Creer un TheEnd',
-        icon: <Plus className="h-10 w-10 rounded-full text-neutral-600 dark:text-neutral-300" />,
-        href: '/theends/create',
+        title: 'Recherche',
+        icon: <Search className="h-10 w-10 rounded-full text-neutral-600 dark:text-neutral-300" />,
+        href: '/recherche',
     },
+
     {
         title: 'Profil',
         icon: <UserRound className="h-full w-full text-neutral-600 dark:text-neutral-300" />,
         href: '/profil',
-    },
-    {
-        title: 'Paramètres',
-        icon: <Settings className="h-full w-full text-neutral-600 dark:text-neutral-300" />,
-        href: '/settings',
-    },
-    {
-        title: 'Theme',
-        icon: <SunMoon className="h-full w-full text-neutral-600 dark:text-neutral-300" />,
-        href: '#',
     },
 ];
 
@@ -67,12 +59,54 @@ export default function PageLayout({ children, breadcrumbs = [] }: AppLayoutProp
     const { auth, ziggy } = usePage<SharedData>().props;
     const getInitials = useInitials();
 
-    // Récupérer le chemin actuel de l'URL
+    // Get current path and active section
     const currentPath = ziggy?.location;
+
+    // Determine active section
+    const getActiveSection = () => {
+        if (!currentPath) return null;
+
+        // Special case for single theend view
+        if (currentPath.startsWith('/theend/') && currentPath.length > 8) {
+            return 'Contenu';
+        }
+
+        // Find the matching navigation item
+        const activeItem = data.find((item) => {
+            switch (item.href) {
+                case '/recherche':
+                    return currentPath.includes('/search/') || currentPath.includes('/recherche');
+                case '/profil':
+                    return currentPath.startsWith('/profil') || currentPath.startsWith('/settings') || currentPath === '/user/profile';
+                case '/exprimer-vous':
+                    return currentPath.startsWith('/exprimer-vous') || currentPath.includes('/step');
+                case '/les-theends':
+                    return currentPath.startsWith('/les-theends');
+                case '/dashboard':
+                    return currentPath === '/dashboard' || currentPath === '/';
+                default:
+                    return item.href !== '#' && currentPath.startsWith(item.href);
+            }
+        });
+
+        return activeItem?.title || null;
+    };
+
+    const activeSection = getActiveSection();
 
     // Ajout pour la recherche
     const [searchOpen, setSearchOpen] = React.useState(false);
     const searchAnchorRef = React.useRef<HTMLDivElement>(null);
+
+    const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.target as HTMLFormElement);
+        const searchQuery = formData.get('search')?.toString() || '';
+
+        if (searchQuery.trim()) {
+            router.visit(route('search', searchQuery.trim()));
+        }
+    };
 
     return (
         <div className="bg-background relative min-h-screen pb-20">
@@ -85,34 +119,39 @@ export default function PageLayout({ children, breadcrumbs = [] }: AppLayoutProp
                                 <AppLogoIcon className="size-5 fill-current text-white dark:text-black" />
                             </div>
                         </div>
-                        {breadcrumbs.length > 0 && (
+                        {activeSection && (
+                            <div className="hidden text-lg font-medium md:block">
+                                <span className="text-primary">{activeSection}</span>
+                            </div>
+                        )}
+                        {!activeSection && breadcrumbs.length > 0 && (
                             <div className="hidden text-lg font-medium md:block">{breadcrumbs[breadcrumbs.length - 1].title}</div>
                         )}
                     </div>
 
                     {/* Search Bar */}
-                    <div className="hidden flex-1 items-center justify-center px-4 md:flex">
+                    <div className="flex-1 items-center justify-center px-4 md:flex">
                         <div className="w-full max-w-xl">
-                            <div className="relative" ref={searchAnchorRef}>
-                                <button
-                                    type="button"
-                                    className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2"
-                                    onClick={() => setSearchOpen(true)}
-                                    tabIndex={-1}
-                                >
-                                    <Search className="h-4 w-4" />
-                                </button>
-                                <Input
-                                    type="search"
-                                    placeholder="Rechercher..."
-                                    className="bg-background/50 w-full rounded-full pl-9 backdrop-blur-sm"
-                                    onFocus={() => setSearchOpen(true)}
-                                    readOnly
-                                />
-                            </div>
+                            <form onSubmit={handleSearchSubmit}>
+                                <div className="relative" ref={searchAnchorRef}>
+                                    <button type="submit" className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2">
+                                        <Search className="h-4 w-4" />
+                                    </button>
+                                    <Input
+                                        type="search"
+                                        name="search"
+                                        placeholder="Rechercher..."
+                                        className="bg-background/50 w-full rounded-full pl-9 backdrop-blur-sm"
+                                    />
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    <SearchCommandDialog open={searchOpen} onOpenChange={setSearchOpen} anchorRef={searchAnchorRef} />
+                    <SearchCommandDialog
+                        open={searchOpen}
+                        onOpenChange={setSearchOpen}
+                        anchorRef={searchAnchorRef as React.RefObject<HTMLDivElement>}
+                    />
 
                     <div className="flex items-center gap-2">
                         <Button variant="ghost" className="size-10 rounded-full p-1">
@@ -184,8 +223,46 @@ export function AppleStyleDock({ currentPath }: { currentPath?: string }) {
         <div className="fixed bottom-2 left-1/2 z-50 max-w-full -translate-x-1/2">
             <Dock className="items-end pb-3">
                 {data.map((item, idx) => {
-                    // Vérifier si cet élément est actif en comparant son href avec l'URL actuelle
-                    const isActive = currentPath && item.href !== '#' && currentPath.startsWith(item.href);
+                    // Check if the current page is active
+                    let isActive = false;
+
+                    if (!currentPath) {
+                        isActive = false;
+                    } else {
+                        // Special case for single theend view
+                        if (currentPath.startsWith('/theend/') && currentPath.length > 8) {
+                            // Don't highlight any nav item for single post view
+                            isActive = false;
+                        } else {
+                            // Special cases for different sections
+                            switch (item.href) {
+                                case '/recherche':
+                                    // Active for search pages
+                                    isActive = currentPath.includes('/search/') || currentPath.includes('/recherche');
+                                    break;
+                                case '/profil':
+                                    // Active for profile and settings pages
+                                    isActive =
+                                        currentPath.startsWith('/profil') || currentPath.startsWith('/settings') || currentPath === '/user/profile';
+                                    break;
+                                case '/exprimer-vous':
+                                    // Active for content creation flow
+                                    isActive = currentPath.startsWith('/exprimer-vous') || currentPath.includes('/step');
+                                    break;
+                                case '/les-theends':
+                                    // Active for theend listing pages
+                                    isActive = currentPath.startsWith('/les-theends');
+                                    break;
+                                case '/dashboard':
+                                    // Active only for exact dashboard path or root
+                                    isActive = currentPath === '/dashboard' || currentPath === '/';
+                                    break;
+                                default:
+                                    // Default case - check if path starts with the href
+                                    isActive = item.href !== '#' && currentPath.startsWith(item.href);
+                            }
+                        }
+                    }
 
                     return (
                         <DockItem

@@ -1,11 +1,15 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent } from '@/components/ui/card';
+import { Link } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 
 interface User {
     id: number;
     name: string;
     avatar_url: string | null;
+    photo?: string | null;
+    bio?: string | null;
+    slug?: string;
 }
 
 interface Comment {
@@ -20,9 +24,10 @@ interface CommentListProps {
     cardClass?: string;
     headingClass?: string;
     textClass?: string;
+    currentUserId?: number;
 }
 
-export default function CommentList({ comments, cardClass, headingClass, textClass }: CommentListProps) {
+export default function CommentList({ comments, cardClass, headingClass, textClass, currentUserId }: CommentListProps) {
     if (!Array.isArray(comments) || comments.length === 0) {
         return <p className="text-muted-foreground text-center">Aucun commentaire pour le moment</p>;
     }
@@ -36,25 +41,50 @@ export default function CommentList({ comments, cardClass, headingClass, textCla
                 <motion.div key={comment.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
                     <Card className={cardClass}>
                         <CardContent className="pt-6">
-                            <div className="mb-2 flex items-center space-x-2">
-                                <Avatar>
-                                    <AvatarImage src={comment.user.avatar_url || undefined} />
-                                    <AvatarFallback>{comment.user.name[0]}</AvatarFallback>
-                                </Avatar>
-                                <div>
-                                    <p className={`font-semibold ${headingClass}`}>{comment.user.name}</p>
-                                    <p className="text-muted-foreground text-sm">
-                                        {new Date(comment.created_at).toLocaleDateString('fr-FR', {
-                                            year: 'numeric',
-                                            month: 'long',
-                                            day: 'numeric',
-                                            hour: '2-digit',
-                                            minute: '2-digit',
-                                        })}
-                                    </p>
+                            <div className="mb-4 flex items-start gap-3">
+                                <Link
+                                    href={
+                                        comment.user.id === currentUserId
+                                            ? route('profil.ViewProfil')
+                                            : comment.user.slug
+                                              ? route('user.profile', comment.user.slug)
+                                              : '#'
+                                    }
+                                    className="group flex-shrink-0"
+                                >
+                                    <Avatar className="group-hover:border-primary/50 h-10 w-10 border border-white/20 transition-all">
+                                        <AvatarImage src={comment.user.photo || comment.user.avatar_url || undefined} />
+                                        <AvatarFallback>{comment.user.name[0]}</AvatarFallback>
+                                    </Avatar>
+                                </Link>
+                                <div className="flex-1">
+                                    <div className="flex flex-wrap items-center gap-2">
+                                        <Link
+                                            href={
+                                                comment.user.id === currentUserId
+                                                    ? route('profil.ViewProfil')
+                                                    : comment.user.slug
+                                                      ? route('user.profile', comment.user.slug)
+                                                      : '#'
+                                            }
+                                            className={`font-semibold ${headingClass} hover:underline`}
+                                        >
+                                            {comment.user.name}
+                                        </Link>
+                                        <p className="text-muted-foreground text-xs">
+                                            {new Date(comment.created_at).toLocaleDateString('fr-FR', {
+                                                year: 'numeric',
+                                                month: 'long',
+                                                day: 'numeric',
+                                                hour: '2-digit',
+                                                minute: '2-digit',
+                                            })}
+                                        </p>
+                                    </div>
+                                    {comment.user.bio && <p className="text-muted-foreground mt-1 mb-2 line-clamp-1 text-xs">{comment.user.bio}</p>}
+                                    <p className={`${textClass} mt-2`}>{comment.content}</p>
                                 </div>
                             </div>
-                            <p className={textClass}>{comment.content}</p>
                         </CardContent>
                     </Card>
                 </motion.div>
