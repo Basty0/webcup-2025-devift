@@ -6,7 +6,7 @@ import { MagneticButton } from './magnetic-button';
 import { ParticleCanvas } from './particle-canvas';
 import TextReveal from './text-reveal';
 import { Button } from './ui/button';
-
+import { Link } from '@inertiajs/react';
 export function HeroSection() {
     const [heroInView, setHeroInView] = useState(true);
     const heroRef = useRef<HTMLElement>(null);
@@ -63,7 +63,8 @@ export function HeroSection() {
 
                                     <MagneticButton>
                                         <Button className='bg-primary' size={'lg'} variant={'border'}>
-                                        Créer ma TheEndPage
+                                            <Link href={'/exprimer-vous'}>Créer ma TheEndPage</Link>
+                                        
                                             
                                         </Button>
                                     </MagneticButton>

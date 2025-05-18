@@ -55,44 +55,16 @@ const data = [
     },
 ];
 
-export default function PageLayout({ children = [] }: AppLayoutProps) {
+export default function PageLayout({ children = []}: AppLayoutProps) {
+  
+    
     const { auth, ziggy } = usePage<SharedData>().props;
     const getInitials = useInitials();
 
     // Get current path and active section
     const currentPath = ziggy?.location;
 
-    // Determine active section
-    // const getActiveSection = () => {
-    //     if (!currentPath) return null;
-
-    //     // Special case for single theend view
-    //     if (currentPath.startsWith('/theend/') && currentPath.length > 8) {
-    //         return 'Contenu';
-    //     }
-
-    //     // Find the matching navigation item
-    //     const activeItem = data.find((item) => {
-    //         switch (item.href) {
-    //             case '/recherche':
-    //                 return currentPath.includes('/search/') || currentPath.includes('/recherche');
-    //             case '/profil':
-    //                 return currentPath.startsWith('/profil') || currentPath.startsWith('/settings') || currentPath === '/user/profile';
-    //             case '/exprimer-vous':
-    //                 return currentPath.startsWith('/exprimer-vous') || currentPath.includes('/step');
-    //             case '/les-theends':
-    //                 return currentPath.startsWith('/les-theends');
-    //             case '/dashboard':
-    //                 return currentPath === '/dashboard' || currentPath === '/';
-    //             default:
-    //                 return item.href !== '#' && currentPath.startsWith(item.href);
-    //         }
-    //     });
-
-    //     return activeItem?.title || null;
-    // };
-
-    // const activeSection = getActiveSection();
+    
 
     // Ajout pour la recherche
     const [searchOpen, setSearchOpen] = React.useState(false);
