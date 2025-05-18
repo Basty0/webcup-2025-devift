@@ -19,7 +19,7 @@ import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Link, router, usePage } from '@inertiajs/react';
 import { Bell, BookOpen, HomeIcon, LogOut, Plus, Search, Settings, UserRound } from 'lucide-react';
 import React, { type ReactNode } from 'react';
-
+import { Image } from '@/components/ui/image';
 interface AppLayoutProps {
     children: ReactNode;
     breadcrumbs?: BreadcrumbItem[];
@@ -56,43 +56,17 @@ const data = [
 ];
 
 export default function PageLayout({ children = [] }: AppLayoutProps) {
+
+   
+
+
     const { auth, ziggy } = usePage<SharedData>().props;
     const getInitials = useInitials();
 
     // Get current path and active section
     const currentPath = ziggy?.location;
 
-    // Determine active section
-    // const getActiveSection = () => {
-    //     if (!currentPath) return null;
 
-    //     // Special case for single theend view
-    //     if (currentPath.startsWith('/theend/') && currentPath.length > 8) {
-    //         return 'Contenu';
-    //     }
-
-    //     // Find the matching navigation item
-    //     const activeItem = data.find((item) => {
-    //         switch (item.href) {
-    //             case '/recherche':
-    //                 return currentPath.includes('/search/') || currentPath.includes('/recherche');
-    //             case '/profil':
-    //                 return currentPath.startsWith('/profil') || currentPath.startsWith('/settings') || currentPath === '/user/profile';
-    //             case '/exprimer-vous':
-    //                 return currentPath.startsWith('/exprimer-vous') || currentPath.includes('/step');
-    //             case '/les-theends':
-    //                 return currentPath.startsWith('/les-theends');
-    //             case '/dashboard':
-    //                 return currentPath === '/dashboard' || currentPath === '/';
-    //             default:
-    //                 return item.href !== '#' && currentPath.startsWith(item.href);
-    //         }
-    //     });
-
-    //     return activeItem?.title || null;
-    // };
-
-    // const activeSection = getActiveSection();
 
     // Ajout pour la recherche
     const [searchOpen, setSearchOpen] = React.useState(false);
@@ -163,7 +137,15 @@ export default function PageLayout({ children = [] }: AppLayoutProps) {
                                     <Avatar className="size-8 overflow-hidden rounded-full">
                                         <AvatarImage src={auth.user.avatar} alt={auth.user.name} />
                                         <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
-                                            {getInitials(auth.user.name)}
+
+                                            <Image
+                                                src={auth.user.photo || '/placeholder-avatar.jpg'}
+                                                alt="Avatar"
+                                                className="h-full w-full object-cover"
+                                                width={40} // tu peux ajuster selon tes besoins
+                                                height={40}
+                                            />
+
                                         </AvatarFallback>
                                     </Avatar>
                                 </Button>
@@ -267,17 +249,15 @@ export function AppleStyleDock({ currentPath }: { currentPath?: string }) {
                     return (
                         <DockItem
                             key={idx}
-                            className={`aspect-square rounded-full backdrop-blur-md ${
-                                isActive ? 'bg-primary/20 ring-primary dark:bg-primary/20 ring-2' : 'bg-gray-200/30 dark:bg-neutral-800/30'
-                            }`}
+                            className={`aspect-square rounded-full backdrop-blur-md ${isActive ? 'bg-primary/20 ring-primary dark:bg-primary/20 ring-2' : 'bg-gray-200/30 dark:bg-neutral-800/30'
+                                }`}
                             href={item.href}
                         >
                             <DockLabel>{item.title}</DockLabel>
                             <DockIcon>
                                 {React.cloneElement(item.icon, {
-                                    className: `h-full w-full ${
-                                        isActive ? 'text-primary dark:text-primary' : 'text-neutral-600 dark:text-neutral-300'
-                                    }`,
+                                    className: `h-full w-full ${isActive ? 'text-primary dark:text-primary' : 'text-neutral-600 dark:text-neutral-300'
+                                        }`,
                                 })}
                             </DockIcon>
                         </DockItem>

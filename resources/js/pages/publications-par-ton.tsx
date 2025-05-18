@@ -314,7 +314,7 @@ export default function PublicationsParTon() {
 
   // Rendu d'une publication style réseau social moderne
   const renderPublication = (publication: Publication) => (
-    <Card key={publication.id} className="mb-4 overflow-hidden rounded-xl border-0 shadow-md bg-[#121212] text-white">
+    <Card key={publication.id} className="mb-4 overflow-hidden rounded-xl border-0 shadow-md  ">
       {/* En-tête avec avatar et nom d'utilisateur */}
       <div className="flex items-center justify-between p-3">
         <div className="flex items-center gap-2">
@@ -323,7 +323,7 @@ export default function PublicationsParTon() {
           </Avatar>
           <span className="text-sm font-medium">@{publication.auteur.username}</span>
         </div>
-        <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white">
+        <Button variant="ghost" size="icon" className="h-8 w-8  hover:text-white">
           <MoreVertical className="h-5 w-5" />
         </Button>
       </div>
@@ -339,8 +339,8 @@ export default function PublicationsParTon() {
 
       {/* Texte et hashtags */}
       <div className="p-3 pt-2">
-        <p className="text-sm text-gray-300">
-          <span className="font-medium text-white">@{publication.auteur.username}</span> {publication.contenu}{" "}
+        <p className="text-sm ">
+          <span className="font-medium ">@{publication.auteur.username}</span> {publication.contenu}{" "}
           {publication.hashtags.map((tag, index) => (
             <span key={index} className="text-blue-400">
               #{tag}{" "}
@@ -355,43 +355,43 @@ export default function PublicationsParTon() {
           <Button
             variant="ghost"
             size="icon"
-            className={`h-8 w-8 p-0 ${likedPosts.includes(publication.id) ? "text-red-500" : "text-gray-300"}`}
+            className={`h-8 w-8 p-0 ${likedPosts.includes(publication.id) ? "text-red-500" : ""}`}
             onClick={() => handleLike(publication.id)}
           >
             <Heart className={`h-5 w-5 ${likedPosts.includes(publication.id) ? "fill-red-500" : ""}`} />
           </Button>
-          <span className="text-sm text-gray-300">
+          <span className="text-sm ">
             {formatNumber(likedPosts.includes(publication.id) ? publication.likes + 1 : publication.likes)}
           </span>
         </div>
 
         <div className="flex items-center gap-1">
-          <Button variant="ghost" size="icon" className="h-8 w-8 p-0 text-gray-300">
+          <Button variant="ghost" size="icon" className="h-8 w-8 p-0 ">
             <MessageCircle className="h-5 w-5" />
           </Button>
-          <span className="text-sm text-gray-300">{formatNumber(publication.commentaires)}</span>
+          <span className="text-sm">{formatNumber(publication.commentaires)}</span>
         </div>
 
         <div className="flex items-center gap-1">
-          <Button variant="ghost" size="icon" className="h-8 w-8 p-0 text-gray-300">
+          <Button variant="ghost" size="icon" className="h-8 w-8 p-0 ">
             <Share2 className="h-5 w-5" />
           </Button>
-          <span className="text-sm text-gray-300">{formatNumber(publication.partages)}</span>
+          <span className="text-sm ">{formatNumber(publication.partages)}</span>
         </div>
       </div>
     </Card>
   )
 
   return (
-    <div className="space-y-4 bg-[#0a0a0a] text-white">
-      <div className="sticky top-0 z-10 bg-[#121212] border-b border-gray-800 pb-2 pt-2">
+    <div className="space-y-4 ">
+      <div className="sticky top-0 z-10  border-b  pb-2 pt-2">
         <Tabs defaultValue="Tous" value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="flex h-auto mb-0 bg-[#1a1a1a] justify-start overflow-x-auto space-x-2 p-1 rounded-lg">
+          <TabsList className="flex h-auto mb-0  justify-start overflow-x-auto space-x-2 p-1 rounded-lg">
             {categories.map((categorie) => (
               <TabsTrigger
                 key={categorie}
                 value={categorie}
-                className="px-3 py-1 rounded-md data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+                className="px-3 py-1 rounded-md data-[state=active]:bg-blue-600 "
               >
                 {categorie}
               </TabsTrigger>
@@ -415,19 +415,19 @@ export default function PublicationsParTon() {
         </Tabs>
       </div>
 
-      <div className="bg-[#121212] p-4 rounded-lg border border-gray-800">
+      <div className=" p-4 rounded-lg border ">
         <div className="flex justify-between items-center mb-3">
           <h2 className="text-lg font-semibold">Tendances</h2>
-          <Badge variant="outline" className="bg-blue-600 text-white border-0">
+          <Badge variant="outline" className="bg-blue-600  border-0">
             Populaire
           </Badge>
         </div>
-        <Separator className="mb-4 bg-gray-800" />
+        <Separator className="mb-4 " />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {publicationsPopulaires.slice(0, 3).map((publication) => (
             <Card
               key={`pop-${publication.id}`}
-              className="overflow-hidden rounded-xl border-0 shadow-md bg-[#121212] text-white"
+              className="overflow-hidden rounded-xl border-0 shadow-md  "
             >
               <div
                 className="w-full bg-cover bg-center relative"
@@ -436,7 +436,7 @@ export default function PublicationsParTon() {
                   height: "150px",
                 }}
               >
-                <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+                <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t  to-transparent">
                   <div className="flex items-center gap-1">
                     <Avatar className={`h-5 w-5 ${avatarColors[publication.categorie as keyof typeof avatarColors]}`}>
                       <AvatarFallback className="text-xs">{publication.auteur.initiales}</AvatarFallback>
@@ -446,7 +446,7 @@ export default function PublicationsParTon() {
                 </div>
               </div>
               <div className="p-2">
-                <div className="flex justify-between text-xs text-gray-400">
+                <div className="flex justify-between text-xs ">
                   <div className="flex items-center gap-1">
                     <Heart className="h-3 w-3" />
                     <span>{formatNumber(publication.likes)}</span>

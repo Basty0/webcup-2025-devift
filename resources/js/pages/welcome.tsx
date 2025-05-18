@@ -160,7 +160,7 @@ export default function Welcome() {
       <HeroSection />
       <HorizontalScrollGallery mouseX={mouseX} mouseY={mouseY} />
 
-      <section id="intro-tons" className="flex flex-col items-center justify-center p-4 md:hidden">
+      <section  className="flex flex-col items-center justify-center p-4 md:hidden">
         <h1 className="font-poppins w-full max-w-[420px] text-5xl leading-tight font-bold md:text-[84px] md:leading-[88px] dark:text-white">
           Votre Ton, C'est quoi ?
         </h1>
@@ -178,13 +178,13 @@ export default function Welcome() {
         <ScrollableCard />
       </section>
 
-      <section id="TheEndPost" className="relative bg-black py-32 md:py-40">
+      <section id="TheEndPost" className="relative  py-32 md:py-40">
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="container mx-auto px-6">
           <motion.h2
             initial={{ opacity: 0, y: 100 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.25, 1, 0.5, 1] }}
-            className="mb-6 text-center text-3xl font-bold text-white md:text-5xl"
+            className="mb-6 text-center text-3xl font-bold  md:text-5xl"
           >
             Dernières actualités
           </motion.h2>

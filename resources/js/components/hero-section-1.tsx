@@ -6,7 +6,7 @@ import { MagneticButton } from './magnetic-button';
 import { ParticleCanvas } from './particle-canvas';
 import TextReveal from './text-reveal';
 import { Button } from './ui/button';
-
+import { Link } from '@inertiajs/react';
 export function HeroSection() {
     const [heroInView, setHeroInView] = useState(true);
     const heroRef = useRef<HTMLElement>(null);
@@ -44,7 +44,7 @@ export function HeroSection() {
                             <div className="mx-auto max-w-full">
                                 <TextReveal
                                     text="Tu pars ? Laisse une trace."
-                                    className="mb-6 text-5xl leading-tight font-bold md:text-6xl"
+                                    className="mb-6 text-6xl leading-tight font-extrabold md:text-7xl text-center"
                                     inView={heroInView}
                                 />
 
@@ -52,15 +52,19 @@ export function HeroSection() {
                                     initial={{ opacity: 0, y: 50 }}
                                     animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
                                     transition={{ duration: 1, delay: 0.5 }}
-                                    className="max-w-2xl text-center"
+                                    className="w-full text-center"
                                 >
-                                    <p className="mb-8 text-xl md:text-2xl">
+                                   <p className="mb-8 text-xl md:text-2xl font-sans font-bold ">
                                     Crée ta page de fin personnalisée, drôle ou touchante, pour marquer les esprits une dernière fois.
                                     </p>
+                                    
+  
+
 
                                     <MagneticButton>
                                         <Button className='bg-primary' size={'lg'} variant={'border'}>
-                                        Créer ma TheEndPage
+                                            <Link href={'/exprimer-vous'}>Créer ma TheEndPage</Link>
+                                        
                                             
                                         </Button>
                                     </MagneticButton>

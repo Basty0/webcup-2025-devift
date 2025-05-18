@@ -16,6 +16,9 @@ Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('home');
 
+Route::fallback(function () {
+    return Inertia::render('Errors/Error404')->toResponse(request())->setStatusCode(404);
+});
 // Public routes
 Route::get('/recherche', function () {
     return Inertia::render('resulatrecherche/resulats-recherche');

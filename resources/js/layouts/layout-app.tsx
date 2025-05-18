@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { Link, usePage } from '@inertiajs/react';
 import { Menu, X } from 'lucide-react';
 import React, { type ReactNode, useEffect, useState } from 'react';
-
+import { motion } from 'framer-motion';
 interface AppLayoutProps {
     children: ReactNode;
 }
@@ -15,10 +15,26 @@ interface User {
     name: string;
     email: string;
 }
-
+const menuVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+        opacity: 1,
+        y: 0,
+        transition: {
+            delay: i * 0.1,
+            duration: 0.4,
+        },
+    }),
+};
 export default ({ children }: AppLayoutProps) => {
     const [isDarkMode, setIsDarkMode] = useState(false);
-
+    const handleClick = (id: string) => {
+        const section = document.getElementById(id);
+        if (section) {
+            // Scroll doux vers la cible
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
     useEffect(() => {
         // Détecter le thème initial
         const isDark = document.documentElement.classList.contains('dark');
@@ -55,9 +71,9 @@ export default ({ children }: AppLayoutProps) => {
 };
 
 const menuItems = [
-    { name: 'Tons'  , id:'Tons'},
-    { name: 'TheEndPost',id:'TheEndPost'},
-    { name: 'À propos' ,id:'apropos'},
+    { name: 'Tons', id: 'Tons' },
+    { name: 'TheEndPost', id: 'TheEndPost' },
+    { name: 'À propos', id: 'apropos' },
 ]
 
 const HeroHeader = () => {
@@ -65,6 +81,13 @@ const HeroHeader = () => {
     const [isScrolled, setIsScrolled] = React.useState(false);
     const { auth } = usePage<{ auth?: { user: User | null } }>().props;
     const isAuthenticated = auth && auth.user;
+
+    const handleClick = (id: string) => {
+        const section = document.getElementById(id);
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
 
     React.useEffect(() => {
         const handleScroll = () => {
@@ -102,13 +125,18 @@ const HeroHeader = () => {
                         <div className="absolute inset-0 m-auto hidden size-fit lg:block">
                             <ul className="flex gap-8 text-sm">
                                 {menuItems.map((item, index) => (
-                                    <li key={index}  onClick={() => {
-                                       
-                                        const section = document.getElementById(item.id);
-                                        section?.scrollIntoView({ behavior: 'smooth' });
-                                    }}>
+                                    <motion.li
+                                        key={index}
+                                        className="cursor-pointer"
+                                        variants={menuVariants}
+                                        initial="hidden"
+                                        whileInView="visible"
+                                        viewport={{ once: true, amount: 0.2 }}
+                                        custom={index}
+                                        onClick={() => handleClick(item.id)}
+                                    >
                                         <span>{item.name}</span>
-                                    </li>
+                                    </motion.li>
                                 ))}
                             </ul>
                         </div>
@@ -118,10 +146,7 @@ const HeroHeader = () => {
                                 <ul className="space-y-6 text-base">
                                     {menuItems.map((item, index) => (
                                         <li key={index}>
-                                            <span className="text-muted-foreground hover:text-accent-foreground block duration-150 cursor-pointer" onClick={() => {
-                                                const section = document.getElementById(item.name);
-                                                section?.scrollIntoView({ behavior: 'smooth' });
-                                            }}>{item.name}</span>
+                                            <span className="text-muted-foreground hover:text-accent-foreground block duration-150 cursor-pointer" onClick={() => handleClick(item.id)}>{item.name}</span>
                                         </li>
                                     ))}
                                 </ul>

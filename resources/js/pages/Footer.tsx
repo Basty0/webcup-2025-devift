@@ -1,9 +1,9 @@
-import { Link } from "lucide-react"
+import { Link } from "@inertiajs/react" 
 import { Facebook, Instagram, Phone, Mail, MapPin, Linkedin, Twitter, Youtube, MessageCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
-
+import AppLogoIcon from "@/components/app-logo-icon"
 export function Footer({ id }: { id: string }) {
   return (
     <footer id={id} className="bg-slate-950 text-slate-200">
@@ -12,16 +12,16 @@ export function Footer({ id }: { id: string }) {
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-slate-800 rounded-md flex items-center justify-center">
-                <span className="text-xl font-bold text-slate-100">D</span>
-              </div>
-              <h2 className="text-2xl font-bold">DEV iFT</h2>
+              
+              
+              <AppLogoIcon />TheEnd
+              
             </div>
             <p className="text-slate-400 max-w-xs">
               Nous créons des solutions numériques innovantes pour transformer votre vision en réalité.
             </p>
             <div className="flex space-x-4">
-              <Link href="https://facebook.com" className="hover:text-slate-100 transition-colors">
+              <Link href="https://facebook.com/" className="hover:text-slate-100 transition-colors">
                 <Facebook size={20} />
                 <span className="sr-only">Facebook</span>
               </Link>
@@ -49,17 +49,17 @@ export function Footer({ id }: { id: string }) {
             <h3 className="text-lg font-semibold">Liens Rapides</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/" className="text-slate-400 hover:text-slate-100 transition-colors">
+                <Link href="/" className=" hover:text-slate-100 ">
                   TheEnd
                 </Link>
               </li>
               <li>
-                <Link href="/" className="text-slate-400 hover:text-slate-10 transition-colors">
+                <Link href="/" className=" hover:text-slate-10 ">
                 TheEndPost
                 </Link>
               </li>
               <li>
-                <Link href="/" className="text-slate-400 hover:text-slate-100 transition-colors">
+                <Link href="/" className=" hover:text-slate-100 ">
                   À propos
                 </Link>
               </li>
